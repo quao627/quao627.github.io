@@ -83,11 +83,11 @@ const PUBLICATIONS_DATA = {
     earlyStage: [
         "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Edgar Sanchez, Catherine Tang, Mark Taylor, Blaine Leonard, Cathy Wu. <em>Mitigating Metropolitan Carbon Emissions with Dynamic Eco-driving at Scale</em> [TR-C 2025] Transportation Research Part C: Emerging Technologies, 2025. Media reports: <a href=\"https://www.newscientist.com/article/2445202-a-simple-driving-trick-could-make-a-big-dent-in-cars-carbon-emissions/\" target=\"_blank\">NewScientist</a>; <a href=\"https://news.mit.edu/2025/eco-driving-measures-could-significantly-reduce-vehicle-emissions-0807\" target=\"_blank\">MIT News</a> (<span class=\"award\">Daily News Spotlight</span>).",
 
-        "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Zhongxia Yan, Cathy Wu. <em>IntersectionZoo: Eco-driving for Benchmarking Multi-Agent Contextual Reinforcement Learning.</em> International Conference on Learning Representations (ICLR) 2025.",
+        "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Zhongxia Yan, Cathy Wu. <em>IntersectionZoo: Eco-driving for Benchmarking Multi-Agent Contextual Reinforcement Learning.</em> International Conference on Learning Representations (ICLR) 2025. Media reports: <a href=\"https://news.mit.edu/2025/new-tool-evaluate-progress-reinforcement-learning-0505\" target=\"_blank\">MIT News</a>.",
         
         "<strong>Ao Qu</strong>, Yihong Tang, Wei Ma. <em>Attacking Deep Reinforcement Learning-Based Traffic Signal Control Systems with Colluding Vehicles.</em> ACM Transactions on Intelligent Systems and Technology.",
         
-        "<strong>Ao Qu</strong>, Jason Xuhuan Huang, Dajiang Suo. <em>SEIP: Simulation-based Design and Evaluation of Infrastructure-supported Collective Perception.</em> 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC).",
+        "<strong>Ao Qu*</strong>, Jason Xuhuan Huang*, Dajiang Suo. <em>SEIP: Simulation-based Design and Evaluation of Infrastructure-supported Collective Perception.</em> 2023 IEEE 26th International Conference on Intelligent Transportation Systems (ITSC).",
         
         "Yue Hu, <strong>Ao Qu</strong>, Dan Work. <em>Detecting extreme traffic events via a context augmented graph autoencoder.</em> ACM Transactions on Intelligent Systems and Technology.",
         
