@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Profile Image Placeholder Generator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 20px;
+            text-align: center;
+        }
+        canvas {
+            border: 2px solid #00d4ff;
+            border-radius: 50%;
+            margin: 20px;
+        }
+        button {
+            padding: 10px 20px;
+            background: linear-gradient(135deg, #00d4ff, #a855f7);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        .info {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background: #f7fafc;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Profile Image Placeholder</h1>
+    <div class="info">
+        <p><strong>Instructions:</strong></p>
+        <p>This is a temporary placeholder for your profile picture.</p>
+        <p>Replace <code>profile.jpg</code> with your actual photo (recommended: 400x400px, square)</p>
+    </div>
+    <canvas id="canvas" width="400" height="400"></canvas>
+    <br>
+    <button onclick="downloadImage()">Download Placeholder</button>
+
+    <script>
+        const canvas = document.getElementById('canvas');
+        const ctx = canvas.getContext('2d');
+        
+        // Create gradient background
+        const gradient = ctx.createLinearGradient(0, 0, 400, 400);
+        gradient.addColorStop(0, '#667eea');
+        gradient.addColorStop(1, '#764ba2');
+        ctx.fillStyle = gradient;
+        ctx.fillRect(0, 0, 400, 400);
+        
+        // Add initials
+        ctx.fillStyle = 'white';
+        ctx.font = 'bold 120px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+        ctx.fillText('AQ', 200, 200);
+        
+        // Add circle overlay
+        ctx.strokeStyle = 'rgba(255, 255, 255, 0.3)';
+        ctx.lineWidth = 4;
+        ctx.beginPath();
+        ctx.arc(200, 200, 150, 0, Math.PI * 2);
+        ctx.stroke();
+        
+        function downloadImage() {
+            const link = document.createElement('a');
+            link.download = 'profile.jpg';
+            link.href = canvas.toDataURL('image/jpeg');
+            link.click();
+        }
+    </script>
+</body>
+</html>
+

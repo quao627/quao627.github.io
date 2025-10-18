@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ao Qu - MIT PhD Student</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  </head>
+  <body>
+    <!-- Ubuntu-style Top Bar -->
+    <div class="top-bar">
+        <div class="top-bar-left">
+            <!-- <span class="site-logo">🎓</span> -->
+            <span class="app-name">aoqu@mit</span>
+        </div>
+        <div class="top-bar-center">
+            <div class="status-info">
+                <span class="status-badge">
+                    <span class="status-dot"></span>
+                    <span class="status-text">Active</span>
+                </span>
+                <span class="location-info">📍 Boston these days · ✈️ Heading to San Diego this December</span>
+            </div>
+        </div>
+        <div class="top-bar-right">
+            <span class="time" id="current-time"></span>
+        </div>
+    </div>
+
+    <!-- Ubuntu-style Sidebar Launcher -->
+    <div class="sidebar">
+        <div class="launcher">
+            <a href="#home" class="launcher-icon active" title="About Me">
+                <i class="fas fa-home"></i>
+            </a>
+            <a href="#news" class="launcher-icon" title="News">
+                <i class="fas fa-newspaper"></i>
+            </a>
+            <a href="#research" class="launcher-icon" title="Research">
+                <i class="fas fa-flask"></i>
+            </a>
+            <a href="#people" class="launcher-icon" title="People & Network">
+                <i class="fas fa-users"></i>
+            </a>
+        </div>
+    </div>
+
+    <!-- Main Content - Scrollable -->
+    <main class="main-content">
+        <!-- Home Section -->
+        <section id="home" class="section">
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <div class="window-title">
+                        <i class="fas fa-user-circle"></i>
+                        About Me
+                    </div>
+                </div>
+                <div class="window-content terminal-content">
+                    <div class="terminal-output">
+                        <!-- Profile and Bio -->
+                        <div class="terminal-response" id="profile-bio-output">
+                            <!-- Content loaded from data/about.js -->
+                        </div>
+
+                        <!-- Research Interests -->
+                        <div class="terminal-response" id="research-output">
+                            <!-- Content loaded from data/about.js -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- News Section -->
+        <section id="news" class="section">
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <div class="window-title">
+                        <i class="fas fa-newspaper"></i>
+                        News
+                    </div>
+                </div>
+                <div class="window-content">
+                <h2>Recent News</h2>
+                <div class="news-list">
+                    <!-- Content loaded from data/news.js -->
+                </div>
+            </div>
+            </div>
+        </section>
+
+        <!-- Research Section -->
+        <section id="research" class="section">
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <div class="window-title">
+                        <i class="fas fa-flask"></i>
+                        Research
+                    </div>
+                </div>
+                <div class="window-content">
+                <h2>Selected Recent Works</h2>
+                <div class="section-note">* indicates equal contribution</div>
+                <div class="papers-list">
+                    <!-- Content loaded from data/publications.js -->
+                </div>
+
+                <h2 class="section-subtitle">Early Publications (Before 2023)</h2>
+                <ul class="simple-list">
+                    <!-- Content loaded from data/publications.js -->
+                </ul>
+            </div>
+            </div>
+        </section>
+
+        <!-- People Section -->
+        <section id="people" class="section">
+            <div class="window">
+                <div class="window-header">
+                    <div class="window-controls">
+                        <span class="control close"></span>
+                        <span class="control minimize"></span>
+                        <span class="control maximize"></span>
+                    </div>
+                    <div class="window-title">
+                        <i class="fas fa-users"></i>
+                        People & Network
+                        </div>
+                    </div>
+                    <div class="window-content">
+                        <div class="people-grid">
+                            <!-- Content loaded from data/people.js -->
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </section>
+    </main>
+
+    <!-- Load data files first -->
+    <script src="data/about.js"></script>
+    <script src="data/news.js"></script>
+    <script src="data/publications.js"></script>
+    <script src="data/people.js"></script>
+    
+    <!-- Then load the data into HTML -->
+    <script src="data-loader.js"></script>
+    
+    <!-- Finally run animations and interactions -->
+    <script src="script.js"></script>
+  </body>
+</html>

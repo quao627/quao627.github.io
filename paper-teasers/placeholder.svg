@@ -1,0 +1,21 @@
+<svg width="400" height="225" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="400" height="225" fill="#f5f5f7"/>
+  
+  <!-- Grid pattern -->
+  <defs>
+    <pattern id="grid" width="40" height="40" patternUnits="userSpaceOnUse">
+      <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#e0e0e0" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="225" fill="url(#grid)" opacity="0.3"/>
+  
+  <!-- Icon -->
+  <circle cx="200" cy="95" r="30" fill="#007aff" opacity="0.2"/>
+  <text x="200" y="105" font-family="Arial, sans-serif" font-size="36" fill="#007aff" text-anchor="middle">📄</text>
+  
+  <!-- Text -->
+  <text x="200" y="150" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="14" fill="#6e6e73" text-anchor="middle">Research Paper</text>
+  <text x="200" y="170" font-family="-apple-system, BlinkMacSystemFont, sans-serif" font-size="12" fill="#999" text-anchor="middle">Image Coming Soon</text>
+</svg>
+
