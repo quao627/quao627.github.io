@@ -43,18 +43,6 @@ const PUBLICATIONS_DATA = {
             }
         },
         {
-            id: 'itinera',
-            title: "ITINERA: Integrating Spatial Optimization with Large Language Models for Open-domain Urban Itinerary Planning",
-            authors: "Yihong Tang*, Zhaokai Wang*, <strong>Ao Qu*(project lead)</strong>, Yihao Yan*, Zhaofeng Wu, Dingyi Zhuang, Jushi Kai, Kebing Hou, Xiaotong Guo, Han Zheng, Tiange Luo, Jinhua Zhao, Zhan Zhao, Wei Ma",
-            venue: "EMNLP 2024 Industry Track | KDD UrbComp Workshop 2024 <span class=\"award\">(Best Paper Award)</span>",
-            icon: "fa-map-marked-alt",
-            image: "paper-teasers/itinera.png",
-            links: {
-                paper: "https://aclanthology.org/2024.emnlp-industry.104/",
-                code: "https://github.com/YihongT/ITINERA"
-            }
-        },
-        {
             id: 'sparkle',
             title: "Sparkle: Mastering Basic Spatial Capabilities in Vision Language Models Elicits Generalization to Spatial Reasoning",
             authors: "Yihong Tang*, <strong>Ao Qu*(corresponding author)</strong>, Zhaokai Wang*, Dingyi Zhuang*, Zhaofeng Wu, Wei Ma, Shenhao Wang, Yunhan Zheng, Zhan Zhao, Jinhua Zhao",
@@ -64,6 +52,18 @@ const PUBLICATIONS_DATA = {
             links: {
                 paper: "https://arxiv.org/abs/2410.16162",
                 code: "https://github.com/YihongT/Sparkle"
+            }
+        },
+        {
+            id: 'itinera',
+            title: "ITINERA: Integrating Spatial Optimization with Large Language Models for Open-domain Urban Itinerary Planning",
+            authors: "Yihong Tang*, Zhaokai Wang*, <strong>Ao Qu*(project lead)</strong>, Yihao Yan*, Zhaofeng Wu, Dingyi Zhuang, Jushi Kai, Kebing Hou, Xiaotong Guo, Han Zheng, Tiange Luo, Jinhua Zhao, Zhan Zhao, Wei Ma",
+            venue: "EMNLP 2024 Industry Track | KDD UrbComp Workshop 2024 <span class=\"award\">(Best Paper Award)</span>",
+            icon: "fa-map-marked-alt",
+            image: "paper-teasers/itinera.png",
+            links: {
+                paper: "https://aclanthology.org/2024.emnlp-industry.104/",
+                code: "https://github.com/YihongT/ITINERA"
             }
         },
         {
