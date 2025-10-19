@@ -717,7 +717,7 @@ h2 {
 .news-list {
     display: flex;
     flex-direction: column;
-    gap: 12px;
+    gap: 14px;
 }
 
 /* Make News section scroll internally when content is long */
@@ -734,40 +734,43 @@ h2 {
 }
 
 .news-item {
-    padding: 14px 18px;
-    background: rgba(255, 255, 255, 0.5);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-left: 3px solid var(--lighter-grey);
-    border-radius: 10px;
-    box-shadow: var(--shadow-sm);
-    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 0 0 0 12px;
+    background: transparent;
+    border-left: 2px solid rgba(0, 0, 0, 0.12);
+    line-height: 1.6;
+    transition: var(--transition);
 }
 
 .news-item.highlight {
-    background: rgba(255, 149, 0, 0.08);
     border-left-color: var(--accent-orange);
+    border-left-width: 3px;
+    padding-left: 11px;
+}
+
+.news-item.highlight .date {
+    color: var(--accent-orange);
 }
 
 .date {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-    font-size: 13px;
+    font-size: 12px;
     color: var(--grey);
     font-weight: 600;
     display: inline;
-    margin-right: 10px;
+    margin-right: 8px;
 }
 
 .news-item p {
     display: inline;
-    font-size: 15px;
-    line-height: 1.65;
+    font-size: 14px;
+    line-height: 1.6;
     color: var(--dark-grey);
 }
 
 .news-item em {
     font-style: italic;
     color: var(--black);
+    font-weight: 500;
 }
 
 .news-item strong {
@@ -776,17 +779,37 @@ h2 {
 }
 
 .news-item a {
-    color: var(--accent-blue);
+    color: #6e6e73;
     text-decoration: none;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+    transition: var(--transition);
 }
 
 .news-item a:hover {
-    text-decoration: underline;
+    color: #2d2d2d;
+    border-bottom-color: #2d2d2d;
 }
 
 /* Ensure linked <em> papers share the same color as non-linked */
 .news-item em a {
     color: var(--black);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.news-item em a:hover {
+    color: var(--black);
+    border-bottom-color: var(--black);
+}
+
+/* Keep workshop/venue links in black */
+.news-item strong a {
+    color: var(--black);
+    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.news-item strong a:hover {
+    color: var(--black);
+    border-bottom-color: var(--black);
 }
 
 /* ======== PAPERS ======== */

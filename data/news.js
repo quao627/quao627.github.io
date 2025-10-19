@@ -2,12 +2,12 @@
 const NEWS_DATA = [
     {
         date: "2025-10-10",
-        content: "<em>MEM1</em> was presented at the COLM RAM2 Workshop! Thanks to Paul for presenting the <a href='https://docs.google.com/presentation/d/1pf7-hMeApnM_9mbqwdi93OFEZ6rI1hekznhw8dJMl74/edit?usp=sharing' target='_blank'>work</a>.",
+        content: "<em>MEM1</em> was presented at the <strong><a href='https://facebookresearch.github.io/RAM/workshop/COLM_2025/' target='_blank'>COLM RAM2 Workshop 2025</a></strong>! Thanks to Paul for presenting the <a href='https://docs.google.com/presentation/d/1pf7-hMeApnM_9mbqwdi93OFEZ6rI1hekznhw8dJMl74/edit?usp=sharing' target='_blank'>work</a>.",
         highlight: false
     },
     {
         date: "2025-10-05",
-        content: "<em>MEM1</em> was accepted by the <strong>NeurIPS Multi-Turn Interactions in Large Language Models</strong> workshop as a <strong>top 1%</strong> submission (2 orals out of 230 papers). Great work with my co–first author, Zijian Zhou. Looking forward to the conference in San Diego!",
+        content: "<em>MEM1</em> was accepted by the <strong><a href='https://workshop-multi-turn-interaction.github.io/' target='_blank'>NeurIPS Multi-Turn Interactions in Large Language Models workshop 2025</a></strong> as a <strong>top 1%</strong> submission (2 orals out of 230 papers). Great work with my co–first author, Zijian Zhou. Looking forward to the conference in San Diego!",
         highlight: true
     },
     {
@@ -22,7 +22,7 @@ const NEWS_DATA = [
     },
     {
         date: "2025-08-20",
-        content: "<em>SPARKLE</em> was accepted to the <strong>Findings of EMNLP 2025</strong> and received the <strong>Best Paper Award</strong> at <strong>IJCAI MKLM 2025</strong>. Great work with my co–first authors, Yihong Tang, Zhaokai Wang, and Dingyi Zhuang.",
+        content: "<em>SPARKLE</em> was accepted to the <strong>Findings of EMNLP 2025</strong> and received the <strong>Best Paper Award</strong> at <strong><a href='https://sites.google.com/view/ijcai-mklm/home' target='_blank'>IJCAI Multimodal Knowledge and Language Modeling workshop 2025</a></strong>. Great work with my co–first authors, Yihong Tang, Zhaokai Wang, and Dingyi Zhuang.",
         highlight: true
     },
     {
