@@ -262,7 +262,7 @@ body {
 .main-content {
     background: var(--desktop-bg);
     margin-top: 24px; /* Top bar height */
-    padding: 32px 48px;
+    padding: 24px 48px;
     max-width: 1200px;
     margin-left: auto;
     margin-right: auto;
@@ -1054,14 +1054,10 @@ h2 {
 }
 
 .people-list li {
-    padding: 10px 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.04);
+    padding: 6px 0;
+    border-bottom: none;
     font-size: 15px;
     color: var(--dark-grey);
-}
-
-.people-list li:last-child {
-    border-bottom: none;
 }
 
 .tag {
