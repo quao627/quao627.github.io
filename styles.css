@@ -1132,6 +1132,76 @@ h2 {
     text-decoration: underline;
 }
 
+/* ======== VISITOR ANALYTICS FOOTER ======== */
+.visitor-footer {
+    margin-top: 32px;
+    padding: 32px 0;
+    background: rgba(248, 248, 250, 0.5);
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+}
+
+.visitor-footer-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 calc(80px + 48px) 0 calc(80px + 48px);
+}
+
+.visitor-inline {
+    display: flex;
+    align-items: center;
+    gap: 48px;
+    justify-content: center;
+}
+
+/* Stats Side Panel */
+.visitor-stats-side {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+    min-width: 140px;
+}
+
+.stat-mini {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.stat-mini-value {
+    font-size: 32px;
+    font-weight: 600;
+    color: var(--black);
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    line-height: 1;
+    letter-spacing: -0.02em;
+}
+
+.stat-mini-label {
+    font-size: 11px;
+    color: var(--grey);
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Map Inline */
+.visitor-map-inline {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 600px;
+}
+
+.visitor-map-inline img,
+.visitor-map-inline canvas,
+.visitor-map-inline iframe {
+    max-width: 100%;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
+}
+
 /* ======== RESPONSIVE ======== */
 
 /* Large tablets and small desktops */
@@ -1213,7 +1283,7 @@ h2 {
     .launcher-text {
         font-size: 10px;
     }
-
+    
     .main-content {
         margin-top: 28px;
         padding: 20px 24px;
@@ -1280,6 +1350,26 @@ h2 {
     .section-subtitle {
         font-size: 17px;
     }
+
+    /* Visitor footer tablet */
+    .visitor-footer {
+        padding: 28px 0;
+    }
+
+    .visitor-inline {
+        flex-direction: column;
+        gap: 24px;
+    }
+
+    .visitor-stats-side {
+        flex-direction: row;
+        gap: 48px;
+        min-width: auto;
+    }
+
+    .visitor-map-inline {
+        max-width: 100%;
+    }
 }
 
 /* Mobile devices - sidebar still visible */
@@ -1290,7 +1380,7 @@ h2 {
 
     .status-info {
         gap: 8px;
-    }
+}
 
     .sidebar {
         width: 60px;
@@ -1300,15 +1390,15 @@ h2 {
         width: 52px;
         padding: 6px 4px;
     }
-
+    
     .launcher-icon i {
         font-size: 18px;
     }
-
+    
     .launcher-text {
         font-size: 9px;
     }
-
+    
     .main-content {
         padding: 16px 20px;
         padding-left: calc(60px + 16px);
@@ -1353,6 +1443,27 @@ h2 {
     .section-subtitle {
         font-size: 16px;
         margin: 24px 0 12px;
+    }
+
+    /* Visitor footer mobile */
+    .visitor-footer-content {
+        padding: 0 calc(60px + 16px);
+    }
+
+    .visitor-footer {
+        padding: 24px 0;
+    }
+
+    .visitor-stats-side {
+        gap: 40px;
+    }
+
+    .stat-mini-value {
+        font-size: 26px;
+    }
+
+    .stat-mini-label {
+        font-size: 10px;
     }
 }
 
@@ -1439,7 +1550,7 @@ h2 {
         width: 50%;
         height: 3px;
     }
-
+    
     .launcher-icon:hover::before {
         width: 40%;
         height: 3px;
@@ -1620,6 +1731,24 @@ h2 {
         gap: 12px;
     }
 
+    /* Visitor footer responsive */
+    .visitor-footer-content {
+        padding: 0 calc(70px + 24px);
+    }
+
+    .visitor-inline {
+        gap: 36px;
+    }
+
+    .visitor-stats-side {
+        gap: 20px;
+        min-width: 120px;
+    }
+
+    .stat-mini-value {
+        font-size: 28px;
+    }
+
     .early-pub-title {
         font-size: 13px;
     }
@@ -1742,6 +1871,142 @@ h2 {
     .paper-links a, .paper-link-disabled {
         padding: 4px 8px;
         font-size: 10px;
+    }
+
+    /* Visitor footer small mobile - with bottom nav */
+    .visitor-footer {
+        margin-bottom: calc(64px + env(safe-area-inset-bottom));
+        padding: 20px 0;
+    }
+
+    .visitor-footer-content {
+        padding: 0 16px;
+    }
+
+    .visitor-inline {
+        gap: 20px;
+    }
+
+    .visitor-stats-side {
+        gap: 32px;
+    }
+
+    .stat-mini-value {
+        font-size: 24px;
+    }
+
+    .stat-mini-label {
+        font-size: 10px;
+    }
+
+    .visitor-map-inline img,
+    .visitor-map-inline canvas,
+    .visitor-map-inline iframe {
+        border-radius: 6px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .top-bar {
+        height: 30px;
+        padding: 0 8px;
+    }
+
+    .app-name {
+        font-size: 11px;
+    }
+
+    .time {
+        font-size: 10px;
+    }
+
+    .sidebar {
+        height: 60px;
+    }
+
+    .launcher-icon {
+        padding: 6px 8px;
+    }
+
+    .launcher-icon i {
+        font-size: 18px;
+    }
+
+    .launcher-text {
+        font-size: 9px;
+    }
+
+    .main-content {
+        margin-top: 30px;
+        margin-bottom: 60px;
+        padding: 10px 12px;
+    }
+
+    .window-content {
+        padding: 12px 14px;
+    }
+
+    .terminal-content {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .terminal-avatar-large {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-info-large h1 {
+        font-size: 18px;
+    }
+
+    .profile-info-large .role {
+        font-size: 12px;
+    }
+
+    .badge-terminal {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+
+    .bio-content p {
+        font-size: 13px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    .paper-info h3 {
+        font-size: 14px;
+    }
+
+    .paper-links a, .paper-link-disabled {
+        padding: 4px 8px;
+        font-size: 10px;
+    }
+
+    /* Visitor footer extra small */
+    .visitor-footer {
+        margin-bottom: calc(60px + env(safe-area-inset-bottom));
+        padding: 16px 0;
+    }
+
+    .visitor-footer-content {
+        padding: 0 12px;
+    }
+
+    .stat-mini-value {
+        font-size: 22px;
+    }
+
+    .stat-mini-label {
+        font-size: 9px;
+    }
+
+    .visitor-stats-side {
+        gap: 24px;
     }
 }
 

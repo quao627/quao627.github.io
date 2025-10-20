@@ -156,7 +156,45 @@
                 </div>
             </section>
         </section>
+
     </main>
+
+    <!-- Visitor Analytics Footer -->
+    <footer class="visitor-footer">
+        <div class="visitor-footer-content">
+            <!-- Inline Stats and Map -->
+            <div class="visitor-inline">
+                <!-- Stats on the side -->
+                <div class="visitor-stats-side">
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="visitor-counter">---</div>
+                        <div class="stat-mini-label">Visitors</div>
+                    </div>
+                    <div class="stat-mini">
+                        <div class="stat-mini-value" id="country-counter">---</div>
+                        <div class="stat-mini-label">Countries</div>
+                    </div>
+                </div>
+                
+                <!-- Map in the center -->
+                <div class="visitor-map-inline">
+                    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=zsHdgbYyiBRIcBn7zJhUndNwxu0z71pKTh0fCO_AoVo&cl=ffffff&w=a"></script>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Google Analytics 4 (Replace YOUR_GA4_ID with your actual ID) -->
+    <!-- Get your ID from https://analytics.google.com -->
+    
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XGVM335K55"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XGVM335K55');
+    </script>
+   
 
     <!-- Load data files first -->
     <script src="data/about.js"></script>

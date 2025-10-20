@@ -134,8 +134,45 @@ document.addEventListener('keydown', (e) => {
     }
 });
 
+// ======== VISITOR STATISTICS ========
+// Option 1: Using a simple counter API (you'll need to choose a service)
+// Recommended free services:
+// - GoatCounter: https://www.goatcounter.com (open source, privacy-friendly)
+// - CountAPI: https://countapi.xyz (simple, no signup)
+// - Visitor Badge: https://visitor-badge.laobi.icu
+
+// Simplified visitor stats - minimalist approach
+async function loadVisitorStats() {
+    try {
+        // Using CountAPI for simple visitor counting
+        const namespace = 'aoqu-website';
+        const keyTotal = 'visits';
+        
+        // Increment total visit counter
+        const responseTotal = await fetch(`https://api.countapi.xyz/hit/${namespace}/${keyTotal}`);
+        const dataTotal = await responseTotal.json();
+        
+        if (dataTotal.value) {
+            document.getElementById('visitor-counter').textContent = dataTotal.value.toLocaleString();
+        }
+        
+        // Country counter - data from map widget or Google Analytics
+        // Placeholder value until you have actual data
+        document.getElementById('country-counter').textContent = '25+';
+        
+    } catch (error) {
+        console.error('Error loading visitor stats:', error);
+        document.getElementById('visitor-counter').textContent = '---';
+        document.getElementById('country-counter').textContent = '---';
+    }
+}
+
+// Load visitor stats on page load
+loadVisitorStats();
+
 // ======== INITIALIZATION ========
 console.log('🐧 Ubuntu-style scrollable website loaded!');
 console.log('💡 Shortcuts: Alt+1-4 (sections)');
 console.log('📜 Scroll or click sidebar to navigate');
 console.log('⌨️  Terminal mode activated!');
+console.log('📊 Visitor stats loaded!');
