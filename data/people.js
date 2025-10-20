@@ -13,7 +13,7 @@ const PEOPLE_DATA = {
     startups: [
         { name: "O2Tech.ai", url: "https://www.o2tech.ai/" },
         { name: "Subconscious.dev", url: "https://www.subconscious.dev/" },
-        { name: "Zhiling Technology", url: "https://libra.zhilingtech.com/" }
+        // { name: "Zhiling Technology", url: "https://libra.zhilingtech.com/" }
     ],
     
     mentors: [
