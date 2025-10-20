@@ -81,7 +81,7 @@ const PUBLICATIONS_DATA = {
     ],
     
     earlyStage: [
-        "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Edgar Sanchez, Catherine Tang, Mark Taylor, Blaine Leonard, Cathy Wu. <em>Mitigating Metropolitan Carbon Emissions with Dynamic Eco-driving at Scale</em> [TR-C 2025] Transportation Research Part C: Emerging Technologies, 2025. Media reports: <a href=\"https://www.newscientist.com/article/2445202-a-simple-driving-trick-could-make-a-big-dent-in-cars-carbon-emissions/\" target=\"_blank\">NewScientist</a>; <a href=\"https://news.mit.edu/2025/eco-driving-measures-could-significantly-reduce-vehicle-emissions-0807\" target=\"_blank\">MIT News</a> (<span class=\"award\">Daily News Spotlight</span>).",
+        "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Edgar Sanchez, Catherine Tang, Mark Taylor, Blaine Leonard, Cathy Wu. <em>Mitigating Metropolitan Carbon Emissions with Dynamic Eco-driving at Scale</em> Transportation Research Part C: Emerging Technologies, 2025. Media reports: <a href=\"https://www.newscientist.com/article/2445202-a-simple-driving-trick-could-make-a-big-dent-in-cars-carbon-emissions/\" target=\"_blank\">NewScientist</a>; <a href=\"https://news.mit.edu/2025/eco-driving-measures-could-significantly-reduce-vehicle-emissions-0807\" target=\"_blank\">MIT News</a> (<span class=\"award\">Daily News Spotlight</span>).",
 
         "Vindula Jayawardana, Baptiste Freydt, <strong>Ao Qu</strong>, Cameron Hickert, Zhongxia Yan, Cathy Wu. <em>IntersectionZoo: Eco-driving for Benchmarking Multi-Agent Contextual Reinforcement Learning.</em> International Conference on Learning Representations (ICLR) 2025. Media reports: <a href=\"https://news.mit.edu/2025/new-tool-evaluate-progress-reinforcement-learning-0505\" target=\"_blank\">MIT News</a>.",
         
@@ -95,7 +95,7 @@ const PUBLICATIONS_DATA = {
         
         "Yihong Tang*, <strong>Ao Qu*</strong>, Andy HF Chow, William HK Lam, Sze Chun Wong, Wei Ma. <em>Domain Adversarial Spatial-Temporal Network: A Transferable Framework for Short-term Traffic Forecasting across cities.</em> Proceedings of the 31st ACM International Conference on Information & Knowledge Management (CIKM) 2022 <span class=\"award\">(Oral)</span>.",
         
-        "<strong>Ao Qu</strong>, Yu Wang, Yue Hu, Yanbing Wang, and Hiba Baroud. <em>A data-integration analysis on road emissions and traffic patterns.</em> 17th Smoky Mountains Computational Sciences and Engineering Conference, SMC 2020, Oak Ridge National Lab <span class=\"award\">(Best Student Paper)</span>.",
+        "<strong>Ao Qu</strong>, Yu Wang, Yue Hu, Yanbing Wang, and Hiba Baroud. <em>A data-integration analysis on road emissions and traffic patterns.</em> SMC 2020 Data Competition at Oak Ridge National Lab <span class=\"award\">(Best Student Paper)</span>.",
     ]
 };
 

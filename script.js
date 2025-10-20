@@ -50,7 +50,10 @@ launcherIcons.forEach(icon => {
         const targetSection = document.querySelector(targetId);
         
         if (targetSection) {
-            const offsetTop = targetSection.offsetTop - 24; // Account for top bar
+            // Adjust offset based on screen size
+            const isMobile = window.innerWidth <= 480;
+            const topBarHeight = isMobile ? 32 : 24;
+            const offsetTop = targetSection.offsetTop - topBarHeight;
             window.scrollTo({
                 top: offsetTop,
                 behavior: 'smooth'
@@ -77,7 +80,10 @@ if (profileImage) {
 document.querySelectorAll('.launcher-icon').forEach(icon => {
     icon.addEventListener('mouseenter', function() {
         const title = this.getAttribute('title');
-        if (title && !this.querySelector('.tooltip')) {
+        const isMobile = window.innerWidth <= 480;
+        
+        // Don't show tooltips on mobile bottom navigation
+        if (title && !this.querySelector('.tooltip') && !isMobile) {
             const tooltip = document.createElement('div');
             tooltip.className = 'tooltip';
             tooltip.textContent = title;

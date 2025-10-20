@@ -51,6 +51,11 @@
 html {
     scroll-behavior: smooth;
     font-size: 15px;
+    /* Prevent text size adjustment on orientation change */
+    -webkit-text-size-adjust: 100%;
+    -moz-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    text-size-adjust: 100%;
 }
 
 body {
@@ -59,6 +64,10 @@ body {
     color: var(--dark-grey);
     line-height: 1.6;
     -webkit-font-smoothing: antialiased;
+    /* Improve touch scrolling on mobile */
+    -webkit-overflow-scrolling: touch;
+    /* Prevent pull-to-refresh on mobile */
+    overscroll-behavior-y: none;
 }
 
 /* ======== UBUNTU TOP BAR ======== */
@@ -205,6 +214,10 @@ body {
     transition: var(--transition);
     position: relative;
     cursor: pointer;
+    /* Better touch target */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .launcher-icon i {
@@ -934,6 +947,10 @@ h2 {
     color: #2d2d2d; /* text stays dark grey/black */
     text-decoration: none;
     transition: var(--transition);
+    /* Better touch target */
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    user-select: none;
+    -webkit-user-select: none;
 }
 
 .paper-links a:hover {
@@ -1116,6 +1133,8 @@ h2 {
 }
 
 /* ======== RESPONSIVE ======== */
+
+/* Large tablets and small desktops */
 @media (max-width: 1024px) {
     .home-layout {
         grid-template-columns: 1fr;
@@ -1142,106 +1161,587 @@ h2 {
     .people-grid {
         grid-template-columns: 1fr;
     }
+
+    .paper-image {
+        width: 400px;
+        max-width: 40%;
+    }
 }
 
+/* Tablets and large phones */
 @media (max-width: 768px) {
+    .top-bar {
+        height: 28px;
+        padding: 0 10px;
+        font-size: 12px;
+    }
+
+    .top-bar-center {
+        position: static;
+        transform: none;
+        flex: 1;
+        display: flex;
+        justify-content: center;
+    }
+
+    .location-info {
+        font-size: 11px;
+    }
+
+    .status-badge {
+        padding: 2px 6px;
+    }
+
+    .status-text {
+        font-size: 8px;
+    }
+
     .sidebar {
-        width: 64px;
+        width: 70px;
     }
 
     .launcher-icon {
-        width: 56px;
-        padding: 6px 4px;
+        width: 62px;
+        padding: 8px 4px;
         font-size: 18px;
     }
     
     .launcher-icon i {
-        font-size: 18px;
+        font-size: 20px;
     }
     
     .launcher-text {
         font-size: 10px;
     }
-    
-    .launcher-icon.active::before {
-        height: 36px;
-    }
-    
-    .launcher-icon:hover::before {
-        height: 28px;
-    }
 
     .main-content {
-        padding: 24px 32px;
-        padding-left: calc(64px + 32px); /* Adjusted sidebar width + desired padding */
+        margin-top: 28px;
+        padding: 20px 24px;
+        padding-left: calc(70px + 24px);
     }
 
     .window-content {
         padding: 20px 24px;
     }
 
+    .terminal-content {
+        padding: 20px;
+    }
+
+    .profile-header-large {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 20px;
+    }
+
+    .terminal-avatar-large {
+        width: 140px;
+        height: 140px;
+    }
+
+    .profile-info-large h1 {
+        font-size: 28px;
+    }
+
+    .profile-info-large .role {
+        font-size: 15px;
+    }
+
     .paper-item {
         flex-direction: column;
+        padding: 14px;
+        gap: 14px;
     }
 
     .paper-image {
         width: 100%;
         max-width: 100%;
-        min-height: 200px;
+        min-height: 180px;
     }
 
-    .top-bar-right i {
-        display: none;
+    .paper-info h3 {
+        font-size: 16px;
+    }
+
+    .paper-links {
+        gap: 8px;
+    }
+
+    .paper-links a {
+        padding: 6px 12px;
+        font-size: 12px;
+    }
+
+    h2 {
+        font-size: 20px;
+    }
+
+    .section-subtitle {
+        font-size: 17px;
     }
 }
 
-@media (max-width: 480px) {
+/* Mobile devices - sidebar still visible */
+@media (max-width: 640px) {
+    .top-bar-center .location-info {
+        display: none;
+    }
+
+    .status-info {
+        gap: 8px;
+    }
+
     .sidebar {
-        width: 56px;
+        width: 60px;
     }
 
     .launcher-icon {
-        width: 48px;
-        padding: 8px 4px;
-        font-size: 16px;
+        width: 52px;
+        padding: 6px 4px;
     }
-    
+
     .launcher-icon i {
         font-size: 18px;
     }
-    
+
     .launcher-text {
         font-size: 9px;
-    }
-    
-    .launcher-icon.active::before {
-        height: 32px;
-    }
-    
-    .launcher-icon:hover::before {
-        height: 24px;
     }
 
     .main-content {
         padding: 16px 20px;
-        padding-left: calc(56px + 20px); /* Adjusted sidebar width + desired padding */
+        padding-left: calc(60px + 16px);
     }
 
     .window-content {
         padding: 16px 20px;
     }
 
-    .profile-card {
-        flex-direction: column;
-        text-align: center;
+    .terminal-content {
+        padding: 16px;
     }
 
-    .profile-image-wrapper {
-        margin: 0 auto;
+    .terminal-avatar-large {
+        width: 120px;
+        height: 120px;
     }
 
-    .badges {
+    .profile-info-large h1 {
+        font-size: 24px;
+    }
+
+    .badges-inline {
+        justify-content: center;
+    }
+
+    .contact-links {
         flex-direction: column;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .people-box {
+        padding: 16px 20px;
+    }
+
+    h2 {
+        font-size: 18px;
+        margin-bottom: 14px;
+    }
+
+    .section-subtitle {
+        font-size: 16px;
+        margin: 24px 0 12px;
+    }
+}
+
+/* Small mobile devices - convert sidebar to bottom nav */
+@media (max-width: 480px) {
+    /* Improve touch scrolling */
+    * {
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    a, button {
+        -webkit-tap-highlight-color: rgba(0, 0, 0, 0.1);
+    }
+
+    .top-bar {
+        height: 32px;
+        padding: 0 12px;
+    }
+
+    .top-bar-center {
+        display: none; /* Hide status info on very small screens */
+    }
+
+    .app-name {
+        font-size: 12px;
+    }
+
+    .time {
+        font-size: 11px;
+    }
+
+    /* Move sidebar to bottom */
+    .sidebar {
+        top: auto;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        width: 100%;
+        height: 64px;
+        border-right: none;
+        border-top: 1px solid rgba(0, 0, 0, 0.1);
+        z-index: 1000;
+        /* Prevent iOS Safari bottom bar interference */
+        padding-bottom: env(safe-area-inset-bottom);
+    }
+
+    .launcher {
+        flex-direction: row;
+        justify-content: space-around;
+        align-items: center;
+        padding: 0;
+        gap: 0;
+        height: 100%;
+    }
+
+    .launcher-icon {
+        width: auto;
+        flex: 1;
+        padding: 8px 12px;
+        gap: 4px;
+        max-width: none;
+        /* Ensure adequate touch target size (minimum 44x44 for iOS) */
+        min-height: 44px;
+    }
+
+    .launcher-icon i {
+        font-size: 20px;
+    }
+
+    .launcher-text {
+        font-size: 10px;
+    }
+
+    .launcher-icon::before {
+        left: 50%;
+        top: auto;
+        bottom: -1px;
+        transform: translateX(-50%);
+        width: 0;
+        height: 0;
+    }
+
+    .launcher-icon.active::before {
+        width: 50%;
+        height: 3px;
+    }
+
+    .launcher-icon:hover::before {
+        width: 40%;
+        height: 3px;
+    }
+
+    /* Adjust main content for bottom nav */
+    .main-content {
+        margin-top: 32px;
+        margin-bottom: calc(64px + env(safe-area-inset-bottom)); /* Space for bottom nav + safe area */
+        padding: 12px 16px;
+        padding-left: 16px; /* Remove sidebar offset */
+        max-width: 100%;
+    }
+
+    .section {
+        scroll-margin-top: 32px;
+        margin-bottom: 12px;
+    }
+
+    .window {
+        border-radius: 10px;
+    }
+
+    .window-header {
+        padding: 6px 12px;
+        height: 36px;
+        border-radius: 10px 10px 0 0;
+    }
+
+    .window-title {
+        font-size: 12px;
+    }
+
+    .window-title i {
+        font-size: 12px;
+    }
+
+    .window-content {
+        padding: 14px 16px;
+    }
+
+    .terminal-content {
+        padding: 14px;
+        font-size: 13px;
+    }
+
+    .profile-header-large {
+        gap: 16px;
+    }
+
+    .terminal-avatar-large {
+        width: 100px;
+        height: 100px;
+        border-width: 3px;
+    }
+
+    .profile-info-large h1 {
+        font-size: 20px;
+        margin-bottom: 8px;
+    }
+
+    .profile-info-large .role {
+        font-size: 13px;
+        margin-bottom: 10px;
+    }
+
+    .badges-inline {
+        gap: 6px;
+    }
+
+    .badge-terminal {
+        padding: 4px 8px;
+        font-size: 11px;
+        gap: 6px;
+    }
+
+    .badge-logo-img {
+        height: 14px;
+    }
+
+    .contact-links {
+        padding: 12px 0;
+        margin-bottom: 16px;
+    }
+
+    .contact-links a {
+        font-size: 13px;
+        gap: 6px;
+    }
+
+    .bio-content p {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 12px;
+    }
+
+    .section-label {
+        font-size: 15px;
+        padding-top: 16px;
+        margin-bottom: 10px;
+    }
+
+    .research-list {
+        padding-left: 18px;
+    }
+
+    .research-list li {
+        font-size: 14px;
+        padding: 6px 0;
+    }
+
+    .research-list li::before {
+        left: -18px;
+    }
+
+    h2 {
+        font-size: 17px;
+        margin-bottom: 12px;
+        padding-bottom: 8px;
+    }
+
+    .section-subtitle {
+        font-size: 15px;
+        margin: 20px 0 10px;
+        padding-bottom: 6px;
+    }
+
+    .news-item {
+        padding-left: 10px;
+    }
+
+    .news-item p {
+        font-size: 13px;
+    }
+
+    .date {
+        font-size: 11px;
+        display: block;
+        margin-bottom: 4px;
+    }
+
+    .paper-item {
+        padding: 12px;
+        gap: 12px;
+    }
+
+    .paper-image {
+        min-height: 150px;
+        border-radius: 8px;
+    }
+
+    .paper-info h3 {
+        font-size: 15px;
+        margin-bottom: 8px;
+    }
+
+    .paper-meta {
+        gap: 2px;
+        margin-bottom: 10px;
+    }
+
+    .authors, .venue {
+        font-size: 12px;
+    }
+
+    .paper-links {
+        gap: 6px;
+    }
+
+    .paper-links a, .paper-link-disabled {
+        padding: 8px 12px; /* Larger touch target */
+        font-size: 11px;
+        gap: 4px;
+        min-height: 36px; /* Ensure adequate touch target */
+    }
+
+    .simple-list {
+        gap: 12px;
+    }
+
+    .early-pub-title {
+        font-size: 13px;
+    }
+
+    .early-pub-authors, .early-pub-venue {
+        font-size: 12px;
+    }
+
+    .people-box {
+        padding: 14px 16px;
+    }
+
+    .people-box h2 {
+        font-size: 16px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
+    }
+
+    .people-list li {
+        font-size: 14px;
+        padding: 5px 0;
+    }
+
+    .names-list {
+        font-size: 14px;
+        line-height: 1.7;
+    }
+
+    .tag {
+        font-size: 12px;
+        margin-left: 6px;
+    }
+
+    .control {
+        width: 10px;
+        height: 10px;
+    }
+
+    .window-controls {
+        gap: 6px;
+    }
+}
+
+/* Extra small devices */
+@media (max-width: 360px) {
+    .top-bar {
+        height: 30px;
+        padding: 0 8px;
+    }
+
+    .app-name {
+        font-size: 11px;
+    }
+
+    .time {
+        font-size: 10px;
+    }
+
+    .sidebar {
+        height: 60px;
+    }
+
+    .launcher-icon {
+        padding: 6px 8px;
+    }
+
+    .launcher-icon i {
+        font-size: 18px;
+    }
+
+    .launcher-text {
+        font-size: 9px;
+    }
+
+    .main-content {
+        margin-top: 30px;
+        margin-bottom: 60px;
+        padding: 10px 12px;
+    }
+
+    .window-content {
+        padding: 12px 14px;
+    }
+
+    .terminal-content {
+        padding: 12px;
+        font-size: 12px;
+    }
+
+    .terminal-avatar-large {
+        width: 90px;
+        height: 90px;
+    }
+
+    .profile-info-large h1 {
+        font-size: 18px;
+    }
+
+    .profile-info-large .role {
+        font-size: 12px;
+    }
+
+    .badge-terminal {
+        font-size: 10px;
+        padding: 3px 6px;
+    }
+
+    .bio-content p {
+        font-size: 13px;
+    }
+
+    h2 {
+        font-size: 16px;
+    }
+
+    .paper-info h3 {
+        font-size: 14px;
+    }
+
+    .paper-links a, .paper-link-disabled {
+        padding: 4px 8px;
+        font-size: 10px;
     }
 }
 
