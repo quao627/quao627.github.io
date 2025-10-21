@@ -46,7 +46,10 @@ const PEOPLE_DATA = {
         { name: "Han Zheng", url: "https://scholar.google.com/citations?user=sZc3Xw8AAAAJ&hl=en" },
         { name: "Tiange Luo", url: "https://tiangeluo.github.io/"},
         { name: "Vindulam Jayawardana", url: "https://vindulamj.github.io/"},
-        { name: "Zhongxia (Zee) Yan", url: "https://zhongxiayan.github.io/"}
-    ]
+        { name: "Zhongxia (Zee) Yan", url: "https://zhongxiayan.github.io/"},
+        { name: "Chonghe Jiang", url: "https://sites.mit.edu/chonghej/"}
+    ].sort((a, b) => a.name.localeCompare(b.name)) // Automatically sorted alphabetically
 };
+
+// Note: Collaborators are automatically sorted in alphabetical order
 

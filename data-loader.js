@@ -196,6 +196,7 @@ function loadPeopleData() {
             <!-- Collaborators Box -->
             <div class="people-box">
                 <h2>Collaborators I am honored to have worked with</h2>
+                <div class="section-note">Listed in alphabetical order</div>
                 <p class="names-list">
                     ${PEOPLE_DATA.collaborators.map((collab, idx) => {
                         const hasUrl = collab.url && collab.url !== '#';
