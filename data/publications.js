@@ -41,8 +41,8 @@ const PUBLICATIONS_DATA = {
             icon: "fa-route",
             image: "paper-teasers/alphaopt.png",
             links: {
-                paper: "#",
-                code: "#",
+                paper: "https://arxiv.org/abs/2510.18428",
+                code: "https://github.com/Minw913/AlphaOPT",
                 demo: "#",
             }
         },
