@@ -13,7 +13,11 @@ const PUBLICATIONS_DATA = {
                 code: "https://github.com/MIT-MI/MEM1",
                 project: "https://mit-mi.github.io/mem1-site/",
                 video: "https://drive.google.com/file/d/1jiVTdCokBwkHOJPnI4xKNLeWaXixvAow/view?usp=sharing"
-            }
+            },
+            media: [
+                { name: "MarkTechPost", url: "https://www.marktechpost.com/2025/06/26/mit-and-nus-researchers-introduce-mem1-a-memory-efficient-framework-for-long-horizon-language-agents/" },
+                { name: "QbitAI (量子位)", url: "https://mp.weixin.qq.com/s/aLq93YFNY2e9-AJ0xyJ1eQ" }
+            ]
         },
         {
             id: 'classmind',
@@ -64,7 +68,10 @@ const PUBLICATIONS_DATA = {
             links: {
                 paper: "https://aclanthology.org/2024.emnlp-industry.104/",
                 code: "https://github.com/YihongT/ITINERA"
-            }
+            },
+            media: [
+                { name: "QbitAI (量子位)", url: "https://mp.weixin.qq.com/s/44mtENyqrHiNEEcWS61COg" }
+            ]
         },
         {
             id: 'urbanci',

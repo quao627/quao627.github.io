@@ -107,6 +107,15 @@ function loadPublicationsData() {
                 })
                 .join('\n');
             
+            // Handle media reports separately (supports multiple outlets)
+            let mediaSection = '';
+            if (paper.media && paper.media.length > 0) {
+                const mediaLinks = paper.media
+                    .map(outlet => `<a href="${outlet.url}" target="_blank">${outlet.name}</a>`)
+                    .join(' | ');
+                mediaSection = `<div class="paper-media"><i class="fas fa-newspaper"></i> Media: ${mediaLinks}</div>`;
+            }
+            
             return `
                 <div class="paper-item" id="${paper.id}">
                     <div class="paper-image">
@@ -121,6 +130,7 @@ function loadPublicationsData() {
                         <div class="paper-links">
                             ${linkButtons}
                         </div>
+                        ${mediaSection}
                     </div>
                 </div>
             `;

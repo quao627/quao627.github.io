@@ -970,6 +970,35 @@ h2 {
 /* Keep 'Coming soon' grey */
 .paper-link-disabled i { color: #8e8e93; }
 
+/* Media reports section */
+.paper-media {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    font-size: 13px;
+    color: #6e6e73;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.paper-media i {
+    color: #ee9ff5; /* orange for media/news */
+    font-size: 14px;
+}
+
+.paper-media a {
+    color: #2d2d2d;
+    text-decoration: none;
+    font-weight: 500;
+    transition: color 0.2s ease;
+}
+
+.paper-media a:hover {
+    color: #ee9ff5;
+    text-decoration: underline;
+}
+
 /* ======== SIMPLE LISTS (Earlier Publications) ======== */
 .simple-list {
     list-style: none;
