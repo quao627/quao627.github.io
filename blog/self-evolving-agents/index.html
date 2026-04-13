@@ -1,0 +1,1255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Self-Evolving Agents · A Framework</title>
+<style>
+  :root {
+    --bg:          #fbfaf6;
+    --bg-elev:     #ffffff;
+    --ink:         #141414;
+    --ink-2:       #3a3a3a;
+    --ink-mute:    #6e6e6e;
+    --ink-fade:    #a2a09a;
+    --rule:        #e7e4dd;
+    --rule-soft:   #f1efe9;
+    --accent:      #a73825;
+    --accent-soft: #f6e5df;
+    --code-bg:     #f1efe7;
+    --ratchet:     #b5731a;
+    --entropy:     #34795f;
+    --grounding:   #9a3f35;
+    --model:       #8e3a24;
+    --harness:     #2b4663;
+    --context:     #2d5540;
+    --env:         #8a5e10;
+    --max:         720px;
+    --max-wide:    860px;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:          #131212;
+      --bg-elev:     #1d1c1c;
+      --ink:         #ecebe5;
+      --ink-2:       #c8c6bf;
+      --ink-mute:    #8e8c85;
+      --ink-fade:    #5d5b55;
+      --rule:        #2c2a28;
+      --rule-soft:   #1f1e1c;
+      --accent:      #e38067;
+      --accent-soft: #3d2821;
+      --code-bg:     #26241f;
+    }
+  }
+
+  * { box-sizing: border-box; }
+  html { -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; text-rendering: optimizeLegibility; }
+
+  body {
+    margin: 0; padding: 0;
+    background: var(--bg); color: var(--ink);
+    font-family: "Iowan Old Style", "Charter", "Palatino", Georgia, serif;
+    font-size: 17.5px;
+    line-height: 1.68;
+    font-feature-settings: "kern" 1, "liga" 1, "onum" 1;
+  }
+
+  article {
+    max-width: var(--max);
+    margin: 0 auto;
+    padding: 96px 28px 140px;
+  }
+
+  /* ─── Typography ─── */
+  h1, h2, h3, h4, .sans, nav, figcaption, table, .label, .byline, .tldr-head, code, kbd, .tag, .id, .claim::before, aside, .example-title, .example dt, .footnote {
+    font-family: "Inter", "SF Pro Display", -apple-system, BlinkMacSystemFont, "Helvetica Neue", sans-serif;
+    font-feature-settings: "ss01" 1, "cv11" 1;
+  }
+
+  h1 {
+    font-family: "Iowan Old Style", "Charter", Georgia, serif;
+    font-size: 54px;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    font-weight: 600;
+    margin: 0 0 14px;
+    color: var(--ink);
+  }
+
+  h1 em {
+    font-style: italic;
+    color: var(--ink-mute);
+    font-weight: 500;
+  }
+
+  .eyebrow {
+    font-family: "Inter", sans-serif;
+    font-size: 12px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    margin: 0 0 20px;
+  }
+
+  .dek {
+    font-family: inherit;
+    font-style: italic;
+    font-size: 21px;
+    color: var(--ink-2);
+    line-height: 1.4;
+    margin: 20px 0 32px;
+    font-weight: 400;
+    max-width: 620px;
+  }
+
+  .byline {
+    font-size: 12px;
+    letter-spacing: 0.08em;
+    color: var(--ink-fade);
+    text-transform: uppercase;
+    margin: 0 0 0;
+    padding-top: 20px;
+    border-top: 1px solid var(--rule);
+    display: flex;
+    justify-content: space-between;
+  }
+  .byline span + span { color: var(--ink-mute); }
+
+  h2 {
+    font-family: "Iowan Old Style", Charter, Georgia, serif;
+    font-size: 30px;
+    margin: 76px 0 18px;
+    font-weight: 600;
+    letter-spacing: -0.02em;
+    line-height: 1.18;
+  }
+
+  h2 .section-num {
+    color: var(--accent);
+    font-family: "Inter", sans-serif;
+    font-weight: 500;
+    font-size: 13px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 8px;
+  }
+
+  h3 {
+    font-size: 15.5px;
+    margin: 42px 0 10px;
+    font-weight: 600;
+    color: var(--ink);
+    letter-spacing: -0.003em;
+  }
+
+  h4 {
+    font-size: 12.5px;
+    margin: 26px 0 6px;
+    font-weight: 600;
+    color: var(--ink);
+    text-transform: uppercase;
+    letter-spacing: 0.09em;
+  }
+
+  h4 em {
+    font-style: normal;
+    text-transform: none;
+    letter-spacing: 0;
+    color: var(--ink-mute);
+    font-weight: 500;
+    margin-left: 6px;
+  }
+
+  p { margin: 0 0 18px; }
+
+  a {
+    color: var(--accent);
+    text-decoration: none;
+    border-bottom: 1px solid color-mix(in srgb, var(--accent) 30%, transparent);
+    transition: border-color 0.15s;
+  }
+  a:hover { border-bottom-color: var(--accent); }
+
+  em { font-style: italic; color: var(--ink-2); }
+  strong { font-weight: 600; color: var(--ink); }
+
+  code {
+    font-size: 0.86em;
+    background: var(--code-bg);
+    padding: 1px 6px;
+    border-radius: 3px;
+    color: var(--ink-2);
+  }
+
+  blockquote {
+    margin: 22px 0;
+    padding: 0 0 0 20px;
+    border-left: 2px solid var(--accent);
+    font-style: italic;
+    color: var(--ink-2);
+  }
+
+  /* ─── Contents / Nav ─── */
+  .contents {
+    margin: 40px 0 48px;
+    padding: 0;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .contents-label {
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-fade);
+    font-weight: 600;
+    padding: 14px 0 8px;
+  }
+  .contents ol {
+    list-style: none;
+    padding: 0; margin: 0 0 14px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4px 32px;
+    font-family: "Inter", sans-serif;
+    font-size: 14px;
+  }
+  .contents li { display: flex; }
+  .contents li a {
+    display: flex;
+    gap: 12px;
+    color: var(--ink);
+    border: none;
+    width: 100%;
+  }
+  .contents li a:hover { color: var(--accent); }
+  .contents .num {
+    color: var(--ink-fade);
+    font-variant-numeric: tabular-nums;
+    min-width: 28px;
+    font-weight: 500;
+  }
+
+  /* ─── TL;DR ─── */
+  .tldr {
+    margin: 36px 0 44px;
+    padding: 0;
+    position: relative;
+  }
+  .tldr-head {
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-fade);
+    font-weight: 600;
+    margin: 0 0 14px;
+  }
+  .tldr p {
+    margin: 0 0 12px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink-2);
+    padding-left: 20px;
+    border-left: 2px solid var(--accent);
+  }
+  .tldr p strong { color: var(--ink); }
+
+  /* ─── Skip / Aside ─── */
+  aside {
+    margin: 22px 0;
+    padding: 12px 16px;
+    background: var(--rule-soft);
+    border-radius: 3px;
+    font-size: 13.5px;
+    color: var(--ink-mute);
+    line-height: 1.55;
+    border-left: 2px solid var(--ink-fade);
+  }
+  aside strong { color: var(--ink-2); font-weight: 600; }
+
+  /* ─── Claim boxes ─── */
+  .claim {
+    position: relative;
+    margin: 32px 0;
+    padding: 20px 24px 20px 28px;
+    background: var(--accent-soft);
+    border-radius: 4px;
+    font-size: 17px;
+    line-height: 1.55;
+    color: var(--ink);
+    font-style: italic;
+  }
+  .claim::before {
+    content: "";
+    position: absolute;
+    left: 0; top: 0; bottom: 0;
+    width: 3px;
+    background: var(--accent);
+    border-radius: 2px 0 0 2px;
+  }
+  .claim .label {
+    display: block;
+    font-size: 10.5px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--accent);
+    font-weight: 600;
+    font-style: normal;
+    margin-bottom: 6px;
+  }
+
+  /* ─── Figures ─── */
+  figure {
+    margin: 44px 0;
+    padding: 0;
+  }
+  .fig-wide { margin-left: -70px; margin-right: -70px; }
+  @media (max-width: 880px) { .fig-wide { margin-left: 0; margin-right: 0; } }
+
+  figure > svg {
+    display: block;
+    margin: 0 auto;
+    max-width: 100%;
+    height: auto;
+    background: var(--bg-elev);
+    border-radius: 4px;
+    padding: 18px;
+    border: 1px solid var(--rule);
+  }
+  figcaption {
+    font-size: 12.5px;
+    color: var(--ink-mute);
+    text-align: left;
+    margin-top: 12px;
+    line-height: 1.5;
+    padding: 0 4px;
+  }
+  figcaption .fig-label {
+    font-weight: 600;
+    color: var(--ink-2);
+    margin-right: 4px;
+    letter-spacing: 0.02em;
+  }
+
+  /* ─── Tables ─── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 24px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 9px 10px;
+    border-bottom: 1px solid var(--rule);
+    vertical-align: top;
+    line-height: 1.5;
+  }
+  th {
+    font-weight: 600;
+    color: var(--ink-mute);
+    font-size: 11.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--ink-2);
+    padding-bottom: 7px;
+  }
+  tbody tr:last-child td { border-bottom: none; }
+  tbody tr:hover { background: var(--rule-soft); }
+  td code, td .id { font-size: 12.5px; white-space: nowrap; }
+
+  /* ─── Tags ─── */
+  .tag {
+    display: inline-block;
+    padding: 1px 7px;
+    border-radius: 3px;
+    font-size: 11.5px;
+    font-weight: 500;
+    letter-spacing: 0.015em;
+    line-height: 1.55;
+    background: var(--rule-soft);
+    color: var(--ink-2);
+    white-space: nowrap;
+  }
+  .tag-model   { background: #f4e3de; color: #7a3520; }
+  .tag-harness { background: #e4ecf4; color: #23405e; }
+  .tag-context { background: #dfeadf; color: #2a553b; }
+  .tag-env     { background: #fbf0d8; color: #8a5e10; }
+
+  /* ─── Example cards ─── */
+  .examples {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 14px;
+    margin: 24px 0;
+  }
+  .example {
+    padding: 18px 22px;
+    background: var(--bg-elev);
+    border: 1px solid var(--rule);
+    border-radius: 5px;
+    position: relative;
+  }
+  .example.ex-t2 { border-left: 3px solid #23405e; }
+  .example.ex-t3 { border-left: 3px solid var(--accent); }
+  .example.ex-t4 { border-left: 3px solid var(--env); }
+
+  .example-title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--ink);
+    margin-bottom: 12px;
+    letter-spacing: -0.005em;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  .example-title .tag { font-size: 10.5px; }
+  .example dl {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 90px 1fr;
+    gap: 2px 14px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .example dt {
+    font-weight: 500;
+    color: var(--ink-fade);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding-top: 3px;
+  }
+  .example dd { margin: 0; color: var(--ink-2); }
+  .example dd em { color: var(--ink); font-style: normal; font-weight: 500; }
+
+  /* ─── IDs / kbd-like ─── */
+  .id {
+    display: inline-block;
+    font-family: "JetBrains Mono", "SF Mono", Menlo, monospace;
+    font-size: 0.82em;
+    padding: 1px 5px;
+    background: var(--rule-soft);
+    color: var(--ink-2);
+    border-radius: 2px;
+    letter-spacing: 0;
+    font-weight: 500;
+  }
+
+  /* ─── Section dividers ─── */
+  hr {
+    border: none;
+    margin: 64px auto;
+    height: 1px;
+    background: var(--rule);
+    max-width: 100px;
+  }
+
+  /* ─── Drop cap on first paragraph of each major section ─── */
+  .section-open::first-letter {
+    initial-letter: 2;
+    -webkit-initial-letter: 2 2;
+    font-weight: 600;
+    margin-right: 6px;
+    color: var(--ink);
+  }
+
+  /* ─── Lists ─── */
+  ol, ul { padding-left: 22px; }
+  ol li, ul li { margin-bottom: 6px; }
+
+  /* ─── Footnote / small ─── */
+  .footnote, small {
+    font-size: 13px;
+    color: var(--ink-mute);
+    line-height: 1.55;
+    display: block;
+  }
+
+  /* ─── Responsive ─── */
+  @media (max-width: 640px) {
+    article { padding: 56px 20px 80px; }
+    h1 { font-size: 38px; }
+    h2 { font-size: 24px; }
+    .dek { font-size: 18px; }
+    body { font-size: 16.5px; }
+    .example dl { grid-template-columns: 1fr; }
+    .example dt { margin-top: 6px; padding-top: 0; }
+    .contents ol { grid-template-columns: 1fr; }
+    .fig-wide { margin-left: 0; margin-right: 0; }
+  }
+
+  /* ─── SVG conventions ─── */
+  svg text { font-family: "Inter", sans-serif; }
+  svg .mono { font-family: "JetBrains Mono", "SF Mono", Menlo, monospace; }
+
+  /* Footer */
+  footer {
+    margin-top: 80px;
+    padding-top: 28px;
+    border-top: 1px solid var(--rule);
+    font-size: 13px;
+    color: var(--ink-mute);
+    font-family: "Inter", sans-serif;
+    line-height: 1.55;
+  }
+
+</style>
+</head>
+
+<body>
+<article>
+
+<!-- ─── HERO ─── -->
+<header>
+<p class="eyebrow">A Framework · Self-Evolving Agents</p>
+<h1>How the loop is wired <em>is</em> the system</h1>
+<p class="dek">AlphaEvolve and the Darwin Gödel Machine use nearly identical tooling and produce categorically different kinds of progress. Why that distinction matters, and what else follows from taking it seriously.</p>
+<div class="byline">
+  <span>Self-evolving agents · 63 works · 2022–2026</span>
+  <span>April 2026</span>
+</div>
+</header>
+
+<!-- ─── CONTENTS ─── -->
+<nav class="contents" aria-label="Table of contents">
+<div class="contents-label">Contents</div>
+<ol>
+<li><a href="#puzzle"><span class="num">§0</span><span>A puzzle</span></a></li>
+<li><a href="#foundations"><span class="num">§1</span><span>Foundations</span></a></li>
+<li><a href="#classification"><span class="num">§2</span><span>Three classification dimensions</span></a></li>
+<li><a href="#lenses"><span class="num">§3</span><span>Three analytical lenses</span></a></li>
+<li><a href="#challenges"><span class="num">§4</span><span>Open challenges</span></a></li>
+<li><a href="#closing"><span class="num">§5</span><span>Closing</span></a></li>
+<li><a href="#method"><span class="num">§A</span><span>How to analyze a paper</span></a></li>
+<li><a href="#master"><span class="num">§B</span><span>Master table of 63 works</span></a></li>
+</ol>
+</nav>
+
+<!-- ─── TL;DR ─── -->
+<section class="tldr" aria-label="Summary">
+<div class="tldr-head">TL;DR</div>
+<p>A self-evolving agent is a <strong>feedback loop</strong>. Classify it by <strong>target</strong> (what evolves), <strong>reference</strong> (what archive informs the next variant), and <strong>mechanism</strong> (how the variant is produced). Most surveys stop here.</p>
+<p>Three <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5), <strong>source of delta</strong> (where new information enters — and the fact that one source, the verifier-generator asymmetry, does most of the work in the field right now), and <strong>the physics</strong> — a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
+<p>Sharp claims. <strong>Most "recursive self-improvement" papers are T2 in disguise.</strong> <strong>Modern self-evolution works because code and math have cheap verifiers.</strong> <strong>Extending the field outside verifier-cheap domains is the hard open problem</strong>, and the most interesting one.</p>
+</section>
+
+<aside><strong>Who this is for.</strong> Two audiences. If you know RL and have built LLM agents: skim §1, jump to §3 — the lenses are where the insight is. If you're new to this area: read top-to-bottom, it's self-contained.</aside>
+
+<!-- ─── PUZZLE ─── -->
+<h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Two near-identical systems, incommensurable outputs</h2>
+
+<p class="section-open">AlphaEvolve and the Darwin Gödel Machine both call themselves "self-evolving systems." They use almost identical building blocks: a frozen LLM as a mutation operator, an evolutionary archive of candidates, automated evaluators, island-based sampling. On paper, they are the same system.</p>
+
+<p>They produce incommensurable things. AlphaEvolve found a new algorithm for 4×4 complex matrix multiplication — the first improvement to Strassen's 1969 result in 56 years. DGM rewrites its own codebase and climbs SWE-bench from 20% to 50%. One discovers mathematics; the other rewrites itself.</p>
+
+<p>Why the difference? The building blocks don't say. A <em>target × reference × mechanism</em> classification doesn't say — both systems land in the same cell.</p>
+
+<p>The difference is the <strong>topology of the feedback loop</strong>. AlphaEvolve has a fixed evolver modifying a separate target. DGM has the evolver and the target as the <em>same entity</em> — it rewrites itself. That single structural fact determines everything. Once you see it, you can't un-see it.</p>
+
+<figure class="fig-wide">
+<svg viewBox="0 0 840 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve T2 vs DGM T3 topology comparison">
+  <defs>
+    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
+    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
+  </defs>
+
+  <!-- Left: AlphaEvolve T2 -->
+  <g transform="translate(0, 0)">
+    <text x="200" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#3a3a3a" letter-spacing="0.04em">ALPHAEVOLVE · T2 · evolver ≠ target</text>
+
+    <!-- Gemini (evolver) -->
+    <rect x="60" y="120" width="100" height="56" rx="6" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="110" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Gemini</text>
+    <text x="110" y="158" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">evolver · fixed</text>
+
+    <!-- Programs (target) -->
+    <rect x="240" y="120" width="100" height="56" rx="6" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="290" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Programs</text>
+    <text x="290" y="158" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">target · evolves</text>
+
+    <!-- Evaluator -->
+    <rect x="150" y="244" width="100" height="48" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="200" y="264" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Evaluator</text>
+    <text x="200" y="279" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">signal</text>
+
+    <!-- Arrows -->
+    <text x="200" y="138" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">mutates</text>
+    <path d="M 162 148 L 238 148" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+
+    <path d="M 290 178 Q 290 220 250 244" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+    <path d="M 150 260 Q 75 260 60 200 Q 60 148 60 148" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+
+    <text x="200" y="328" text-anchor="middle" font-size="11" fill="#3a3a3a" font-style="italic">The evolver is stable. The target population evolves.</text>
+  </g>
+
+  <!-- Divider -->
+  <line x1="420" y1="80" x2="420" y2="310" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- Right: DGM T3 -->
+  <g transform="translate(420, 0)">
+    <text x="200" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#a73825" letter-spacing="0.04em">DARWIN GÖDEL MACHINE · T3 · evolver ≡ target</text>
+
+    <!-- Self-modifies label well above the loop -->
+    <text x="200" y="62" text-anchor="middle" font-size="11" font-style="italic" fill="#a73825">self-modifies</text>
+
+    <!-- Self-loop arc above the Agent -->
+    <path d="M 140 120 Q 140 76 200 76 Q 260 76 260 120" fill="none" stroke="#a73825" stroke-width="1.5" marker-end="url(#arrB)"/>
+
+    <!-- Agent (both) -->
+    <rect x="120" y="120" width="160" height="62" rx="6" fill="#f6e5df" stroke="#a73825" stroke-width="1.5"/>
+    <text x="200" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Agent</text>
+    <text x="200" y="164" text-anchor="middle" font-size="10.5" font-style="italic" fill="#a73825">evolver = target</text>
+
+    <!-- SWE-bench -->
+    <rect x="140" y="244" width="120" height="48" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="200" y="264" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">SWE-bench</text>
+    <text x="200" y="279" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">signal</text>
+
+    <!-- down arrow -->
+    <path d="M 200 182 L 200 242" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+    <!-- up arrow -->
+    <path d="M 140 260 Q 75 260 75 175 Q 75 145 120 145" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+
+    <text x="200" y="328" text-anchor="middle" font-size="11" fill="#a73825" font-style="italic">Same entity plays both roles. That is the entire difference.</text>
+  </g>
+</svg>
+<figcaption><span class="fig-label">Figure 1.</span> The same building blocks wired two different ways. T2 caps at the evolver's capability; T3 can, in principle, exceed its starting point. Whether DGM actually does this is an open empirical question; see §3.1.</figcaption>
+</figure>
+
+<p>This essay is about seeing it, and about five or six other things that are hidden in plain sight the same way.</p>
+
+<hr>
+
+<!-- ─── PART 1: FOUNDATIONS ─── -->
+<h2 id="foundations"><span class="section-num">§1 · Foundations</span>Agent, harness, context, environment</h2>
+
+<aside>If RL and LLM-agent architectures are familiar, skim the headings and jump to <a href="#classification">§2</a>.</aside>
+
+<h3>The classical RL picture</h3>
+
+<p class="section-open">A standard RL setup has three parts: an <strong>agent</strong>, an <strong>environment</strong>, and the <strong>context</strong> flowing between them. At each step, the env emits an observation <code>o_t</code> and a reward <code>r_t</code>; the agent emits an action <code>a_t</code>. The context at time <code>t</code> is just the trajectory so far:</p>
+
+<p style="text-align:center; font-family:'JetBrains Mono', monospace; font-size:14.5px; color:var(--ink-2); margin:14px 0 20px;">c_t = (o₁, a₁, r₁, o₂, a₂, r₂, …, o_t)</p>
+
+<p>Context is the information <em>flowing through the agent</em> during execution. Keep this idea; we generalize it.</p>
+
+<h3>Modern agents have internal structure</h3>
+
+<p>A 2024-era LLM agent is not a single policy network. It has at least two parts: the <strong>Model</strong> (weights) and the <strong>Harness</strong> — code, prompts, tool schemas, retrieval, memory, orchestration, scaffolding. If you've built an agent beyond a chatbot wrapper, the harness is where the real work lives. The model is the CPU; the harness is the OS.</p>
+
+<h3>Harness vs Context — a temporal split</h3>
+
+<p>A load-bearing distinction. Some things are <strong>fixed during a run</strong>: system prompts, tool catalogues, scaffolding code, weights. Compiled in before deployment. The <strong>Harness</strong>.</p>
+
+<p>Other things <strong>change during a run</strong>: conversation history, scratchpad, skills written this session, reflections stored. The <strong>Context</strong>. Context in this broad sense is the direct generalization of RL's trajectory.</p>
+
+<p>Two systems with identical outputs can have very different learning dynamics based on what lives in harness vs context. A prompt optimized offline (harness) is a fundamentally different object from a reflection written mid-run (context), even when the resulting string looks similar. Most confusions in this field come from conflating these two.</p>
+
+<h3>Four components</h3>
+
+<figure>
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four components of a modern agent system">
+  <!-- Env outer -->
+  <rect x="20" y="20" width="640" height="200" rx="10" fill="#fbf0d8" stroke="#8a5e10" stroke-width="1.2" opacity="0.55"/>
+  <text x="40" y="48" font-size="12" font-weight="600" fill="#8a5e10" letter-spacing="0.12em">ENVIRONMENT</text>
+  <text x="40" y="64" font-size="11" fill="#8a5e10" font-style="italic" opacity="0.85">tasks · observations · rewards · evaluators · humans</text>
+
+  <!-- Agent -->
+  <rect x="56" y="88" width="568" height="116" rx="7" fill="#ffffff" stroke="#3a3a3a" stroke-width="1.2"/>
+  <text x="76" y="114" font-size="12" font-weight="600" fill="#3a3a3a" letter-spacing="0.12em">AGENT</text>
+
+  <!-- Model -->
+  <rect x="80" y="130" width="160" height="60" rx="5" fill="#f4e3de" stroke="#7a3520" stroke-width="1"/>
+  <text x="160" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Model</text>
+  <text x="160" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#7a3520">weights</text>
+  <text x="160" y="186" text-anchor="middle" font-size="10" fill="#7a3520">(STaR, Abs Zero, …)</text>
+
+  <!-- Harness -->
+  <rect x="256" y="130" width="160" height="60" rx="5" fill="#e4ecf4" stroke="#23405e" stroke-width="1"/>
+  <text x="336" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Harness</text>
+  <text x="336" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#23405e">fixed at runtime</text>
+  <text x="336" y="186" text-anchor="middle" font-size="10" fill="#23405e">(DSPy, DGM, ADAS, …)</text>
+
+  <!-- Context -->
+  <rect x="432" y="130" width="160" height="60" rx="5" fill="#dfeadf" stroke="#2a553b" stroke-width="1"/>
+  <text x="512" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Context</text>
+  <text x="512" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#2a553b">changes at runtime</text>
+  <text x="512" y="186" text-anchor="middle" font-size="10" fill="#2a553b">(Reflexion, Voyager, …)</text>
+</svg>
+<figcaption><span class="fig-label">Figure 2.</span> Four components. The reward function is part of the Environment — it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
+</figure>
+
+<h3>What "self-evolving" means</h3>
+
+<p>A system is self-evolving if, during operation, it causes at least one of its four components — Model, Harness, Context, or Environment — to systematically change based on its own outputs and the signal it receives. Deliberately broad, but tight enough to exclude one-shot LLM calls, human-driven iteration, and plain supervised training.</p>
+
+<hr>
+
+<!-- ─── PART 2: CLASSIFICATION ─── -->
+<h2 id="classification"><span class="section-num">§2 · Classification</span>Three dimensions that subsume the field</h2>
+
+<p class="section-open">Every self-evolving system lives at a specific coordinate in a three-dimensional space. The axes below are the most orthogonal choice I've found. This is where most existing surveys converge — and where they stop.</p>
+
+<h3>Dim 1 · Target <em>— what evolves</em></h3>
+
+<table>
+<thead><tr><th style="width:34%">Category</th><th>What changes</th><th style="width:30%">Examples</th></tr></thead>
+<tbody>
+<tr><td><span class="tag tag-model">Model</span></td><td>LLM weights</td><td>STaR, Self-Rewarding LMs, Abs Zero</td></tr>
+<tr><td><span class="tag tag-harness">Harness · Prompts</span></td><td>Prompts optimized offline</td><td>OPRO, DSPy, TextGrad, PromptBreeder</td></tr>
+<tr><td><span class="tag tag-harness">Harness · Scaffolding</span></td><td>Agent code, workflow, MA structure</td><td>DGM, ADAS, SICA, Meta-Harness</td></tr>
+<tr><td><span class="tag tag-context">Context · Memory</span></td><td>Memory written at runtime</td><td>Reflexion, ExpeL, EvolveR, CORAL</td></tr>
+<tr><td><span class="tag tag-context">Context · Dyn. Skills / Tools</span></td><td>Tools/skills created at runtime</td><td>Voyager, CREATOR, STELLA, Alita</td></tr>
+<tr><td><span class="tag tag-context">Context · Search State</span></td><td>Candidate population mid-search</td><td>AlphaEvolve, FunSearch, CodeEvolve</td></tr>
+<tr><td><span class="tag tag-env">Env · Rewards</span></td><td>Reward functions</td><td>Eureka, Auto MC-Reward</td></tr>
+<tr><td><span class="tag tag-env">Env · Tasks</span></td><td>Task distribution / curriculum</td><td>OMNI-EPIC, AgentGen</td></tr>
+</tbody>
+</table>
+
+<p>When a paper calls itself "prompt evolution" and the prompt is optimized by an outer loop then deployed fixed (OPRO, DSPy, TextGrad, PromptBreeder), it is evolving the <em>harness</em>, not the context. A surprising amount of writing slips here.</p>
+
+<h3>Dim 2 · Reference <em>— what informs the next variant</em></h3>
+
+<p>When the outer loop produces a new candidate, what does it look at? This is the memory structure of the <em>evolution loop itself</em>, separate from any memory the deployed agent might use at inference.</p>
+
+<table>
+<thead><tr><th style="width:6%">ID</th><th>Reference type</th><th style="width:34%">Examples</th></tr></thead>
+<tbody>
+<tr><td><span class="id">R1</span></td><td><strong>None / implicit.</strong> Weights or current input are the only memory.</td><td>STaR, Self-Rewarding LMs, Const. AI</td></tr>
+<tr><td><span class="id">R2</span></td><td><strong>Linear history.</strong> Ordered (candidate, score) list; replay buffer.</td><td>OPRO, TextGrad, RAGEN</td></tr>
+<tr><td><span class="id">R3</span></td><td><strong>Flat population.</strong> Unstructured candidate set.</td><td>EvoPrompt, PromptBreeder</td></tr>
+<tr><td><span class="id">R4</span></td><td><strong>Structured archive.</strong> QD bins or island sub-populations.</td><td>AlphaEvolve, FunSearch, DGM, ADAS</td></tr>
+<tr><td><span class="id">R5</span></td><td><strong>Textual memory.</strong> NL or code items, retrieved by content.</td><td>Reflexion, Voyager, EvolveR, CORAL</td></tr>
+<tr><td><span class="id">R6</span></td><td><strong>Search tree.</strong> Per-task, transient.</td><td>AFlow, AIDE, LATS</td></tr>
+</tbody>
+</table>
+
+<p>This dimension matters more than it first appears. Two systems with the same target can have wildly different dynamics based on their archive: a linear history (R2) can only hill-climb; a structured archive (R4) maintains diversity and escapes local optima. Most of the <em>real design</em> in the strongest self-evolving systems — AlphaEvolve's island topology, DGM's QD-style agent archive, OMNI-EPIC's interestingness bins — is in the reference.</p>
+
+<h3>Dim 3 · Mechanism <em>— how the variant is produced</em></h3>
+
+<table>
+<thead><tr><th style="width:6%">ID</th><th>Mechanism</th></tr></thead>
+<tbody>
+<tr><td><span class="id">M1</span></td><td><strong>Gradient training.</strong> SFT · DPO · RL · RLAIF</td></tr>
+<tr><td><span class="id">M2</span></td><td><strong>Evolutionary search.</strong> Population + variation + selection</td></tr>
+<tr><td><span class="id">M3</span></td><td><strong>Text optimization.</strong> NL feedback as gradient</td></tr>
+<tr><td><span class="id">M4</span></td><td><strong>In-context learning.</strong> Accumulate skills / memory / rules</td></tr>
+<tr><td><span class="id">M5</span></td><td><strong>Code rewriting.</strong> Modify solutions, tools, or self</td></tr>
+<tr><td><span class="id">M6</span></td><td><strong>Search / planning.</strong> MCTS, beam, tree search</td></tr>
+</tbody>
+</table>
+
+<p>Strong systems combine two or three. DGM = M2 + M5. Agent Q = M1 + M6. Voyager = M4 + M5.</p>
+
+<p>This is where most surveys stop. You now know what every paper <em>does</em>. You still can't tell <em>why</em> AlphaEvolve discovers mathematics while Self-Rewarding asymptotes after a few iterations — at this resolution their structural similarities are real and their dynamical differences are invisible. That's what Part 3 is for.</p>
+
+<hr>
+
+<!-- ─── PART 3: LENSES ─── -->
+<h2 id="lenses"><span class="section-num">§3 · Three lenses</span>Topology, delta, physics</h2>
+
+<p class="section-open">The dimensions above classify a system's structure. The three lenses below ask about its dynamics — whether the loop is well-formed, where its information comes from, and whether it compounds or just reshuffles. In order of increasing depth.</p>
+
+<table style="margin: 22px 0 32px;">
+<thead><tr><th style="width:14%">Lens</th><th>Question it answers</th><th style="width:24%">Resolves</th></tr></thead>
+<tbody>
+<tr><td><strong>Topology</strong></td><td>How is the feedback loop wired? Can the evolver modify itself? Are there nested or co-evolving loops?</td><td><em>What's the ceiling?</em></td></tr>
+<tr><td><strong>Delta</strong></td><td>Where does new information enter? If it can't enter, the loop reshuffles forever.</td><td><em>Can this compound at all?</em></td></tr>
+<tr><td><strong>Physics</strong></td><td>Are ratchet, entropy, and grounding all present and strong?</td><td><em>Will it stall, collapse, or drift?</em></td></tr>
+</tbody>
+</table>
+
+<!-- 3.1 TOPOLOGY -->
+<h3>Lens 1 · Loop topology</h3>
+
+<p>The shape of the feedback wiring. <strong>The first question to ask of any self-evolving system: draw the loop.</strong> Most papers don't do this explicitly, and most of the confusion in the field traces to that omission.</p>
+
+<p>There are five topologies. Each strictly subsumes the previous.</p>
+
+<figure class="fig-wide">
+<svg viewBox="0 0 860 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five loop topologies">
+  <defs>
+    <marker id="tpar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
+    <marker id="tpar-r" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
+  </defs>
+
+  <!-- T1 · OPEN LOOP -->
+  <g transform="translate(18, 30)">
+    <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#6e6e6e" letter-spacing="0.08em">T1 · OPEN</text>
+    <g transform="translate(0, 30)">
+      <rect x="10" y="30" width="56" height="34" rx="5" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="38" y="51" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">E</text>
+      <line x1="68" y1="47" x2="92" y2="47" stroke="#3a3a3a" stroke-width="1.2" marker-end="url(#tpar)"/>
+      <rect x="94" y="30" width="56" height="34" rx="5" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="122" y="51" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">T</text>
+    </g>
+    <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">no feedback</text>
+    <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(baseline)</text>
+  </g>
+
+  <!-- T2 · SINGLE-TARGET -->
+  <g transform="translate(190, 30)">
+    <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#23405e" letter-spacing="0.08em">T2 · SINGLE-TARGET</text>
+    <g transform="translate(0, 30)">
+      <rect x="10" y="10" width="56" height="34" rx="5" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="38" y="31" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">E</text>
+      <line x1="68" y1="27" x2="92" y2="27" stroke="#3a3a3a" stroke-width="1.2" marker-end="url(#tpar)"/>
+      <rect x="94" y="10" width="56" height="34" rx="5" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="122" y="31" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">T</text>
+      <!-- signal -->
+      <rect x="54" y="80" width="52" height="26" rx="5" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="80" y="97" text-anchor="middle" font-size="11" fill="#141414">signal</text>
+      <!-- T → signal -->
+      <path d="M 122 44 L 122 72 L 106 92" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- signal → E -->
+      <path d="M 54 92 L 38 72 L 38 44" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+    </g>
+    <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">fixed evolver iterates</text>
+    <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(the workhorse)</text>
+  </g>
+
+  <!-- T3 · SELF-REFERENTIAL -->
+  <g transform="translate(362, 30)">
+    <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#a73825" letter-spacing="0.08em">T3 · SELF-REFERENTIAL</text>
+    <g transform="translate(0, 30)">
+      <rect x="44" y="10" width="72" height="34" rx="5" fill="#f6e5df" stroke="#a73825" stroke-width="1.4"/>
+      <text x="80" y="31" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">E = T</text>
+      <!-- self-loop above -->
+      <path d="M 56 10 Q 56 -12 80 -12 Q 104 -12 104 10" fill="none" stroke="#a73825" stroke-width="1.4" marker-end="url(#tpar-r)"/>
+      <text x="80" y="-16" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">self-modifies</text>
+      <!-- signal -->
+      <rect x="54" y="80" width="52" height="26" rx="5" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="80" y="97" text-anchor="middle" font-size="11" fill="#141414">signal</text>
+      <!-- E=T → signal -->
+      <path d="M 80 44 L 80 78" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- signal → E=T -->
+      <path d="M 54 92 L 30 72 L 30 27 L 44 27" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+    </g>
+    <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">evolver ≡ target</text>
+    <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(recursive)</text>
+  </g>
+
+  <!-- T4 · CO-EVOLUTION -->
+  <g transform="translate(534, 30)">
+    <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#8a5e10" letter-spacing="0.08em">T4 · CO-EVOLUTION</text>
+    <g transform="translate(0, 30)">
+      <rect x="12" y="10" width="56" height="34" rx="5" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="40" y="31" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">A</text>
+      <rect x="92" y="10" width="56" height="34" rx="5" fill="#fbf0d8" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="120" y="31" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">B</text>
+      <!-- A → B (top arc) -->
+      <path d="M 68 18 Q 80 2 92 18" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- B → A (bottom arc) -->
+      <path d="M 92 36 Q 80 52 68 36" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- signal -->
+      <rect x="54" y="80" width="52" height="26" rx="5" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="80" y="97" text-anchor="middle" font-size="11" fill="#141414">signal</text>
+      <!-- B → signal → A -->
+      <path d="M 120 44 L 106 72 L 106 80" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <path d="M 54 92 L 40 72 L 40 44" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+    </g>
+    <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">each drives the other</text>
+    <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(adversarial)</text>
+  </g>
+
+  <!-- T5 · NESTED -->
+  <g transform="translate(706, 30)">
+    <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#6c3483" letter-spacing="0.08em">T5 · NESTED</text>
+    <g transform="translate(0, 30)">
+      <!-- outer meta-loop frame -->
+      <rect x="0" y="6" width="160" height="112" rx="6" fill="none" stroke="#6c3483" stroke-width="1.3" stroke-dasharray="4,3"/>
+      <text x="80" y="-2" text-anchor="middle" font-size="10" fill="#6c3483" font-style="italic">outer meta-loop</text>
+      <rect x="14" y="20" width="52" height="30" rx="5" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="40" y="39" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">E</text>
+      <line x1="68" y1="35" x2="92" y2="35" stroke="#3a3a3a" stroke-width="1.2" marker-end="url(#tpar)"/>
+      <rect x="94" y="20" width="52" height="30" rx="5" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="120" y="39" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">T</text>
+      <rect x="54" y="84" width="52" height="26" rx="5" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.1"/>
+      <text x="80" y="101" text-anchor="middle" font-size="11" fill="#141414">signal</text>
+      <path d="M 120 50 L 106 78 L 106 84" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <path d="M 54 96 L 40 78 L 40 50" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+    </g>
+    <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">loop on a loop</text>
+    <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(the frontier)</text>
+  </g>
+
+  <!-- subsumption arrow at bottom -->
+  <line x1="40" y1="250" x2="780" y2="250" stroke="#e7e4dd" stroke-width="1" marker-end="url(#tpar)"/>
+  <text x="410" y="244" text-anchor="middle" font-size="10.5" fill="#a2a09a" font-style="italic" letter-spacing="0.04em">each topology strictly subsumes the previous  ·  ceiling rises, stability cost rises</text>
+</svg>
+<figcaption><span class="fig-label">Figure 3.</span> <strong>E</strong> = evolver, <strong>T</strong> = target. Each topology strictly subsumes the previous. Most papers that claim "recursive self-improvement" operate at T2, not T3. Draw the loop to check.</figcaption>
+</figure>
+
+<h4>T1 <em>· open loop</em></h4>
+<p>One pass, no feedback. Most "use an LLM to write a better prompt" setups. Useful as a baseline.</p>
+
+<h4>T2 <em>· single-target loop</em></h4>
+<p>Fixed evolver iteratively modifies a target, informed by a signal. Where most of the field lives: OPRO, AlphaEvolve, FunSearch, Reflexion, Voyager, Eureka, ADAS, STaR, Self-Rewarding — all T2. The differences between them are <em>inside</em> the loop, not in the topology.</p>
+
+<p><em>The T2 ceiling.</em> A T2 system is bounded by its evolver. AlphaEvolve is only ever as clever as Gemini; make Gemini better and AlphaEvolve improves, but AlphaEvolve cannot independently transcend Gemini. Most "self-evolving" systems have a hard ceiling they cannot cross without a base-model upgrade.</p>
+
+<h4>T3 <em>· self-referential loop</em></h4>
+<p>The evolver <em>is</em> the target. DGM rewrites its own code. STOP improves its own improver. This is what people usually mean by recursive self-improvement — each modification changes both what you produce and how you produce the next one.</p>
+
+<p><em>Why T3 is fragile.</em> A self-modifier can break its own self-modification ability. T3 works only with strong grounding (to distinguish good modifications from bad) and a retention mechanism that survives bad modifications (an archive to roll back to). DGM's archive of every historical variant is not decorative — it's what keeps the system alive.</p>
+
+<p><em>The open question.</em> Does T3 actually transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly. This question is the single most important empirical one in the field.</p>
+
+<h4>T4 <em>· dual co-evolution</em></h4>
+<p>Two agents drive each other. Often proposer ↔ solver: Absolute Zero, SPIN, WebRL. In T4, problem difficulty is <em>endogenous</em> — it scales with solver capability. That's what gave AlphaGo Zero its magic. Without a game-like dual structure, it's hard to get this property.</p>
+
+<p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
+
+<h4>T5 <em>· nested / multi-scale</em></h4>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner. Showing this, or ruling it out, would be the single most important empirical result in the field.</p>
+
+<!-- 3.2 DELTA -->
+<h3>Lens 2 · Source of delta</h3>
+
+<p>A well-wired loop isn't enough. <strong>Where does new information enter?</strong></p>
+
+<p>Shannon-basic: a closed system without an information source can only reshuffle what it already has. For a self-evolving system to produce genuinely new capability, bits must enter from somewhere. There are surprisingly few options.</p>
+
+<figure class="fig-wide">
+<svg viewBox="0 0 840 320" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Six sources of delta">
+  <!-- Row 1 -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="0" width="260" height="94" rx="5" fill="#f2edf5" stroke="#6c3483" stroke-width="0.8"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#6c3483" letter-spacing="0.06em">1 · EXTERNAL DATA</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Human labels, external corpora</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: human capability, cost</text>
+    <text x="16" y="84" font-size="10.5" fill="#6e6e6e">RLHF · Constitutional AI</text>
+  </g>
+  <g transform="translate(290, 10)">
+    <rect x="0" y="0" width="260" height="94" rx="5" fill="#eeedf0" stroke="#3a3a4a" stroke-width="0.8"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#3a3a4a" letter-spacing="0.06em">2 · COMPUTE</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Think longer at inference</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: linear compute scaling</text>
+    <text x="16" y="84" font-size="10.5" fill="#6e6e6e">MCTS · LATS · Best-of-N</text>
+  </g>
+  <g transform="translate(570, 10)">
+    <rect x="0" y="0" width="260" height="94" rx="5" fill="#e4efe5" stroke="#2a553b" stroke-width="0.8"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#2a553b" letter-spacing="0.06em">3 · ENVIRONMENT</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Rich interaction generates obs.</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: env richness, sim-real gap</text>
+    <text x="16" y="84" font-size="10.5" fill="#6e6e6e">Voyager · embodied RL · SPRING</text>
+  </g>
+
+  <!-- Row 2 — Source 4 gets special treatment -->
+  <g transform="translate(10, 120)">
+    <rect x="0" y="0" width="540" height="94" rx="5" fill="#f6e5df" stroke="#a73825" stroke-width="1.4"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#a73825" letter-spacing="0.06em">4 · VERIFIER–GENERATOR ASYMMETRY</text>
+    <text x="527" y="26" text-anchor="end" font-size="14" font-weight="600" fill="#a73825">★</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Cheap verifier + strong generator → engine for mining the verifier's knowledge</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: verification must stay cheaper than generation</text>
+    <text x="16" y="84" font-size="10.5" fill="#6e6e6e">AlphaEvolve · FunSearch · DGM · STaR · Absolute Zero · Eureka</text>
+  </g>
+  <g transform="translate(570, 120)">
+    <rect x="0" y="0" width="260" height="94" rx="5" fill="#fbf0d8" stroke="#8a5e10" stroke-width="0.8"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#8a5e10" letter-spacing="0.06em">5 · SELF-PLAY</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Arms race between two systems</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: stability (collapse-prone)</text>
+    <text x="16" y="84" font-size="10.5" fill="#6e6e6e">Abs Zero · SPIN · AlphaGo Zero</text>
+  </g>
+
+  <!-- Row 3 -->
+  <g transform="translate(10, 230)">
+    <rect x="0" y="0" width="820" height="82" rx="5" fill="#e4ecf4" stroke="#23405e" stroke-width="0.8"/>
+    <text x="16" y="26" font-size="11" font-weight="600" fill="#23405e" letter-spacing="0.06em">6 · COMPOSITIONAL RECOMBINATION</text>
+    <text x="16" y="48" font-size="13" fill="#141414">Combining primitives produces artifacts the primitive library didn't explicitly contain</text>
+    <text x="16" y="68" font-size="10.5" fill="#6e6e6e" font-style="italic">Bottleneck: needs a good primitive library and good composition operators  ·  Voyager (skills) · ADAS · tool-creation</text>
+  </g>
+</svg>
+<figcaption><span class="fig-label">Figure 4.</span> Source 4 is doing most of the heavy lifting in modern self-evolution. It is why code and math are the breakthrough domains. Extending the engine outside verifier-cheap domains is the hard open problem.</figcaption>
+</figure>
+
+<div class="claim"><span class="label">Claim</span>Modern self-evolution works because of Source 4. LLMs are strong generators; code, math, and formal reasoning have cheap verifiers. That one asymmetry is the engine.</div>
+
+<p>A corollary worth taking seriously: <strong>if a paper claims self-improvement without clearly identifying its source of delta, it is almost always implicitly running on Source 1</strong> — the pretraining prior — and will hit the corresponding ceiling. Such systems look impressive for a few iterations (latent knowledge being unlocked) and then flatline. Self-Rewarding LMs, read through this lens, do exactly that.</p>
+
+<!-- 3.3 PHYSICS -->
+<h3>Lens 3 · The physics — ratchet, entropy, grounding</h3>
+
+<p>The deepest lens. Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> — reliably get better rather than plateauing or degenerating — it needs three forces in balance.</p>
+
+<p>I call this the <strong>physics</strong> of self-evolution because the three forces correspond cleanly to physical concepts that happen to carve the field exactly right. Each has a physical analogue, a specific role, and a predictable failure mode when absent. Remove any one and the loop dies in a characteristic way.</p>
+
+<figure class="fig-wide">
+<svg viewBox="0 0 840 380" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three forces triangle">
+  <!-- Spokes -->
+  <line x1="420" y1="195" x2="160" y2="90"  stroke="#e7e4dd" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="420" y1="195" x2="680" y2="90"  stroke="#e7e4dd" stroke-width="1" stroke-dasharray="3,3"/>
+  <line x1="420" y1="195" x2="420" y2="310" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Center -->
+  <circle cx="420" cy="195" r="54" fill="#141414"/>
+  <text x="420" y="189" text-anchor="middle" font-size="12.5" font-weight="600" fill="#ffffff">a loop</text>
+  <text x="420" y="207" text-anchor="middle" font-size="12.5" font-weight="600" fill="#ffffff">that compounds</text>
+
+  <!-- Ratchet -->
+  <g>
+    <rect x="12" y="28" width="290" height="118" rx="7" fill="#faf0e2" stroke="#b5731a" stroke-width="1.4"/>
+    <text x="32" y="54" font-size="16" font-weight="700" fill="#b5731a" letter-spacing="0.02em">RATCHET</text>
+    <text x="32" y="70" font-size="10" fill="#b5731a" font-style="italic">from mechanics · one-way motion</text>
+    <line x1="32" y1="80" x2="52" y2="80" stroke="#b5731a" stroke-width="1"/>
+    <text x="32" y="98" font-size="12.5" fill="#141414" font-weight="600">What accumulates?</text>
+    <text x="32" y="116" font-size="11" fill="#3a3a3a">weights · archive · skill library ·</text>
+    <text x="32" y="130" font-size="11" fill="#3a3a3a">quality-diversity bins</text>
+    <text x="32" y="142" font-size="10" fill="#a73825" font-style="italic">✗ weak → catastrophic forgetting</text>
+  </g>
+
+  <!-- Entropy -->
+  <g>
+    <rect x="538" y="28" width="290" height="118" rx="7" fill="#e7f0ea" stroke="#34795f" stroke-width="1.4"/>
+    <text x="558" y="54" font-size="16" font-weight="700" fill="#34795f" letter-spacing="0.02em">ENTROPY</text>
+    <text x="558" y="70" font-size="10" fill="#34795f" font-style="italic">from thermodynamics · source of variation</text>
+    <line x1="558" y1="80" x2="578" y2="80" stroke="#34795f" stroke-width="1"/>
+    <text x="558" y="98" font-size="12.5" fill="#141414" font-weight="600">What prevents freezing?</text>
+    <text x="558" y="116" font-size="11" fill="#3a3a3a">temperature · mutation · QD ·</text>
+    <text x="558" y="130" font-size="11" fill="#3a3a3a">self-play · novelty rewards</text>
+    <text x="558" y="142" font-size="10" fill="#a73825" font-style="italic">✗ weak → mode collapse</text>
+  </g>
+
+  <!-- Grounding -->
+  <g>
+    <rect x="204" y="260" width="432" height="114" rx="7" fill="#f6e5e2" stroke="#9a3f35" stroke-width="1.4"/>
+    <text x="224" y="286" font-size="16" font-weight="700" fill="#9a3f35" letter-spacing="0.02em">GROUNDING</text>
+    <text x="224" y="302" font-size="10" fill="#9a3f35" font-style="italic">from electrical engineering · reference to earth</text>
+    <line x1="224" y1="312" x2="244" y2="312" stroke="#9a3f35" stroke-width="1"/>
+    <text x="224" y="330" font-size="12.5" fill="#141414" font-weight="600">What anchors to reality?</text>
+    <text x="224" y="348" font-size="11" fill="#3a3a3a">deterministic verifier · env reward · human oversight · constitution</text>
+    <text x="224" y="362" font-size="10.5" fill="#6e6e6e" font-style="italic">(self-judge is the weakest · it is not a source of new bits)</text>
+    <text x="624" y="362" text-anchor="end" font-size="10" fill="#a73825" font-style="italic">✗ weak → drift / reward hacking</text>
+  </g>
+</svg>
+<figcaption><span class="fig-label">Figure 5.</span> The minimal feature set of a compounding self-evolving loop. Each force has a physical analogue, an ML implementation, and a predictable failure mode when absent.</figcaption>
+</figure>
+
+<h4>Ratchet <em>— what accumulates?</em></h4>
+<p>A device that permits motion in only one direction. Biology has Muller's ratchet; culture has Tomasello's ratchet effect. In a self-evolving loop, the ratchet is whatever makes good modifications persist and bad ones reversible. Without it, gains and losses are symmetric and capability random-walks.</p>
+<p>Common ratchets, weakest to strongest: gradient descent on weights (permanent but compressed); quality-diversity archive (best-in-niche); append-only textual memory or skill library (gated by verification); version-controlled archive of all history (perfect; storage-heavy). <em>Failure mode when weak:</em> catastrophic forgetting.</p>
+
+<h4>Entropy <em>— what keeps it from freezing?</em></h4>
+<p>The tendency toward disorder, the source of variation. Without entropy, the ratchet grinds to a halt at the first local optimum — the best candidate survives, every nearby mutation is downhill, the system freezes.</p>
+<p>Sources: sampling temperature, mutation operators, quality-diversity pressure, self-play, explicit novelty rewards. <em>Failure mode when weak:</em> mode collapse. Self-play converges to repetitive strategies. Prompt optimizers produce convergent templates. Archives without diversity pressure collapse to one solution.</p>
+
+<h4>Grounding <em>— what anchors to reality?</em></h4>
+<p>A reference tied to physical earth, preventing potential from drifting. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); constitutional principles (medium); self-judgment alone (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
+
+<div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three — ratchet, entropy, grounding — are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
+
+<p>This is a design checklist. When you read a self-evolving-agent paper, <em>name the three forces explicitly</em>. Where is the ratchet? What is the entropy source? What is the grounding? If you can't answer any one clearly, either you don't understand the system or the system doesn't work the way the paper implies. The second case is common.</p>
+
+<p>Note the deep connection between lenses 2 and 3: <strong>the grounding asymmetry and the verifier-generator asymmetry are the same asymmetry from different angles.</strong> Every genuine self-evolving success story lives in a domain with cheap automated grounding. Extending the field outside those domains is the hard open problem.</p>
+
+<hr>
+
+<!-- ─── PART 4: OPEN CHALLENGES ─── -->
+<h2 id="challenges"><span class="section-num">§4 · Open challenges</span>Where the frontier actually is</h2>
+
+<p class="section-open">Running the three lenses across the literature produces a fairly clear map of where the frontier actually is. It is not where most press coverage suggests.</p>
+
+<h3>Extending beyond verifier-rich domains</h3>
+<p>Source 4 is why the field works. It's also narrow — it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
+<p><em>Prediction.</em> The next wave of "creative self-evolution" papers will claim progress that doesn't hold up under careful evaluation. Watch for weak grounding dressed up as strong.</p>
+
+<h3>Stabilizing T3 and T4 at scale</h3>
+<p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
+<p>A concrete conjecture worth testing: <strong>a T3 system without an archive ratchet will fail catastrophically within a bounded number of iterations.</strong> The archive in DGM is not decorative; it's what prevents self-destruction. Build T3 without it and watch it die.</p>
+
+<h3>Composition of discovered artifacts</h3>
+<p>AlphaEvolve discovers algorithms. Those algorithms do not feed back into AlphaEvolve 2 as primitives. Each campaign starts from a fixed library. Closing this loop — discovered components becoming the substrate for future discovery — would add a second compounding mechanism on top of the verifier-generator engine. Voyager does this at skill-level; AlphaEvolve does not yet do it at algorithm-level. The first serious attempt will matter.</p>
+
+<h3>Grounding beyond binary verification</h3>
+<p>Most strong grounding today is binary (pass/fail) or scalar (reward). Grounding on subjective quality — is this writing any good, is this research direction promising — remains essentially unsolved. LLM-as-Judge is not a solution; it's a symptom.</p>
+
+<h3>Compounding T5</h3>
+<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. If someone does, it will be a phase transition. If no one can, the long-term ceiling of the field is T3/T4 plateauing at base-model capability.</p>
+
+<p>This one experiment — demonstrating or falsifying compounding T5 — is probably the single most important empirical question in self-evolving agents. Everything else is variations on it.</p>
+
+<hr>
+
+<!-- ─── CLOSING ─── -->
+<h2 id="closing"><span class="section-num">§5 · Closing</span>If you internalize one thing</h2>
+
+<p class="section-open">The field is in a confusing phase. Every paper uses some subset of the same tooling — LLMs as mutation operators, archives, automated evaluators — and every paper claims some flavor of "self-improvement." The surface similarity hides profound structural difference.</p>
+
+<p>The structural difference is what this essay is about. A T2 system can be brilliant and a T3 system can be trivial; the topology determines what's possible, not the cleverness of the components. A loop with strong ratchet and grounding but no entropy will look impressive for a few iterations and then freeze. A system without a real source of delta will reshuffle latent knowledge into apparent novelty and then plateau.</p>
+
+<p>Distinguishing these failure modes from genuine compounding is the work the field has yet to do.</p>
+
+<div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology, its source of new information, and the three forces that keep it productive are what determine whether it actually evolves — or just reshuffles forever in place.</div>
+
+<p>The next decade of AI progress runs through these questions. The systems that compound will be the ones that get them right.</p>
+
+<hr>
+
+<!-- ─── APPENDIX A ─── -->
+<h2 id="method"><span class="section-num">§A · Method</span>How to analyze a paper</h2>
+
+<p>A repeatable checklist. Apply in order.</p>
+
+<ol>
+<li><strong>Draw the agent/environment boundary.</strong> What's deployed? What's external?</li>
+<li><strong>Target.</strong> Which of the nine categories changes across iterations?</li>
+<li><strong>Reference.</strong> What does the outer loop look at? R1–R6.</li>
+<li><strong>Mechanism.</strong> What procedure produces the variant? M1–M6.</li>
+<li><strong>Draw the loop. Identify the topology.</strong> T1–T5. Does the evolver modify itself?</li>
+<li><strong>Source of delta.</strong> Where does new information enter? Source 1 only → distilling, not compounding.</li>
+<li><strong>Name the three forces.</strong> Ratchet. Entropy. Grounding. Explicitly.</li>
+<li><strong>Ceiling.</strong> What bounds this system? What would raise it?</li>
+</ol>
+
+<div class="examples">
+
+<div class="example ex-t2">
+<div class="example-title">AlphaEvolve<span class="tag tag-harness">T2 · Source 4</span></div>
+<dl>
+<dt>Boundary</dt><dd>agent = Gemini + evolutionary controller · env = problem + automated evaluator</dd>
+<dt>Target</dt><dd><em>Context · Search State</em> — the program population</dd>
+<dt>Reference</dt><dd><em>R4</em> · island-based QD archive</dd>
+<dt>Mechanism</dt><dd><em>M2 + M5</em> · evolutionary search, LLM-as-mutator generating code</dd>
+<dt>Topology</dt><dd><em>T2</em>. Fixed Gemini, fixed evaluator, fixed algorithm — only the population evolves.</dd>
+<dt>Delta</dt><dd><em>Source 4</em>. Cheap verifier extracts bits from a frozen generator.</dd>
+<dt>Forces</dt><dd>Ratchet = island archive · Entropy = island topology + temperature + mutation prompt diversity · Grounding = deterministic evaluator</dd>
+<dt>Ceiling</dt><dd>Bounded by Gemini's ability to propose good candidates. AlphaEvolve is a Gemini-amplifier, not a Gemini-transcender.</dd>
+</dl>
+</div>
+
+<div class="example ex-t3">
+<div class="example-title">Darwin Gödel Machine<span class="tag tag-model">T3 · Source 4</span></div>
+<dl>
+<dt>Boundary</dt><dd>agent = the self-modifying agent system · env = SWE-bench + Polyglot</dd>
+<dt>Target</dt><dd><em>Harness · Scaffolding</em> — the agent's own codebase</dd>
+<dt>Reference</dt><dd><em>R4</em> · archive of all historical agent variants</dd>
+<dt>Mechanism</dt><dd><em>M2 + M5</em> · evolutionary archive of self-rewritten code</dd>
+<dt>Topology</dt><dd><em>T3</em>. Evolver = target. The agent modifies itself.</dd>
+<dt>Delta</dt><dd><em>Source 4</em>. Benchmark verifiers.</dd>
+<dt>Forces</dt><dd>Ratchet = full archive (load-bearing: bad self-modifications cannot wipe prior progress) · Entropy = archive diversity + LLM temperature · Grounding = SWE-bench</dd>
+<dt>Ceiling</dt><dd>Unresolved. T3 can in principle transcend the base model; DGM has not yet convincingly demonstrated it.</dd>
+</dl>
+</div>
+
+<div class="example ex-t4">
+<div class="example-title">Absolute Zero<span class="tag tag-env">T4 · Source 4 + 5</span></div>
+<dl>
+<dt>Boundary</dt><dd>LLM is the agent (playing both roles) · code executor + self-proposed tasks are env</dd>
+<dt>Target</dt><dd><em>Model</em> weights + <em>Env · Tasks</em>. Co-evolution.</dd>
+<dt>Reference</dt><dd><em>R1</em> on both sides. Weights are the memory.</dd>
+<dt>Mechanism</dt><dd><em>M1</em> · RL applied to a model playing two roles</dd>
+<dt>Topology</dt><dd><em>T4</em>. Proposer ↔ solver. Same base model, different heads.</dd>
+<dt>Delta</dt><dd><em>Sources 4 + 5</em>. Code executor grounds; proposer-solver gap generates novelty.</dd>
+<dt>Forces</dt><dd>Ratchet = model weights · Entropy = stochastic task proposal + RL rollout variance · Grounding = code executor</dd>
+<dt>Ceiling</dt><dd>Bounded by what the proposer can imagine, itself bounded by pretraining. Extends within a distribution; unclear whether it escapes the base model's envelope.</dd>
+</dl>
+</div>
+
+<div class="example ex-t2">
+<div class="example-title">Reflexion<span class="tag tag-context">T2 · Source 3</span></div>
+<dl>
+<dt>Boundary</dt><dd>agent = LLM + episodic memory · env = task environment</dd>
+<dt>Target</dt><dd><em>Context · Memory</em> — the reflection buffer</dd>
+<dt>Reference</dt><dd><em>R5</em> · textual memory of prior reflections</dd>
+<dt>Mechanism</dt><dd><em>M4</em> · in-context learning on accumulated reflections</dd>
+<dt>Topology</dt><dd><em>T2</em>. Fixed LLM, accumulating memory.</dd>
+<dt>Delta</dt><dd><em>Source 3</em>. Each trajectory adds observations compressed into reflections.</dd>
+<dt>Forces</dt><dd>Ratchet = memory buffer · Entropy = each retry is fresh-sampled · Grounding = task outcome from env</dd>
+<dt>Ceiling</dt><dd>Bounded by what the LLM can profitably use as in-context memory. Finite context and reflection noise mean Reflexion cannot compound over many orders of magnitude.</dd>
+</dl>
+</div>
+
+</div>
+
+<hr>
+
+<!-- ─── APPENDIX B ─── -->
+<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 63 works</h2>
+
+<small>Tagged <em>target · reference · mechanism · topology · delta</em>. Keys in §2 and §3.</small>
+
+<table>
+<thead><tr><th>Work</th><th>Y</th><th>Target</th><th>Ref</th><th>Mech</th><th>Top</th><th>Δ</th></tr></thead>
+<tbody>
+<tr><td>STaR</td><td>'22</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>4</td></tr>
+<tr><td>Constitutional AI</td><td>'22</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1+4</td></tr>
+<tr><td>Self-Rewarding LMs</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1</td></tr>
+<tr><td>SPIN</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T4</td><td>5</td></tr>
+<tr><td>Meta-Rewarding</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T4·lite</td><td>1</td></tr>
+<tr><td>Quiet-STaR</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1</td></tr>
+<tr><td>Agent Q</td><td>'24</td><td>Model</td><td>R2+R6</td><td>M1+M6</td><td>T2</td><td>3+4</td></tr>
+<tr><td>RAGEN</td><td>'25</td><td>Model</td><td>R2</td><td>M1</td><td>T2</td><td>3</td></tr>
+<tr><td>ARPO</td><td>'25</td><td>Model</td><td>R2</td><td>M1</td><td>T2</td><td>4</td></tr>
+<tr><td>Absolute Zero</td><td>'25</td><td>Model + Env·Tasks</td><td>R1</td><td>M1</td><td>T4</td><td>4+5</td></tr>
+<tr><td>TTT-Discover</td><td>'26</td><td>Model (test-time)</td><td>R1</td><td>M1</td><td>T2</td><td>4</td></tr>
+<tr><td>APE</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>OPRO</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>PromptBreeder</td><td>'23</td><td>Harness·Prompts</td><td>R3</td><td>M2</td><td>T5</td><td>4</td></tr>
+<tr><td>Self-Refine</td><td>'23</td><td>ephemeral</td><td>R1</td><td>M3</td><td>T2</td><td>1</td></tr>
+<tr><td>DSPy</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>ProTeGi</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>EvoPrompt</td><td>'24</td><td>Harness·Prompts</td><td>R3</td><td>M2</td><td>T2</td><td>4</td></tr>
+<tr><td>PromptAgent</td><td>'24</td><td>Harness·Prompts</td><td>R6</td><td>M6</td><td>T2</td><td>4</td></tr>
+<tr><td>TextGrad</td><td>'24</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>Trace / OptoPrime</td><td>'24</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>STOP</td><td>'23</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
+<tr><td>AI Scientist</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M5+M6</td><td>T2</td><td>1+4</td></tr>
+<tr><td>ADAS</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>AFlow</td><td>'24</td><td>Harness·Scaffolding</td><td>R6</td><td>M6</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentSquare</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M2</td><td>T2</td><td>4</td></tr>
+<tr><td>Godel Agent</td><td>'24</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
+<tr><td>DGM</td><td>'25</td><td>Harness·Scaffolding</td><td>R4</td><td>M2+M5</td><td>T3</td><td>4</td></tr>
+<tr><td>SICA</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
+<tr><td>AIDE</td><td>'25</td><td>Harness·Scaffolding</td><td>R6</td><td>M6+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>R&D-Agent</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentBreeder</td><td>'25</td><td>Harness·Scaffolding</td><td>R4</td><td>M2</td><td>T2</td><td>4</td></tr>
+<tr><td>MAS-ZERO</td><td>'25</td><td>Harness·Scaffolding</td><td>R3</td><td>M6</td><td>T2</td><td>1</td></tr>
+<tr><td>Confucius Code Agent</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>Meta-Harness</td><td>'26</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>HyperAgents</td><td>'26</td><td>Harness·Scaffolding (meta)</td><td>R4</td><td>M5</td><td>T5</td><td>4</td></tr>
+<tr><td>Reflexion</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>ExpeL</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>SPRING</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>A-MEM</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>Mem0</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>SAGE</td><td>'24</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>EvolveR</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>Agent Workflow Memory</td><td>'24</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>CORAL</td><td>'26</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>CREATOR</td><td>'23</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>Voyager</td><td>'23</td><td>Context·DynSkills</td><td>R5</td><td>M5+M4</td><td>T2</td><td>3+6</td></tr>
+<tr><td>CLOVA</td><td>'24</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>3</td></tr>
+<tr><td>ToolEVO</td><td>'24</td><td>Context·DynSkills</td><td>R5</td><td>M6+M4</td><td>T2</td><td>3</td></tr>
+<tr><td>LIVE-SWE-AGENT</td><td>'25</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>STELLA</td><td>'25</td><td>Context·DynSkills + Memory</td><td>R5</td><td>M5+M4</td><td>T2</td><td>3+6</td></tr>
+<tr><td>Alita</td><td>'25</td><td>Context·DynSkills</td><td>R5</td><td>M5</td><td>T2</td><td>4+6</td></tr>
+<tr><td>ELM</td><td>'22</td><td>Context·SearchState</td><td>R4</td><td>M2</td><td>T2</td><td>4+6</td></tr>
+<tr><td>FunSearch</td><td>'23</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>AlphaEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>CodeEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>ShinkaEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>Eureka</td><td>'23</td><td>Env·Rewards</td><td>R2</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
+<tr><td>Auto MC-Reward</td><td>'23</td><td>Env·Rewards</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>OMNI-EPIC</td><td>'24</td><td>Env·Tasks + Rewards</td><td>R4</td><td>M5</td><td>T2</td><td>3+4</td></tr>
+<tr><td>AgentGen</td><td>'24</td><td>Env·Tasks</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentTrek</td><td>'24</td><td>Env·Tasks (traj.)</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>WebRL</td><td>'24</td><td>Env·Tasks + Model</td><td>R1</td><td>M1+M5</td><td>T4</td><td>3+5</td></tr>
+</tbody>
+</table>
+
+<footer>
+<p style="margin-bottom: 14px;"><strong style="color: var(--ink-2);">Acknowledgments &amp; sources.</strong> Two recent surveys map this field comprehensively (<a href="https://arxiv.org/abs/2507.21046">arXiv:2507.21046</a> and <a href="https://arxiv.org/abs/2508.07407">arXiv:2508.07407</a>); the <a href="https://github.com/EvoAgentX/Awesome-Self-Evolving-Agents">Awesome-Self-Evolving-Agents</a> bibliography is the most complete index of works. The loop-topology and three-forces lenses developed here are my own framing.</p>
+<p>If you know a system that this essay misclassifies — or, especially, a genuinely <em>compounding</em> T5 system that this essay underweights — I would particularly like to hear about it.</p>
+<p style="margin-top: 18px; color: var(--ink-fade); font-size: 12px; letter-spacing: 0.04em;">— Written April 2026.</p>
+</footer>
+
+</article>
+</body>
+</html>
