@@ -542,87 +542,80 @@
 <aside><strong>Who this is for.</strong> Two audiences. If you know RL and have built LLM agents: skim §1, jump to §3 — the lenses are where the insight is. If you're new to this area: read top-to-bottom, it's self-contained.</aside>
 
 <!-- ─── PUZZLE ─── -->
-<h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Two near-identical systems, incommensurable outputs</h2>
+<h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Three papers, three levels of the stack</h2>
 
-<p class="section-open">AlphaEvolve and the Darwin Gödel Machine both call themselves "self-evolving systems." They use almost identical building blocks: a frozen LLM as a mutation operator, an evolutionary archive of candidates, automated evaluators, island-based sampling. On paper, they are the same system.</p>
+<p class="section-open">Three recent papers all call themselves self-evolving agents. At the building-block level they look similar — an LLM in the loop, an archive of candidates, automated evaluators. They are doing fundamentally different kinds of evolution, and those differences are invisible if you focus on the tooling.</p>
 
-<p>They produce incommensurable things. AlphaEvolve found a new algorithm for 4×4 complex matrix multiplication — the first improvement to Strassen's 1969 result in 56 years. DGM rewrites its own codebase and climbs SWE-bench from 20% to 50%. One discovers mathematics; the other rewrites itself.</p>
+<p><strong>AlphaEvolve</strong> (DeepMind, 2025) pairs Gemini with an island-based archive, iterating on <em>programs</em>. It produced a new algorithm for 4×4 complex matrix multiplication — the first improvement to Strassen in 56 years.</p>
 
-<p>Why the difference? The building blocks don't say. A <em>target × reference × mechanism</em> classification doesn't say — both systems land in the same cell.</p>
+<p><strong>Meta-Harness</strong> (2026) uses an agentic proposer to iterate on the <em>harness code</em> wrapping a fixed LLM — the retrieval logic, context assembly, orchestration. +7.7 points on text classification; top-ranked on SWE-bench among Claude agents.</p>
 
-<p>The difference is the <strong>topology of the feedback loop</strong>. AlphaEvolve has a fixed evolver modifying a separate target. DGM has the evolver and the target as the <em>same entity</em> — it rewrites itself. That single structural fact determines everything. Once you see it, you can't un-see it.</p>
+<p><strong>HyperAgents</strong> (2026) extends the Darwin Gödel Machine so that the <em>self-modification procedure itself is editable</em>. The agent modifies itself, and the way the agent modifies itself also modifies itself.</p>
+
+<p>Three papers, three different levels of the stack. AlphaEvolve evolves the <em>solutions</em> a frozen system produces. Meta-Harness evolves the <em>system</em>. HyperAgents evolves <em>the process that evolves the system</em>. This is not a progression from simple to sophisticated — they target fundamentally different things.</p>
 
 <figure class="fig-wide">
-<svg viewBox="0 0 840 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve T2 vs DGM T3 topology comparison">
+<svg viewBox="0 0 820 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three self-evolving papers target three different levels of the stack">
   <defs>
-    <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
-    <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
+    <marker id="arrDown-obj" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2a553b"/></marker>
+    <marker id="arrDown-agt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#2b4663"/></marker>
+    <marker id="arrDown-meta" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
   </defs>
 
-  <!-- Left: AlphaEvolve T2 -->
-  <g transform="translate(0, 0)">
-    <text x="200" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#3a3a3a" letter-spacing="0.04em">ALPHAEVOLVE · T2 · evolver ≠ target</text>
+  <!-- Paper labels (top) -->
+  <g>
+    <!-- AlphaEvolve (left) → OBJECT band (longest arrow) -->
+    <text x="150" y="32" text-anchor="middle" font-size="14.5" font-weight="600" fill="#2a553b" letter-spacing="-0.005em">AlphaEvolve</text>
+    <text x="150" y="48" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">DeepMind · 2025</text>
+    <text x="150" y="62" text-anchor="middle" font-size="10" fill="#2a553b" letter-spacing="0.04em">evolves programs</text>
 
-    <!-- Gemini (evolver) -->
-    <rect x="60" y="120" width="100" height="56" rx="6" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.2"/>
-    <text x="110" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Gemini</text>
-    <text x="110" y="158" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">evolver · fixed</text>
+    <!-- Meta-Harness (middle) → AGENT band -->
+    <text x="410" y="32" text-anchor="middle" font-size="14.5" font-weight="600" fill="#2b4663" letter-spacing="-0.005em">Meta-Harness</text>
+    <text x="410" y="48" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">2026</text>
+    <text x="410" y="62" text-anchor="middle" font-size="10" fill="#2b4663" letter-spacing="0.04em">evolves the harness</text>
 
-    <!-- Programs (target) -->
-    <rect x="240" y="120" width="100" height="56" rx="6" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.2"/>
-    <text x="290" y="142" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Programs</text>
-    <text x="290" y="158" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">target · evolves</text>
-
-    <!-- Evaluator -->
-    <rect x="150" y="244" width="100" height="48" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
-    <text x="200" y="264" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Evaluator</text>
-    <text x="200" y="279" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">signal</text>
-
-    <!-- Arrows -->
-    <text x="200" y="138" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">mutates</text>
-    <path d="M 162 148 L 238 148" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-
-    <path d="M 290 178 Q 290 220 250 244" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-    <path d="M 150 260 Q 75 260 60 200 Q 60 148 60 148" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-
-    <text x="200" y="328" text-anchor="middle" font-size="11" fill="#3a3a3a" font-style="italic">The evolver is stable. The target population evolves.</text>
+    <!-- HyperAgents (right) → META band (shortest arrow) -->
+    <text x="670" y="32" text-anchor="middle" font-size="14.5" font-weight="600" fill="#a73825" letter-spacing="-0.005em">HyperAgents</text>
+    <text x="670" y="48" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">2026</text>
+    <text x="670" y="62" text-anchor="middle" font-size="10" fill="#a73825" letter-spacing="0.04em">evolves the self-modifier</text>
   </g>
 
-  <!-- Divider -->
-  <line x1="420" y1="80" x2="420" y2="310" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="4,4"/>
+  <!-- Arrows from papers down to their target bands -->
+  <!-- HyperAgents (short) → META band top at y=100 -->
+  <path d="M 670 76 L 670 98" stroke="#a73825" stroke-width="1.8" fill="none" marker-end="url(#arrDown-meta)"/>
+  <!-- Meta-Harness (medium) → AGENT band top at y=172 -->
+  <path d="M 410 76 L 410 170" stroke="#2b4663" stroke-width="1.8" fill="none" marker-end="url(#arrDown-agt)"/>
+  <!-- AlphaEvolve (long) → OBJECT band top at y=244 -->
+  <path d="M 150 76 L 150 242" stroke="#2a553b" stroke-width="1.8" fill="none" marker-end="url(#arrDown-obj)"/>
 
-  <!-- Right: DGM T3 -->
-  <g transform="translate(420, 0)">
-    <text x="200" y="28" text-anchor="middle" font-size="13" font-weight="600" fill="#a73825" letter-spacing="0.04em">DARWIN GÖDEL MACHINE · T3 · evolver ≡ target</text>
+  <!-- META band -->
+  <rect x="50" y="102" width="720" height="58" rx="6" fill="#faeadf" stroke="#a73825" stroke-width="1.3"/>
+  <text x="70" y="126" font-size="12" font-weight="700" fill="#a73825" letter-spacing="0.1em">META LEVEL</text>
+  <text x="70" y="145" font-size="12.5" fill="#141414">The process that modifies the agent</text>
+  <text x="758" y="126" text-anchor="end" font-size="10.5" fill="#a73825" font-style="italic">HyperAgents, STOP</text>
+  <text x="758" y="145" text-anchor="end" font-size="10" fill="#a2a09a" font-style="italic">evolver ≡ the improvement procedure</text>
 
-    <!-- Self-modifies label well above the loop -->
-    <text x="200" y="62" text-anchor="middle" font-size="11" font-style="italic" fill="#a73825">self-modifies</text>
+  <!-- AGENT band -->
+  <rect x="50" y="172" width="720" height="58" rx="6" fill="#e4ecf4" stroke="#2b4663" stroke-width="1.3"/>
+  <text x="70" y="196" font-size="12" font-weight="700" fill="#2b4663" letter-spacing="0.1em">AGENT / HARNESS LEVEL</text>
+  <text x="70" y="215" font-size="12.5" fill="#141414">The system that produces solutions</text>
+  <text x="758" y="196" text-anchor="end" font-size="10.5" fill="#2b4663" font-style="italic">Meta-Harness, DGM, ADAS, SICA</text>
+  <text x="758" y="215" text-anchor="end" font-size="10" fill="#a2a09a" font-style="italic">evolving the scaffolding wrapping the LLM</text>
 
-    <!-- Self-loop arc above the Agent -->
-    <path d="M 140 120 Q 140 76 200 76 Q 260 76 260 120" fill="none" stroke="#a73825" stroke-width="1.5" marker-end="url(#arrB)"/>
+  <!-- OBJECT band -->
+  <rect x="50" y="242" width="720" height="58" rx="6" fill="#dfeadf" stroke="#2a553b" stroke-width="1.3"/>
+  <text x="70" y="266" font-size="12" font-weight="700" fill="#2a553b" letter-spacing="0.1em">OBJECT LEVEL</text>
+  <text x="70" y="285" font-size="12.5" fill="#141414">The solutions / artifacts produced</text>
+  <text x="758" y="266" text-anchor="end" font-size="10.5" fill="#2a553b" font-style="italic">AlphaEvolve, FunSearch, Eureka</text>
+  <text x="758" y="285" text-anchor="end" font-size="10" fill="#a2a09a" font-style="italic">a frozen system iterating on its outputs</text>
 
-    <!-- Agent (both) -->
-    <rect x="120" y="120" width="160" height="62" rx="6" fill="#f6e5df" stroke="#a73825" stroke-width="1.5"/>
-    <text x="200" y="146" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Agent</text>
-    <text x="200" y="164" text-anchor="middle" font-size="10.5" font-style="italic" fill="#a73825">evolver = target</text>
-
-    <!-- SWE-bench -->
-    <rect x="140" y="244" width="120" height="48" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
-    <text x="200" y="264" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">SWE-bench</text>
-    <text x="200" y="279" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">signal</text>
-
-    <!-- down arrow -->
-    <path d="M 200 182 L 200 242" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-    <!-- up arrow -->
-    <path d="M 140 260 Q 75 260 75 175 Q 75 145 120 145" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-
-    <text x="200" y="328" text-anchor="middle" font-size="11" fill="#a73825" font-style="italic">Same entity plays both roles. That is the entire difference.</text>
-  </g>
+  <!-- Caption hint -->
+  <text x="410" y="326" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">Same tooling. Different things being evolved.</text>
 </svg>
-<figcaption><span class="fig-label">Figure 1.</span> The same building blocks wired two different ways. T2 caps at the evolver's capability; T3 can, in principle, exceed its starting point. Whether DGM actually does this is an open empirical question; see §3.1.</figcaption>
+<figcaption><span class="fig-label">Figure 1.</span> Three recent papers, three levels of a stack. An object-level system iterates on the artifacts a frozen agent produces; an agent-level system iterates on the agent itself; a meta-level system iterates on the procedure that does the iterating. These are not more or less sophisticated; they target different components.</figcaption>
 </figure>
 
-<p>This essay is about seeing it, and about five or six other things that are hidden in plain sight the same way.</p>
+<p>This essay is about making that stack legible — and about five or six other things that are hidden in plain sight the same way.</p>
 
 <hr>
 
