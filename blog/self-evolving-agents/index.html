@@ -94,13 +94,24 @@
     margin: 0 0 20px;
   }
 
+  .h1-sub {
+    font-family: "Iowan Old Style", "Charter", "Palatino", Georgia, serif;
+    font-size: 30px;
+    line-height: 1.18;
+    letter-spacing: -0.012em;
+    font-weight: 400;
+    font-style: italic;
+    color: var(--ink-mute);
+    margin: 6px 0 0;
+  }
+
   .dek {
     font-family: inherit;
     font-style: italic;
     font-size: 21px;
     color: var(--ink-2);
     line-height: 1.4;
-    margin: 20px 0 32px;
+    margin: 22px 0 32px;
     font-weight: 400;
     max-width: 620px;
   }
@@ -379,6 +390,11 @@
   .tag-harness { background: #e4ecf4; color: #23405e; }
   .tag-context { background: #dfeadf; color: #2a553b; }
   .tag-env     { background: #fbf0d8; color: #8a5e10; }
+  /* topology tags for worked-example cards — paired with their ex-t* border color */
+  .tag-t2      { background: #e4ecf4; color: #23405e; }
+  .tag-t3      { background: #f6e5df; color: #a73825; }
+  .tag-t4      { background: #fbf0d8; color: #8a5e10; }
+  .tag-t5      { background: #f0e6f2; color: #6c3483; }
 
   /* ─── Example cards ─── */
   .examples {
@@ -508,8 +524,9 @@
 <!-- ─── HERO ─── -->
 <header>
 <p class="eyebrow">A Framework · Self-Evolving Agents</p>
-<h1>What evolves, when an agent <em>evolves itself</em>?</h1>
-<p class="dek">AlphaEvolve, MetaHarness, and HyperAgents share a similar philosophy and do categorically different things. What makes the distinctions? And what else follows from taking them seriously?</p>
+<h1>The Compounding Loop</h1>
+<p class="h1-sub">Topology, Delta, Physics</p>
+<p class="dek">An anatomy of self-evolving agents — and what comes next.</p>
 <div class="byline">
   <span>Self-evolving agents · 63 works · 2022–2026</span>
   <span>April 2026</span>
@@ -534,30 +551,30 @@
 <!-- ─── TL;DR ─── -->
 <section class="tldr" aria-label="Summary">
 <div class="tldr-head">TL;DR</div>
-<p>A self-evolving agent is a <strong>feedback loop</strong>. Classify it by <strong>target</strong> (what evolves), <strong>reference</strong> (what archive informs the next variant), and <strong>mechanism</strong> (how the variant is produced). Most surveys stop here.</p>
-<p>Three <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5), <strong>source of delta</strong> (where new information enters — and the fact that one source, the verifier-generator asymmetry, does most of the work in the field right now), and <strong>the physics</strong> — a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
-<p>Sharp claims. <strong>Most "recursive self-improvement" papers are T2 in disguise.</strong> <strong>Modern self-evolution works because code and math have cheap verifiers.</strong> <strong>Extending the field outside verifier-cheap domains is the hard open problem</strong>, and the most interesting one.</p>
+<p>A self-evolving agent is a <strong>feedback loop</strong>. Classify it by <strong>target</strong> (what evolves), <strong>reference</strong> (what archive informs the next variant), and <strong>mechanism</strong> (how the variant is produced).</p>
+<p>Three <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5), <strong>source of delta</strong> (where new information enters), and <strong>the physics</strong> — a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
+<p>One asymmetry — cheap verifier + strong generator — is doing most of the heavy lifting in modern self-evolution. <strong>Extending the field outside verifier-cheap domains</strong> is the hard open problem, and the most interesting one.</p>
 </section>
 
-<aside><strong>Who this is for.</strong> Two audiences. If you know RL and have built LLM agents: skim §1, jump to §3 — the lenses are where the insight is. If you're new to this area: read top-to-bottom, it's self-contained.</aside>
+<aside><strong>Who this is for.</strong> If you're new to the area, read top-to-bottom — it's self-contained. If you know RL and have built LLM agents, skim §1; if you've also been following the self-evolving-agents literature, skim §2 as well. Either way, §3 is where the insight is.</aside>
 
 <!-- ─── PUZZLE ─── -->
 <h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Three systems, three different things evolving</h2>
 
-<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>MetaHarness</strong>, and <strong>HyperAgents</strong>. They share the same building blocks — LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
+<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>Meta-Harness</strong>, and <strong>HyperAgents</strong>. They share the same building blocks — LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
 
 <p>They are doing categorically different things.</p>
 
 <p><strong>AlphaEvolve</strong> evolves <em>solutions</em>. The LLM is frozen; a population of candidate programs evolves through mutation-and-selection, filtered by automated evaluators. What improves is the population — AlphaEvolve discovered an algorithm for 4×4 complex matrix multiplication that Strassen missed for 56 years.</p>
 
-<p><strong>MetaHarness</strong> evolves <em>the harness</em>. The code wrapping an LLM — context assembly, retrieval, prompt construction, tool orchestration — is iteratively rewritten by an agentic proposer. The model stays fixed. What improves is the operating system around it.</p>
+<p><strong>Meta-Harness</strong> evolves <em>the harness</em>. The code wrapping an LLM — context assembly, retrieval, prompt construction, tool orchestration — is iteratively rewritten by an agentic proposer. The model stays fixed. What improves is the operating system around it.</p>
 
 <p><strong>HyperAgents</strong> evolves <em>the meta-process</em>. The task agent modifies itself (that is already DGM's trick); the meta-procedure that does the modification is itself editable. What improves is not only the agent but the procedure by which the agent improves.</p>
 
-<p>Three systems. Three different targets of evolution. Three different loop topologies. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This essay is about why they are not the same, and about five or six other things that are hidden in plain sight the same way.</p>
+<p>Three systems. Three different targets of evolution. Three different loop topologies. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This essay is about seeing the differences — and about three questions that decide whether a self-evolving system actually <em>compounds</em>: how is the loop wired, where does new information enter, and what keeps it from collapsing.</p>
 
 <figure class="fig-wide">
-<svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve, MetaHarness, HyperAgents — three self-evolving systems">
+<svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve, Meta-Harness, HyperAgents — three self-evolving systems">
   <defs>
     <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
     <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
@@ -628,41 +645,39 @@
     <text x="140" y="50" text-anchor="middle" font-size="11" font-style="italic" fill="#6e6e6e">evolves <tspan font-weight="600" fill="#6c3483" font-style="normal">the meta-process</tspan>  ·  T5</text>
 
     <!-- Outer dashed meta-procedure frame -->
-    <rect x="6" y="80" width="268" height="200" rx="8" fill="none" stroke="#6c3483" stroke-width="1.4" stroke-dasharray="4,3"/>
-    <text x="140" y="74" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6c3483">meta-procedure (also editable)</text>
+    <rect x="6" y="78" width="268" height="208" rx="8" fill="none" stroke="#6c3483" stroke-width="1.4" stroke-dasharray="4,3"/>
+    <text x="140" y="72" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6c3483">meta-procedure (also editable)</text>
 
-    <!-- Self-modifies label for Agent -->
-    <text x="140" y="106" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">self-modifies</text>
+    <!-- Self-modifies label for Agent — placed above the self-loop arc -->
+    <text x="140" y="98" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">self-modifies</text>
 
-    <!-- Self-loop above Agent -->
-    <path d="M 100 122 Q 100 96 140 96 Q 180 96 180 122" fill="none" stroke="#a73825" stroke-width="1.3" marker-end="url(#arrB)"/>
+    <!-- Self-loop above Agent (apex pushed lower so text sits cleanly above) -->
+    <path d="M 100 134 Q 100 110 140 110 Q 180 110 180 134" fill="none" stroke="#a73825" stroke-width="1.3" marker-end="url(#arrB)"/>
 
     <!-- Agent -->
-    <rect x="80" y="122" width="120" height="50" rx="6" fill="#f6e5df" stroke="#a73825" stroke-width="1.4"/>
-    <text x="140" y="144" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Agent</text>
-    <text x="140" y="160" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">evolver = target</text>
+    <rect x="80" y="134" width="120" height="50" rx="6" fill="#f6e5df" stroke="#a73825" stroke-width="1.4"/>
+    <text x="140" y="156" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">Agent</text>
+    <text x="140" y="172" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">evolver = target</text>
 
     <!-- Benchmark -->
-    <rect x="90" y="220" width="100" height="42" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
-    <text x="140" y="238" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">Benchmark</text>
-    <text x="140" y="254" text-anchor="middle" font-size="10" font-style="italic" fill="#6e6e6e">signal</text>
+    <rect x="90" y="226" width="100" height="42" rx="6" fill="#dfeadf" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="140" y="244" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">Benchmark</text>
+    <text x="140" y="260" text-anchor="middle" font-size="10" font-style="italic" fill="#6e6e6e">signal</text>
 
-    <path d="M 140 172 L 140 218" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
-    <path d="M 90 240 Q 40 240 40 175 Q 40 145 80 145" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+    <path d="M 140 184 L 140 224" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
+    <path d="M 90 246 Q 40 246 40 184 Q 40 157 80 157" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
 
-    <text x="140" y="298" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">Agent rewrites itself; the procedure</text>
-    <text x="140" y="314" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">that does the rewriting is also editable.</text>
+    <text x="140" y="304" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">Agent rewrites itself; the procedure</text>
+    <text x="140" y="320" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">that does the rewriting is also editable.</text>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 1.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). MetaHarness evolves the code wrapping the model (the model is frozen). HyperAgents evolves the agent and the procedure that modifies the agent. The framework developed below makes these three coordinates explicit.</figcaption>
+<figcaption><span class="fig-label">Figure 1.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). Meta-Harness evolves the code wrapping the model (the model is frozen). HyperAgents evolves the agent and the procedure that modifies the agent. The framework developed below makes these three coordinates explicit.</figcaption>
 </figure>
-
-<p>This essay is about seeing the differences, and about five or six other things that are hidden in plain sight the same way.</p>
 
 <hr>
 
 <!-- ─── PART 1: FOUNDATIONS ─── -->
-<h2 id="foundations"><span class="section-num">§1 · Foundations</span>Agent, harness, context, environment</h2>
+<h2 id="foundations"><span class="section-num">§1 · Foundations</span>Model, harness, context, environment</h2>
 
 <aside>If RL and LLM-agent architectures are familiar, skim the headings and jump to <a href="#classification">§2</a>.</aside>
 
@@ -680,9 +695,9 @@
 
 <h3>Harness vs Context — a temporal split</h3>
 
-<p>A load-bearing distinction. Some things are <strong>fixed during a run</strong>: system prompts, tool catalogues, scaffolding code, weights. Compiled in before deployment. The <strong>Harness</strong>.</p>
+<p>A load-bearing distinction. The <strong>Harness</strong> is what's fixed during a run — system prompts, tool catalogues, scaffolding code, retrieval logic — all compiled in before deployment. (Weights are also fixed at runtime, but conceptually they're their own thing — the Model — distinct from the orchestration code around them.)</p>
 
-<p>Other things <strong>change during a run</strong>: conversation history, scratchpad, skills written this session, reflections stored. The <strong>Context</strong>. Context in this broad sense is the direct generalization of RL's trajectory.</p>
+<p>The <strong>Context</strong> is what changes during a run — conversation history, scratchpad, skills written this session, reflections stored. In this broad sense, context is the direct generalization of RL's trajectory.</p>
 
 <p>Two systems with identical outputs can have very different learning dynamics based on what lives in harness vs context. A prompt optimized offline (harness) is a fundamentally different object from a reflection written mid-run (context), even when the resulting string looks similar. Most confusions in this field come from conflating these two.</p>
 
@@ -788,7 +803,7 @@
 <hr>
 
 <!-- ─── PART 3: LENSES ─── -->
-<h2 id="lenses"><span class="section-num">§3 · Three lenses</span>Topology, delta, physics</h2>
+<h2 id="lenses"><span class="section-num">§3 · Three lenses</span>Topology, Delta, Physics</h2>
 
 <p class="section-open">The dimensions above classify a system's structure. The three lenses below ask about its dynamics — whether the loop is well-formed, where its information comes from, and whether it compounds or just reshuffles. In order of increasing depth.</p>
 
@@ -935,7 +950,7 @@
 
 <p><em>Why T3 is fragile.</em> A self-modifier can break its own self-modification ability. T3 works only with strong grounding (to distinguish good modifications from bad) and a retention mechanism that survives bad modifications (an archive to roll back to). DGM's archive of every historical variant is not decorative — it's what keeps the system alive.</p>
 
-<p><em>The open question.</em> Does T3 actually transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly. This question is the single most important empirical one in the field.</p>
+<p><em>The open question.</em> Does T3 actually transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly.</p>
 
 <h4>T4 <em>· dual co-evolution</em></h4>
 <p>Two agents drive each other. Often proposer ↔ solver: Absolute Zero, SPIN, WebRL. In T4, problem difficulty is <em>endogenous</em> — it scales with solver capability. That's what gave AlphaGo Zero its magic. Without a game-like dual structure, it's hard to get this property.</p>
@@ -943,7 +958,7 @@
 <p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
 
 <h4>T5 <em>· nested / multi-scale</em></h4>
-<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner. Showing this, or ruling it out, would be the single most important empirical result in the field.</p>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has yet demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner. (Why this question is load-bearing for the field's long-term trajectory: see §4.)</p>
 
 <!-- 3.2 DELTA -->
 <h3>Lens 2 · Source of delta</h3>
@@ -1012,7 +1027,7 @@
 <!-- 3.3 PHYSICS -->
 <h3>Lens 3 · The physics — ratchet, entropy, grounding</h3>
 
-<p>The deepest lens. Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> — reliably get better rather than plateauing or degenerating — it needs three forces in balance.</p>
+<p>Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> — reliably get better rather than plateauing or degenerating — it needs three forces in balance.</p>
 
 <p>I call this the <strong>physics</strong> of self-evolution because the three forces correspond cleanly to physical concepts that happen to carve the field exactly right. Each has a physical analogue, a specific role, and a predictable failure mode when absent. Remove any one and the loop dies in a characteristic way.</p>
 
@@ -1146,7 +1161,7 @@
 <div class="examples">
 
 <div class="example ex-t2">
-<div class="example-title">AlphaEvolve<span class="tag tag-harness">T2 · Source 4</span></div>
+<div class="example-title">AlphaEvolve<span class="tag tag-t2">T2 · Source 4</span></div>
 <dl>
 <dt>Boundary</dt><dd>agent = Gemini + evolutionary controller · env = problem + automated evaluator</dd>
 <dt>Target</dt><dd><em>Context · Search State</em> — the program population</dd>
@@ -1160,7 +1175,7 @@
 </div>
 
 <div class="example ex-t3">
-<div class="example-title">Darwin Gödel Machine<span class="tag tag-model">T3 · Source 4</span></div>
+<div class="example-title">Darwin Gödel Machine<span class="tag tag-t3">T3 · Source 4</span></div>
 <dl>
 <dt>Boundary</dt><dd>agent = the self-modifying agent system · env = SWE-bench + Polyglot</dd>
 <dt>Target</dt><dd><em>Harness · Scaffolding</em> — the agent's own codebase</dd>
@@ -1174,7 +1189,7 @@
 </div>
 
 <div class="example ex-t4">
-<div class="example-title">Absolute Zero<span class="tag tag-env">T4 · Source 4 + 5</span></div>
+<div class="example-title">Absolute Zero<span class="tag tag-t4">T4 · Source 4 + 5</span></div>
 <dl>
 <dt>Boundary</dt><dd>LLM is the agent (playing both roles) · code executor + self-proposed tasks are env</dd>
 <dt>Target</dt><dd><em>Model</em> weights + <em>Env · Tasks</em>. Co-evolution.</dd>
@@ -1188,7 +1203,7 @@
 </div>
 
 <div class="example ex-t2">
-<div class="example-title">Reflexion<span class="tag tag-context">T2 · Source 3</span></div>
+<div class="example-title">Reflexion<span class="tag tag-t2">T2 · Source 3</span></div>
 <dl>
 <dt>Boundary</dt><dd>agent = LLM + episodic memory · env = task environment</dd>
 <dt>Target</dt><dd><em>Context · Memory</em> — the reflection buffer</dd>
@@ -1197,7 +1212,7 @@
 <dt>Topology</dt><dd><em>T2</em>. Fixed LLM, accumulating memory.</dd>
 <dt>Delta</dt><dd><em>Source 3</em>. Each trajectory adds observations compressed into reflections.</dd>
 <dt>Forces</dt><dd>Ratchet = memory buffer · Entropy = each retry is fresh-sampled · Grounding = task outcome from env</dd>
-<dt>Ceiling</dt><dd>Bounded by what the LLM can profitably use as in-context memory. Finite context and reflection noise mean Reflexion cannot compound over many orders of magnitude.</dd>
+<dt>Ceiling</dt><dd>Bounded by what the LLM can profitably use as in-context memory. Finite context and reflection noise mean Reflexion cannot compound indefinitely.</dd>
 </dl>
 </div>
 
