@@ -371,6 +371,19 @@
   }
   tbody tr:last-child td { border-bottom: none; }
   tbody tr:hover { background: var(--rule-soft); }
+  tbody tr.group-row:hover { background: transparent; }
+  tbody tr.group-row td {
+    background: var(--rule-soft);
+    font-family: "Inter", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-mute);
+    padding: 10px 10px 7px;
+    border-bottom: 1px solid var(--rule);
+    border-top: 1px solid var(--rule);
+  }
   td code, td .id { font-size: 12.5px; white-space: nowrap; }
 
   /* ─── Tags ─── */
@@ -539,7 +552,7 @@
 <ol>
 <li><a href="#puzzle"><span class="num">§0</span><span>A puzzle</span></a></li>
 <li><a href="#foundations"><span class="num">§1</span><span>Foundations</span></a></li>
-<li><a href="#classification"><span class="num">§2</span><span>Three classification dimensions</span></a></li>
+<li><a href="#classification"><span class="num">§2</span><span>Classification: target &amp; evolver</span></a></li>
 <li><a href="#lenses"><span class="num">§3</span><span>Three analytical lenses</span></a></li>
 <li><a href="#challenges"><span class="num">§4</span><span>Open challenges</span></a></li>
 <li><a href="#closing"><span class="num">§5</span><span>Closing</span></a></li>
@@ -551,7 +564,7 @@
 <!-- ─── TL;DR ─── -->
 <section class="tldr" aria-label="Summary">
 <div class="tldr-head">TL;DR</div>
-<p>A self-evolving agent is a <strong>feedback loop</strong>. Classify it by <strong>target</strong> (what evolves), <strong>reference</strong> (what archive informs the next variant), and <strong>mechanism</strong> (how the variant is produced).</p>
+<p>A self-evolving agent is a <strong>feedback loop</strong> with two parts: a <strong>target</strong> (what gets evolved) and an <strong>evolver</strong> (the thing doing the evolving — which itself has Model / Harness / Context structure, and varies sharply in capacity, what it reads, and what operation it performs).</p>
 <p>Three <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5), <strong>source of delta</strong> (where new information enters), and <strong>the physics</strong> — a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
 <p>One asymmetry — cheap verifier + strong generator — is doing most of the heavy lifting in modern self-evolution. <strong>Extending the field outside verifier-cheap domains</strong> is the hard open problem, and the most interesting one.</p>
 </section>
@@ -742,11 +755,11 @@
 <hr>
 
 <!-- ─── PART 2: CLASSIFICATION ─── -->
-<h2 id="classification"><span class="section-num">§2 · Classification</span>Three dimensions that subsume the field</h2>
+<h2 id="classification"><span class="section-num">§2 · Classification</span>Target and evolver</h2>
 
-<p class="section-open">Every self-evolving system lives at a specific coordinate in a three-dimensional space. The axes below are the most orthogonal choice I've found. This is where most existing surveys converge — and where they stop.</p>
+<p class="section-open">Every self-evolving system has two parts worth describing: a <strong>target</strong> — what gets modified — and an <strong>evolver</strong> — the thing doing the modifying. Target is one concept. The evolver has several facets. Tagging both is where most classifications start, and where they stop.</p>
 
-<h3>Dim 1 · Target <em>— what evolves</em></h3>
+<h3>Target <em>— what gets evolved</em></h3>
 
 <table>
 <thead><tr><th style="width:34%">Category</th><th>What changes</th><th style="width:30%">Examples</th></tr></thead>
@@ -764,41 +777,161 @@
 
 <p>When a paper calls itself "prompt evolution" and the prompt is optimized by an outer loop then deployed fixed (OPRO, DSPy, TextGrad, PromptBreeder), it is evolving the <em>harness</em>, not the context. A surprising amount of writing slips here.</p>
 
-<h3>Dim 2 · Reference <em>— what informs the next variant</em></h3>
+<h3>The evolver <em>— the thing doing the evolving</em></h3>
 
-<p>When the outer loop produces a new candidate, what does it look at? This is the memory structure of the <em>evolution loop itself</em>, separate from any memory the deployed agent might use at inference.</p>
+<p>The evolver is itself a system. Applied recursively, the framework from §1 says: <strong>the evolver has its own Model, Harness, and Context</strong>. Three facets of it are worth tagging separately — <em>what kind of system</em> it is (capacity), <em>what it reads</em> (reference), and <em>what operation</em> it performs (mechanism). Tag all three and you've located the evolver in design space.</p>
+
+<p class="footnote" style="margin: 6px 0 18px;">These facets are not perfectly orthogonal: capacity constrains what references and mechanisms are feasible, and some mechanisms overlap at the edges. They are pragmatic vocabulary that captures what papers actually do, rather than a carved-at-the-joints ontology — which is fine if you know where the joints do and don't cut.</p>
+
+<h4>Capacity <em>— what kind of system is the evolver?</em></h4>
+
+<p>How capable is the evolver in its own right? Three levels cover most of the field.</p>
+
+<table>
+<thead><tr><th style="width:6%">ID</th><th>Evolver capacity</th><th style="width:34%">Examples</th></tr></thead>
+<tbody>
+<tr><td><span class="id">E1</span></td><td><strong>Fixed procedure.</strong> Frozen LLM + a static prompt template; reads at most the current candidate and its score.</td><td>OPRO, PromptBreeder, APE, Self-Refine</td></tr>
+<tr><td><span class="id">E2</span></td><td><strong>LLM + structured memory.</strong> Frozen LLM reading an archive or history of past candidates; not itself an agent.</td><td>AlphaEvolve, FunSearch, DGM, Eureka, ADAS</td></tr>
+<tr><td><span class="id">E3</span></td><td><strong>Agentic evolver.</strong> Evolver is itself a full agent (Model + Harness + Context) with its own reading capacity — source, traces, retrieval, tool use.</td><td>Meta-Harness, AI Scientist, AIDE, R&amp;D-Agent</td></tr>
+</tbody>
+</table>
+
+<figure class="fig-wide">
+<svg viewBox="0 0 900 330" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Three levels of evolver capacity">
+  <defs>
+    <marker id="ea" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
+  </defs>
+
+  <!-- ── E1 ── -->
+  <g transform="translate(10, 10)">
+    <text x="140" y="22" text-anchor="middle" font-size="12" font-weight="600" fill="#6e6e6e" letter-spacing="0.08em">E1 · FIXED PROCEDURE</text>
+    <text x="140" y="40" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">frozen LLM + fixed prompt</text>
+
+    <text x="140" y="92" text-anchor="middle" font-size="10" fill="#6e6e6e">candidate + score</text>
+    <path d="M 140 100 L 140 124" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#ea)"/>
+
+    <rect x="80" y="128" width="120" height="54" rx="6" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="140" y="150" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">LLM</text>
+    <text x="140" y="168" text-anchor="middle" font-size="10" font-style="italic" fill="#6e6e6e">fixed prompt</text>
+
+    <path d="M 140 184 L 140 208" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#ea)"/>
+    <text x="140" y="222" text-anchor="middle" font-size="10" fill="#6e6e6e">new candidate</text>
+
+    <line x1="70" y1="260" x2="210" y2="260" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="140" y="282" text-anchor="middle" font-size="10.5" fill="#3a3a3a">OPRO · PromptBreeder</text>
+    <text x="140" y="298" text-anchor="middle" font-size="10.5" fill="#3a3a3a">APE · Self-Refine</text>
+  </g>
+
+  <line x1="305" y1="60" x2="305" y2="300" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ── E2 ── -->
+  <g transform="translate(315, 10)">
+    <text x="140" y="22" text-anchor="middle" font-size="12" font-weight="600" fill="#2874a6" letter-spacing="0.08em">E2 · LLM + STRUCTURED MEMORY</text>
+    <text x="140" y="40" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">frozen LLM reading an archive</text>
+
+    <rect x="20" y="98" width="88" height="80" rx="6" fill="#e4ecf4" stroke="#23405e" stroke-width="1.2"/>
+    <text x="64" y="120" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">archive</text>
+    <text x="64" y="138" text-anchor="middle" font-size="9" fill="#6e6e6e">(candidate,</text>
+    <text x="64" y="150" text-anchor="middle" font-size="9" fill="#6e6e6e">score) pairs</text>
+    <text x="64" y="165" text-anchor="middle" font-size="9" fill="#6e6e6e">· history ·</text>
+
+    <path d="M 112 138 L 160 138" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#ea)"/>
+    <text x="136" y="130" text-anchor="middle" font-size="9" font-style="italic" fill="#6e6e6e">reads</text>
+
+    <rect x="164" y="112" width="96" height="54" rx="6" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.2"/>
+    <text x="212" y="134" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">LLM</text>
+    <text x="212" y="152" text-anchor="middle" font-size="10" font-style="italic" fill="#6e6e6e">frozen</text>
+
+    <path d="M 212 168 L 212 208" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#ea)"/>
+    <text x="212" y="222" text-anchor="middle" font-size="10" fill="#6e6e6e">new candidate</text>
+
+    <line x1="70" y1="260" x2="210" y2="260" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="140" y="282" text-anchor="middle" font-size="10.5" fill="#3a3a3a">AlphaEvolve · FunSearch</text>
+    <text x="140" y="298" text-anchor="middle" font-size="10.5" fill="#3a3a3a">DGM · Eureka · ADAS</text>
+  </g>
+
+  <line x1="610" y1="60" x2="610" y2="300" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="4,4"/>
+
+  <!-- ── E3 ── -->
+  <g transform="translate(620, 10)">
+    <text x="140" y="22" text-anchor="middle" font-size="12" font-weight="600" fill="#6c3483" letter-spacing="0.08em">E3 · AGENTIC EVOLVER</text>
+    <text x="140" y="40" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6e6e6e">evolver is itself an agent</text>
+
+    <text x="40" y="82" text-anchor="middle" font-size="9.5" fill="#6e6e6e">source</text>
+    <text x="100" y="82" text-anchor="middle" font-size="9.5" fill="#6e6e6e">traces</text>
+    <text x="180" y="82" text-anchor="middle" font-size="9.5" fill="#6e6e6e">retrieval</text>
+    <text x="240" y="82" text-anchor="middle" font-size="9.5" fill="#6e6e6e">tool use</text>
+    <path d="M 40 88 L 80 120" stroke="#3a3a3a" stroke-width="1" fill="none" marker-end="url(#ea)"/>
+    <path d="M 100 88 L 110 120" stroke="#3a3a3a" stroke-width="1" fill="none" marker-end="url(#ea)"/>
+    <path d="M 180 88 L 170 120" stroke="#3a3a3a" stroke-width="1" fill="none" marker-end="url(#ea)"/>
+    <path d="M 240 88 L 200 120" stroke="#3a3a3a" stroke-width="1" fill="none" marker-end="url(#ea)"/>
+
+    <rect x="30" y="122" width="220" height="68" rx="6" fill="#f0e6f2" stroke="#6c3483" stroke-width="1.4"/>
+    <text x="140" y="140" text-anchor="middle" font-size="11" font-weight="600" fill="#6c3483">Agent</text>
+    <rect x="40" y="148" width="60" height="34" rx="3" fill="#ffffff" stroke="#6c3483" stroke-width="0.8"/>
+    <text x="70" y="168" text-anchor="middle" font-size="9.5" font-weight="500" fill="#141414">Model</text>
+    <rect x="108" y="148" width="60" height="34" rx="3" fill="#ffffff" stroke="#6c3483" stroke-width="0.8"/>
+    <text x="138" y="168" text-anchor="middle" font-size="9.5" font-weight="500" fill="#141414">Harness</text>
+    <rect x="176" y="148" width="66" height="34" rx="3" fill="#ffffff" stroke="#6c3483" stroke-width="0.8"/>
+    <text x="209" y="168" text-anchor="middle" font-size="9.5" font-weight="500" fill="#141414">Context</text>
+
+    <path d="M 140 192 L 140 208" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#ea)"/>
+    <text x="140" y="222" text-anchor="middle" font-size="10" fill="#6e6e6e">new candidate</text>
+
+    <line x1="70" y1="260" x2="210" y2="260" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="140" y="282" text-anchor="middle" font-size="10.5" fill="#3a3a3a">Meta-Harness · AI Scientist</text>
+    <text x="140" y="298" text-anchor="middle" font-size="10.5" fill="#3a3a3a">AIDE · R&amp;D-Agent</text>
+  </g>
+
+  <line x1="40" y1="322" x2="860" y2="322" stroke="#e7e4dd" stroke-width="1" marker-end="url(#ea)"/>
+  <text x="450" y="316" text-anchor="middle" font-size="10.5" fill="#a2a09a" font-style="italic" letter-spacing="0.04em">autonomy &amp; information richness rise  ·  the evolver becomes more like an agent in its own right</text>
+</svg>
+<figcaption><span class="fig-label">Figure 6.</span> The evolver itself has Model / Harness / Context structure. Three levels cover most of the field. Within a target type, systems can differ dramatically in evolver capacity — and this difference often decides whether they produce real work or just reshuffle.</figcaption>
+</figure>
+
+<h4>Reference <em>— what does the evolver read?</em></h4>
+
+<p>The evolver's runtime context: the archive or memory it consults each time it produces a new variant. This is separate from any memory the deployed agent might use at inference. Listed roughly from weakest to richest reference structure. <strong>Scope</strong> — whether the reference persists across iterations or is built and discarded per-task — is an orthogonal axis; R1 holds nothing, R2 is per-task by definition, and R3–R6 are persistent across iterations.</p>
 
 <table>
 <thead><tr><th style="width:6%">ID</th><th>Reference type</th><th style="width:34%">Examples</th></tr></thead>
 <tbody>
-<tr><td><span class="id">R1</span></td><td><strong>None / implicit.</strong> Weights or current input are the only memory.</td><td>STaR, Self-Rewarding LMs, Const. AI</td></tr>
-<tr><td><span class="id">R2</span></td><td><strong>Linear history.</strong> Ordered (candidate, score) list; replay buffer.</td><td>OPRO, TextGrad, RAGEN</td></tr>
-<tr><td><span class="id">R3</span></td><td><strong>Flat population.</strong> Unstructured candidate set.</td><td>EvoPrompt, PromptBreeder</td></tr>
-<tr><td><span class="id">R4</span></td><td><strong>Structured archive.</strong> QD bins or island sub-populations.</td><td>AlphaEvolve, FunSearch, DGM, ADAS</td></tr>
-<tr><td><span class="id">R5</span></td><td><strong>Textual memory.</strong> NL or code items, retrieved by content.</td><td>Reflexion, Voyager, EvolveR, CORAL</td></tr>
-<tr><td><span class="id">R6</span></td><td><strong>Search tree.</strong> Per-task, transient.</td><td>AFlow, AIDE, LATS</td></tr>
+<tr><td><span class="id">R1</span></td><td><strong>None / implicit.</strong> No external archive; the evolver sees only the current candidate (and, for training-based systems, the weights themselves).</td><td>STaR, Self-Rewarding LMs, Const. AI</td></tr>
+<tr><td><span class="id">R2</span></td><td><strong>Per-task search tree.</strong> Tree or graph built within a single task and discarded — MCTS trees, beam-search frontiers. Rich within a task, but nothing carries across.</td><td>AFlow, AIDE, LATS</td></tr>
+<tr><td><span class="id">R3</span></td><td><strong>Ordered log.</strong> Sequence of past (candidate, score) items; includes replay buffers and prompt-score histories.</td><td>OPRO, TextGrad, RAGEN</td></tr>
+<tr><td><span class="id">R4</span></td><td><strong>Flat population.</strong> Unordered candidate set with no topology over it.</td><td>EvoPrompt, PromptBreeder</td></tr>
+<tr><td><span class="id">R5</span></td><td><strong>Structured archive.</strong> An archive with topology — quality-diversity bins, island sub-populations, or similar geometry.</td><td>AlphaEvolve, FunSearch, DGM, ADAS</td></tr>
+<tr><td><span class="id">R6</span></td><td><strong>Content-indexed library.</strong> Textual or code items retrieved by semantic match. Internal structure varies across systems (per-task buffer in Reflexion, indexed skill library in Voyager, shared workspace in CORAL) — the unifying feature is content-based retrieval rather than positional or score-based access.</td><td>Reflexion, Voyager, EvolveR, CORAL</td></tr>
 </tbody>
 </table>
 
-<p>This dimension matters more than it first appears. Two systems with the same target can have wildly different dynamics based on their archive: a linear history (R2) can only hill-climb; a structured archive (R4) maintains diversity and escapes local optima. Most of the <em>real design</em> in the strongest self-evolving systems — AlphaEvolve's island topology, DGM's QD-style agent archive, OMNI-EPIC's interestingness bins — is in the reference.</p>
+<p>This is where a lot of the real design in strong self-evolving systems lives. Two systems with the same target and same capacity can have wildly different dynamics based on their archive: an ordered log (R3) can only hill-climb; a structured archive (R5) maintains diversity and escapes local optima. AlphaEvolve's island topology, DGM's archive of past agent variants, and OMNI-EPIC's interestingness bins are all R5 — and all are doing most of their work in this facet.</p>
 
-<h3>Dim 3 · Mechanism <em>— how the variant is produced</em></h3>
+<h4>Mechanism <em>— what operation produces the variant?</em></h4>
+
+<p>What the evolver actually <em>does</em> with the reference to produce the next candidate. Listed roughly from weakest to strongest in compounding power.</p>
 
 <table>
 <thead><tr><th style="width:6%">ID</th><th>Mechanism</th></tr></thead>
 <tbody>
-<tr><td><span class="id">M1</span></td><td><strong>Gradient training.</strong> SFT · DPO · RL · RLAIF</td></tr>
-<tr><td><span class="id">M2</span></td><td><strong>Evolutionary search.</strong> Population + variation + selection</td></tr>
-<tr><td><span class="id">M3</span></td><td><strong>Text optimization.</strong> NL feedback as gradient</td></tr>
-<tr><td><span class="id">M4</span></td><td><strong>In-context learning.</strong> Accumulate skills / memory / rules</td></tr>
-<tr><td><span class="id">M5</span></td><td><strong>Code rewriting.</strong> Modify solutions, tools, or self</td></tr>
-<tr><td><span class="id">M6</span></td><td><strong>Search / planning.</strong> MCTS, beam, tree search</td></tr>
+<tr><td><span class="id">M1</span></td><td><strong>Per-task search.</strong> Tree search, MCTS, or beam search built and discarded within a single task — distinct from M5's across-task evolution. Powerful within a task; nothing accumulates between tasks.</td></tr>
+<tr><td><span class="id">M2</span></td><td><strong>Context accumulation.</strong> Variants (produced by M3 / M4 / others) are retained in runtime memory and consulted by future iterations. Almost always a co-label with another mechanism that does the actual production.</td></tr>
+<tr><td><span class="id">M3</span></td><td><strong>Iterative LLM refinement.</strong> LLM edits a text artifact (prompts, parameters, other text variables) given feedback or score. OPRO-style.</td></tr>
+<tr><td><span class="id">M4</span></td><td><strong>Code generation.</strong> LLM produces novel code — solutions, tools, or self-modifications. Distinguished from M3 by artifact type: code with semantics, not just optimizable text.</td></tr>
+<tr><td><span class="id">M5</span></td><td><strong>Evolutionary search.</strong> Population + variation + selection, across iterations. Almost always paired with another mechanism (typically M4) that produces the actual variants.</td></tr>
+<tr><td><span class="id">M6</span></td><td><strong>Gradient training.</strong> Weight updates via loss — SFT, DPO, RL, RLAIF. The most powerful in the sense that the substrate itself moves; everything else above edits artifacts around a fixed substrate.</td></tr>
 </tbody>
 </table>
 
-<p>Strong systems combine two or three. DGM = M2 + M5. Agent Q = M1 + M6. Voyager = M4 + M5.</p>
+<p>Strong systems combine two or three. DGM = M5 + M4. Agent Q = M6 + M1. Voyager = M2 + M4. The M3/M4 boundary and M2's almost-always-co-label status are the main places these tags overlap — which is fine, since they're labels, not disjoint bins.</p>
 
-<p>This is where most surveys stop. You now know what every paper <em>does</em>. You still can't tell <em>why</em> AlphaEvolve discovers mathematics while Self-Rewarding asymptotes after a few iterations — at this resolution their structural similarities are real and their dynamical differences are invisible. That's what Part 3 is for.</p>
+<h4>How the three facets fit together</h4>
+
+<p>Capacity, reference, and mechanism are correlated — a richer evolver tends to support richer references and more sophisticated mechanisms — but they are not redundant. A system can be fixed on one facet and vary on another, and this is where most of the interesting differentiation within a target type lives.</p>
+
+<p>The sharpest case study is <strong>DGM vs Meta-Harness</strong>. Both evolve the agent's own scaffolding (same target). Both run code-rewriting as their mechanism (M4). But DGM's evolver is <em>E2</em> with an R5 archive of past agent variants; Meta-Harness's evolver is <em>E3</em> — an agentic proposer (think Claude Code) with filesystem access, execution traces, and retrieval, using an R3 history. Same target, same core operation, categorically different evolvers. The wider information pipe of the E3 evolver is part of what makes Meta-Harness's rewrites qualitatively different from DGM's: the evolver can <em>notice</em> things a simpler mutator cannot.</p>
+
+<p>This is where most classifications stop. You now know what every paper <em>does</em>. You still can't tell <em>why</em> AlphaEvolve discovers mathematics while Self-Rewarding asymptotes after a few iterations — at this resolution their structural similarities are real and their dynamical differences are invisible. That's what Part 3 is for.</p>
 
 <hr>
 
@@ -1045,41 +1178,34 @@
 
   <!-- Ratchet -->
   <g>
-    <rect x="12" y="28" width="290" height="118" rx="7" fill="#faf0e2" stroke="#b5731a" stroke-width="1.4"/>
+    <rect x="12" y="28" width="290" height="108" rx="7" fill="#faf0e2" stroke="#b5731a" stroke-width="1.4"/>
     <text x="32" y="54" font-size="16" font-weight="700" fill="#b5731a" letter-spacing="0.02em">RATCHET</text>
-    <text x="32" y="70" font-size="10" fill="#b5731a" font-style="italic">from mechanics · one-way motion</text>
-    <line x1="32" y1="80" x2="52" y2="80" stroke="#b5731a" stroke-width="1"/>
-    <text x="32" y="98" font-size="12.5" fill="#141414" font-weight="600">What accumulates?</text>
-    <text x="32" y="116" font-size="11" fill="#3a3a3a">weights · archive · skill library ·</text>
-    <text x="32" y="130" font-size="11" fill="#3a3a3a">quality-diversity bins</text>
-    <text x="32" y="142" font-size="10" fill="#a73825" font-style="italic">✗ weak → catastrophic forgetting</text>
+    <text x="32" y="80" font-size="12.5" fill="#141414" font-weight="600">What accumulates?</text>
+    <text x="32" y="98" font-size="11" fill="#3a3a3a">weights · archive · skill library ·</text>
+    <text x="32" y="112" font-size="11" fill="#3a3a3a">quality-diversity bins</text>
+    <text x="32" y="128" font-size="10" fill="#a73825" font-style="italic">✗ weak → catastrophic forgetting</text>
   </g>
 
   <!-- Entropy -->
   <g>
-    <rect x="538" y="28" width="290" height="118" rx="7" fill="#e7f0ea" stroke="#34795f" stroke-width="1.4"/>
+    <rect x="538" y="28" width="290" height="108" rx="7" fill="#e7f0ea" stroke="#34795f" stroke-width="1.4"/>
     <text x="558" y="54" font-size="16" font-weight="700" fill="#34795f" letter-spacing="0.02em">ENTROPY</text>
-    <text x="558" y="70" font-size="10" fill="#34795f" font-style="italic">from thermodynamics · source of variation</text>
-    <line x1="558" y1="80" x2="578" y2="80" stroke="#34795f" stroke-width="1"/>
-    <text x="558" y="98" font-size="12.5" fill="#141414" font-weight="600">What prevents freezing?</text>
-    <text x="558" y="116" font-size="11" fill="#3a3a3a">temperature · mutation · QD ·</text>
-    <text x="558" y="130" font-size="11" fill="#3a3a3a">self-play · novelty rewards</text>
-    <text x="558" y="142" font-size="10" fill="#a73825" font-style="italic">✗ weak → mode collapse</text>
+    <text x="558" y="80" font-size="12.5" fill="#141414" font-weight="600">What prevents freezing?</text>
+    <text x="558" y="98" font-size="11" fill="#3a3a3a">temperature · mutation · QD ·</text>
+    <text x="558" y="112" font-size="11" fill="#3a3a3a">self-play · novelty rewards</text>
+    <text x="558" y="128" font-size="10" fill="#a73825" font-style="italic">✗ weak → mode collapse</text>
   </g>
 
   <!-- Grounding -->
   <g>
-    <rect x="204" y="260" width="432" height="114" rx="7" fill="#f6e5e2" stroke="#9a3f35" stroke-width="1.4"/>
+    <rect x="204" y="260" width="432" height="104" rx="7" fill="#f6e5e2" stroke="#9a3f35" stroke-width="1.4"/>
     <text x="224" y="286" font-size="16" font-weight="700" fill="#9a3f35" letter-spacing="0.02em">GROUNDING</text>
-    <text x="224" y="302" font-size="10" fill="#9a3f35" font-style="italic">from electrical engineering · reference to earth</text>
-    <line x1="224" y1="312" x2="244" y2="312" stroke="#9a3f35" stroke-width="1"/>
-    <text x="224" y="330" font-size="12.5" fill="#141414" font-weight="600">What anchors to reality?</text>
-    <text x="224" y="348" font-size="11" fill="#3a3a3a">deterministic verifier · env reward · human oversight · constitution</text>
-    <text x="224" y="362" font-size="10.5" fill="#6e6e6e" font-style="italic">(self-judge is the weakest · it is not a source of new bits)</text>
-    <text x="624" y="362" text-anchor="end" font-size="10" fill="#a73825" font-style="italic">✗ weak → drift / reward hacking</text>
+    <text x="224" y="312" font-size="12.5" fill="#141414" font-weight="600">What anchors to reality?</text>
+    <text x="224" y="330" font-size="11" fill="#3a3a3a">deterministic verifier · env reward · human oversight</text>
+    <text x="224" y="348" font-size="10" fill="#a73825" font-style="italic">✗ weak → drift / reward hacking</text>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 5.</span> The minimal feature set of a compounding self-evolving loop. Each force has a physical analogue, an ML implementation, and a predictable failure mode when absent.</figcaption>
+<figcaption><span class="fig-label">Figure 5.</span> The minimal feature set of a compounding self-evolving loop. Each force has a named implementation in ML systems and a predictable failure mode when absent.</figcaption>
 </figure>
 
 <h4>Ratchet <em>— what accumulates?</em></h4>
@@ -1091,7 +1217,7 @@
 <p>Sources: sampling temperature, mutation operators, quality-diversity pressure, self-play, explicit novelty rewards. <em>Failure mode when weak:</em> mode collapse. Self-play converges to repetitive strategies. Prompt optimizers produce convergent templates. Archives without diversity pressure collapse to one solution.</p>
 
 <h4>Grounding <em>— what anchors to reality?</em></h4>
-<p>A reference tied to physical earth, preventing potential from drifting. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); constitutional principles (medium); self-judgment alone (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
+<p>A reference tied to physical earth, preventing potential from drifting. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); self-judgment (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
 
 <div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three — ratchet, entropy, grounding — are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
 
@@ -1150,6 +1276,7 @@
 <ol>
 <li><strong>Draw the agent/environment boundary.</strong> What's deployed? What's external?</li>
 <li><strong>Target.</strong> Which of the nine categories changes across iterations?</li>
+<li><strong>Evolver.</strong> What is the evolver itself? E1, E2, or E3?</li>
 <li><strong>Reference.</strong> What does the outer loop look at? R1–R6.</li>
 <li><strong>Mechanism.</strong> What procedure produces the variant? M1–M6.</li>
 <li><strong>Draw the loop. Identify the topology.</strong> T1–T5. Does the evolver modify itself?</li>
@@ -1165,8 +1292,9 @@
 <dl>
 <dt>Boundary</dt><dd>agent = Gemini + evolutionary controller · env = problem + automated evaluator</dd>
 <dt>Target</dt><dd><em>Context · Search State</em> — the program population</dd>
-<dt>Reference</dt><dd><em>R4</em> · island-based QD archive</dd>
-<dt>Mechanism</dt><dd><em>M2 + M5</em> · evolutionary search, LLM-as-mutator generating code</dd>
+<dt>Evolver</dt><dd><em>E2</em> · Gemini reads the island archive + scores; not itself an agent</dd>
+<dt>Reference</dt><dd><em>R5</em> · island-based program archive</dd>
+<dt>Mechanism</dt><dd><em>M5 + M4</em> · evolutionary search, LLM-as-mutator generating code</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed Gemini, fixed evaluator, fixed algorithm — only the population evolves.</dd>
 <dt>Delta</dt><dd><em>Source 4</em>. Cheap verifier extracts bits from a frozen generator.</dd>
 <dt>Forces</dt><dd>Ratchet = island archive · Entropy = island topology + temperature + mutation prompt diversity · Grounding = deterministic evaluator</dd>
@@ -1179,8 +1307,9 @@
 <dl>
 <dt>Boundary</dt><dd>agent = the self-modifying agent system · env = SWE-bench + Polyglot</dd>
 <dt>Target</dt><dd><em>Harness · Scaffolding</em> — the agent's own codebase</dd>
-<dt>Reference</dt><dd><em>R4</em> · archive of all historical agent variants</dd>
-<dt>Mechanism</dt><dd><em>M2 + M5</em> · evolutionary archive of self-rewritten code</dd>
+<dt>Evolver</dt><dd><em>E2</em> · frozen LLM reading the agent-variant archive + benchmark scores</dd>
+<dt>Reference</dt><dd><em>R5</em> · archive of all historical agent variants</dd>
+<dt>Mechanism</dt><dd><em>M5 + M4</em> · evolutionary archive of self-rewritten code</dd>
 <dt>Topology</dt><dd><em>T3</em>. Evolver = target. The agent modifies itself.</dd>
 <dt>Delta</dt><dd><em>Source 4</em>. Benchmark verifiers.</dd>
 <dt>Forces</dt><dd>Ratchet = full archive (load-bearing: bad self-modifications cannot wipe prior progress) · Entropy = archive diversity + LLM temperature · Grounding = SWE-bench</dd>
@@ -1193,8 +1322,9 @@
 <dl>
 <dt>Boundary</dt><dd>LLM is the agent (playing both roles) · code executor + self-proposed tasks are env</dd>
 <dt>Target</dt><dd><em>Model</em> weights + <em>Env · Tasks</em>. Co-evolution.</dd>
+<dt>Evolver</dt><dd><em>E1</em> · the model itself, prompted to propose / solve; no external archive</dd>
 <dt>Reference</dt><dd><em>R1</em> on both sides. Weights are the memory.</dd>
-<dt>Mechanism</dt><dd><em>M1</em> · RL applied to a model playing two roles</dd>
+<dt>Mechanism</dt><dd><em>M6</em> · RL applied to a model playing two roles</dd>
 <dt>Topology</dt><dd><em>T4</em>. Proposer ↔ solver. Same base model, different heads.</dd>
 <dt>Delta</dt><dd><em>Sources 4 + 5</em>. Code executor grounds; proposer-solver gap generates novelty.</dd>
 <dt>Forces</dt><dd>Ratchet = model weights · Entropy = stochastic task proposal + RL rollout variance · Grounding = code executor</dd>
@@ -1207,8 +1337,9 @@
 <dl>
 <dt>Boundary</dt><dd>agent = LLM + episodic memory · env = task environment</dd>
 <dt>Target</dt><dd><em>Context · Memory</em> — the reflection buffer</dd>
-<dt>Reference</dt><dd><em>R5</em> · textual memory of prior reflections</dd>
-<dt>Mechanism</dt><dd><em>M4</em> · in-context learning on accumulated reflections</dd>
+<dt>Evolver</dt><dd><em>E1</em> · LLM with a reflection prompt; no archive beyond the current task</dd>
+<dt>Reference</dt><dd><em>R6</em> · textual memory of prior reflections</dd>
+<dt>Mechanism</dt><dd><em>M2</em> · in-context learning on accumulated reflections</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed LLM, accumulating memory.</dd>
 <dt>Delta</dt><dd><em>Source 3</em>. Each trajectory adds observations compressed into reflections.</dd>
 <dt>Forces</dt><dd>Ratchet = memory buffer · Entropy = each retry is fresh-sampled · Grounding = task outcome from env</dd>
@@ -1223,74 +1354,89 @@
 <!-- ─── APPENDIX B ─── -->
 <h2 id="master"><span class="section-num">§B · Reference</span>Master table of 63 works</h2>
 
-<small>Tagged <em>target · reference · mechanism · topology · delta</em>. Keys in §2 and §3.</small>
+<small>Grouped by target. Tagged <em>evolver · reference · mechanism · topology · delta</em>. Keys in §2 and §3.</small>
 
 <table>
-<thead><tr><th>Work</th><th>Y</th><th>Target</th><th>Ref</th><th>Mech</th><th>Top</th><th>Δ</th></tr></thead>
+<thead><tr><th>Work</th><th>Y</th><th>E</th><th>Ref</th><th>Mech</th><th>Top</th><th>Δ</th></tr></thead>
 <tbody>
-<tr><td>STaR</td><td>'22</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>4</td></tr>
-<tr><td>Constitutional AI</td><td>'22</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1+4</td></tr>
-<tr><td>Self-Rewarding LMs</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1</td></tr>
-<tr><td>SPIN</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T4</td><td>5</td></tr>
-<tr><td>Meta-Rewarding</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T4·lite</td><td>1</td></tr>
-<tr><td>Quiet-STaR</td><td>'24</td><td>Model</td><td>R1</td><td>M1</td><td>T2</td><td>1</td></tr>
-<tr><td>Agent Q</td><td>'24</td><td>Model</td><td>R2+R6</td><td>M1+M6</td><td>T2</td><td>3+4</td></tr>
-<tr><td>RAGEN</td><td>'25</td><td>Model</td><td>R2</td><td>M1</td><td>T2</td><td>3</td></tr>
-<tr><td>ARPO</td><td>'25</td><td>Model</td><td>R2</td><td>M1</td><td>T2</td><td>4</td></tr>
-<tr><td>Absolute Zero</td><td>'25</td><td>Model + Env·Tasks</td><td>R1</td><td>M1</td><td>T4</td><td>4+5</td></tr>
-<tr><td>TTT-Discover</td><td>'26</td><td>Model (test-time)</td><td>R1</td><td>M1</td><td>T2</td><td>4</td></tr>
-<tr><td>APE</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>OPRO</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>PromptBreeder</td><td>'23</td><td>Harness·Prompts</td><td>R3</td><td>M2</td><td>T5</td><td>4</td></tr>
-<tr><td>Self-Refine</td><td>'23</td><td>ephemeral</td><td>R1</td><td>M3</td><td>T2</td><td>1</td></tr>
-<tr><td>DSPy</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>ProTeGi</td><td>'23</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>EvoPrompt</td><td>'24</td><td>Harness·Prompts</td><td>R3</td><td>M2</td><td>T2</td><td>4</td></tr>
-<tr><td>PromptAgent</td><td>'24</td><td>Harness·Prompts</td><td>R6</td><td>M6</td><td>T2</td><td>4</td></tr>
-<tr><td>TextGrad</td><td>'24</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>Trace / OptoPrime</td><td>'24</td><td>Harness·Prompts</td><td>R2</td><td>M3</td><td>T2</td><td>4</td></tr>
-<tr><td>STOP</td><td>'23</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
-<tr><td>AI Scientist</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M5+M6</td><td>T2</td><td>1+4</td></tr>
-<tr><td>ADAS</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>AFlow</td><td>'24</td><td>Harness·Scaffolding</td><td>R6</td><td>M6</td><td>T2</td><td>4</td></tr>
-<tr><td>AgentSquare</td><td>'24</td><td>Harness·Scaffolding</td><td>R4</td><td>M2</td><td>T2</td><td>4</td></tr>
-<tr><td>Godel Agent</td><td>'24</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
-<tr><td>DGM</td><td>'25</td><td>Harness·Scaffolding</td><td>R4</td><td>M2+M5</td><td>T3</td><td>4</td></tr>
-<tr><td>SICA</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T3</td><td>4</td></tr>
-<tr><td>AIDE</td><td>'25</td><td>Harness·Scaffolding</td><td>R6</td><td>M6+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>R&D-Agent</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>AgentBreeder</td><td>'25</td><td>Harness·Scaffolding</td><td>R4</td><td>M2</td><td>T2</td><td>4</td></tr>
-<tr><td>MAS-ZERO</td><td>'25</td><td>Harness·Scaffolding</td><td>R3</td><td>M6</td><td>T2</td><td>1</td></tr>
-<tr><td>Confucius Code Agent</td><td>'25</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>Meta-Harness</td><td>'26</td><td>Harness·Scaffolding</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>HyperAgents</td><td>'26</td><td>Harness·Scaffolding (meta)</td><td>R4</td><td>M5</td><td>T5</td><td>4</td></tr>
-<tr><td>Reflexion</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>ExpeL</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>SPRING</td><td>'23</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>A-MEM</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>Mem0</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>SAGE</td><td>'24</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>EvolveR</td><td>'25</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>Agent Workflow Memory</td><td>'24</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>3</td></tr>
-<tr><td>CORAL</td><td>'26</td><td>Context·Memory</td><td>R5</td><td>M4</td><td>T2</td><td>4</td></tr>
-<tr><td>CREATOR</td><td>'23</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>Voyager</td><td>'23</td><td>Context·DynSkills</td><td>R5</td><td>M5+M4</td><td>T2</td><td>3+6</td></tr>
-<tr><td>CLOVA</td><td>'24</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>3</td></tr>
-<tr><td>ToolEVO</td><td>'24</td><td>Context·DynSkills</td><td>R5</td><td>M6+M4</td><td>T2</td><td>3</td></tr>
-<tr><td>LIVE-SWE-AGENT</td><td>'25</td><td>Context·DynSkills</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>STELLA</td><td>'25</td><td>Context·DynSkills + Memory</td><td>R5</td><td>M5+M4</td><td>T2</td><td>3+6</td></tr>
-<tr><td>Alita</td><td>'25</td><td>Context·DynSkills</td><td>R5</td><td>M5</td><td>T2</td><td>4+6</td></tr>
-<tr><td>ELM</td><td>'22</td><td>Context·SearchState</td><td>R4</td><td>M2</td><td>T2</td><td>4+6</td></tr>
-<tr><td>FunSearch</td><td>'23</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>AlphaEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>CodeEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>ShinkaEvolve</td><td>'25</td><td>Context·SearchState</td><td>R4</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>Eureka</td><td>'23</td><td>Env·Rewards</td><td>R2</td><td>M2+M5</td><td>T2</td><td>4</td></tr>
-<tr><td>Auto MC-Reward</td><td>'23</td><td>Env·Rewards</td><td>R2</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>OMNI-EPIC</td><td>'24</td><td>Env·Tasks + Rewards</td><td>R4</td><td>M5</td><td>T2</td><td>3+4</td></tr>
-<tr><td>AgentGen</td><td>'24</td><td>Env·Tasks</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>AgentTrek</td><td>'24</td><td>Env·Tasks (traj.)</td><td>R1</td><td>M5</td><td>T2</td><td>4</td></tr>
-<tr><td>WebRL</td><td>'24</td><td>Env·Tasks + Model</td><td>R1</td><td>M1+M5</td><td>T4</td><td>3+5</td></tr>
+<tr class="group-row"><td colspan="7">Model — weights evolve</td></tr>
+<tr><td>STaR</td><td>'22</td><td>E1</td><td>R1</td><td>M6</td><td>T2</td><td>4</td></tr>
+<tr><td>Constitutional AI</td><td>'22</td><td>E1</td><td>R1</td><td>M6</td><td>T2</td><td>1+4</td></tr>
+<tr><td>Self-Rewarding LMs</td><td>'24</td><td>E1</td><td>R1</td><td>M6</td><td>T2</td><td>1</td></tr>
+<tr><td>SPIN</td><td>'24</td><td>E1</td><td>R1</td><td>M6</td><td>T4</td><td>5</td></tr>
+<tr><td>Meta-Rewarding</td><td>'24</td><td>E1</td><td>R1</td><td>M6</td><td>T4·lite</td><td>1</td></tr>
+<tr><td>Quiet-STaR</td><td>'24</td><td>E1</td><td>R1</td><td>M6</td><td>T2</td><td>1</td></tr>
+<tr><td>Agent Q</td><td>'24</td><td>E2</td><td>R2+R3</td><td>M6+M1</td><td>T2</td><td>3+4</td></tr>
+<tr><td>RAGEN</td><td>'25</td><td>E2</td><td>R3</td><td>M6</td><td>T2</td><td>3</td></tr>
+<tr><td>ARPO</td><td>'25</td><td>E2</td><td>R3</td><td>M6</td><td>T2</td><td>4</td></tr>
+<tr><td>Absolute Zero</td><td>'25</td><td>E1</td><td>R1</td><td>M6</td><td>T4</td><td>4+5</td></tr>
+<tr><td>TTT-Discover</td><td>'26</td><td>E1</td><td>R1</td><td>M6</td><td>T2</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Harness · Prompts — prompts evolve offline</td></tr>
+<tr><td>APE</td><td>'23</td><td>E1</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>OPRO</td><td>'23</td><td>E1</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>PromptBreeder</td><td>'23</td><td>E1</td><td>R4</td><td>M5</td><td>T5</td><td>4</td></tr>
+<tr><td>Self-Refine</td><td>'23</td><td>E1</td><td>R1</td><td>M3</td><td>T2</td><td>1</td></tr>
+<tr><td>DSPy</td><td>'23</td><td>E1</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>ProTeGi</td><td>'23</td><td>E1</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>EvoPrompt</td><td>'24</td><td>E1</td><td>R4</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>PromptAgent</td><td>'24</td><td>E2</td><td>R2</td><td>M1</td><td>T2</td><td>4</td></tr>
+<tr><td>TextGrad</td><td>'24</td><td>E1</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+<tr><td>Trace / OptoPrime</td><td>'24</td><td>E2</td><td>R3</td><td>M3</td><td>T2</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Harness · Scaffolding — agent code / workflow evolves</td></tr>
+<tr><td>STOP</td><td>'23</td><td>E2</td><td>R3</td><td>M4</td><td>T3</td><td>4</td></tr>
+<tr><td>AI Scientist</td><td>'24</td><td>E3</td><td>R5</td><td>M4+M1</td><td>T2</td><td>1+4</td></tr>
+<tr><td>ADAS</td><td>'24</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>AFlow</td><td>'24</td><td>E2</td><td>R2</td><td>M1</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentSquare</td><td>'24</td><td>E2</td><td>R5</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>Godel Agent</td><td>'24</td><td>E2</td><td>R3</td><td>M4</td><td>T3</td><td>4</td></tr>
+<tr><td>DGM</td><td>'25</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T3</td><td>4</td></tr>
+<tr><td>SICA</td><td>'25</td><td>E2</td><td>R3</td><td>M4</td><td>T3</td><td>4</td></tr>
+<tr><td>AIDE</td><td>'25</td><td>E3</td><td>R2</td><td>M1+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>R&amp;D-Agent</td><td>'25</td><td>E3</td><td>R3</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentBreeder</td><td>'25</td><td>E2</td><td>R5</td><td>M5</td><td>T2</td><td>4</td></tr>
+<tr><td>MAS-ZERO</td><td>'25</td><td>E2</td><td>R4</td><td>M1</td><td>T2</td><td>1</td></tr>
+<tr><td>Confucius Code Agent</td><td>'25</td><td>E3</td><td>R3</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>Meta-Harness</td><td>'26</td><td>E3</td><td>R3</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>HyperAgents</td><td>'26</td><td>E3</td><td>R5</td><td>M4</td><td>T5</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Context · Memory — runtime memory grows</td></tr>
+<tr><td>Reflexion</td><td>'23</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>ExpeL</td><td>'23</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>SPRING</td><td>'23</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>A-MEM</td><td>'25</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>Mem0</td><td>'25</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>SAGE</td><td>'24</td><td>E2</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>EvolveR</td><td>'25</td><td>E2</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>Agent Workflow Memory</td><td>'24</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td><td>3</td></tr>
+<tr><td>CORAL</td><td>'26</td><td>E3</td><td>R6</td><td>M2</td><td>T2</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Context · Dynamic skills — tools/skills created at runtime</td></tr>
+<tr><td>CREATOR</td><td>'23</td><td>E1</td><td>R1</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>Voyager</td><td>'23</td><td>E2</td><td>R6</td><td>M4+M2</td><td>T2</td><td>3+6</td></tr>
+<tr><td>CLOVA</td><td>'24</td><td>E1</td><td>R1</td><td>M4</td><td>T2</td><td>3</td></tr>
+<tr><td>ToolEVO</td><td>'24</td><td>E2</td><td>R6</td><td>M1+M2</td><td>T2</td><td>3</td></tr>
+<tr><td>LIVE-SWE-AGENT</td><td>'25</td><td>E3</td><td>R1</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>STELLA</td><td>'25</td><td>E3</td><td>R6</td><td>M4+M2</td><td>T2</td><td>3+6</td></tr>
+<tr><td>Alita</td><td>'25</td><td>E3</td><td>R6</td><td>M4</td><td>T2</td><td>4+6</td></tr>
+
+<tr class="group-row"><td colspan="7">Context · Search state — candidate population evolves during a search</td></tr>
+<tr><td>ELM</td><td>'22</td><td>E2</td><td>R5</td><td>M5</td><td>T2</td><td>4+6</td></tr>
+<tr><td>FunSearch</td><td>'23</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>AlphaEvolve</td><td>'25</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>CodeEvolve</td><td>'25</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>ShinkaEvolve</td><td>'25</td><td>E2</td><td>R5</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Environment · Rewards — reward function evolves</td></tr>
+<tr><td>Eureka</td><td>'23</td><td>E2</td><td>R3</td><td>M5+M4</td><td>T2</td><td>4</td></tr>
+<tr><td>Auto MC-Reward</td><td>'23</td><td>E2</td><td>R3</td><td>M4</td><td>T2</td><td>4</td></tr>
+
+<tr class="group-row"><td colspan="7">Environment · Tasks — task distribution / curriculum evolves</td></tr>
+<tr><td>OMNI-EPIC</td><td>'24</td><td>E2</td><td>R5</td><td>M4</td><td>T2</td><td>3+4</td></tr>
+<tr><td>AgentGen</td><td>'24</td><td>E2</td><td>R1</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>AgentTrek</td><td>'24</td><td>E2</td><td>R1</td><td>M4</td><td>T2</td><td>4</td></tr>
+<tr><td>WebRL</td><td>'24</td><td>E1</td><td>R1</td><td>M6+M4</td><td>T4</td><td>3+5</td></tr>
 </tbody>
 </table>
 
