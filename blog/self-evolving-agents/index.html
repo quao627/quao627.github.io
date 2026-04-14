@@ -1168,20 +1168,15 @@
 
 <h3>Extending beyond verifier-rich domains</h3>
 <p>The verifier-generator asymmetry is why the field works. It's also narrow — it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
-<p><em>Prediction.</em> The next wave of "creative self-evolution" papers will claim progress that doesn't hold up under careful evaluation. Watch for weak grounding dressed up as strong.</p>
 
 <h3>Stabilizing T3 and T4 at scale</h3>
 <p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
-<p>A concrete conjecture worth testing: <strong>a T3 system without an archive ratchet will fail catastrophically within a bounded number of iterations.</strong> The archive in DGM is not decorative; it's what prevents self-destruction. Build T3 without it and watch it die.</p>
 
 <h3>Composition of discovered artifacts</h3>
 <p>AlphaEvolve discovers algorithms. Those algorithms do not feed back into AlphaEvolve 2 as primitives. Each campaign starts from a fixed library. Closing this loop — discovered components becoming the substrate for future discovery — would add a second compounding mechanism on top of the verifier-generator engine. Voyager does this at skill-level; AlphaEvolve does not yet do it at algorithm-level. The first serious attempt will matter.</p>
 
-<h3>Grounding beyond binary verification</h3>
-<p>Most strong grounding today is binary (pass/fail) or scalar (reward). Grounding on subjective quality — is this writing any good, is this research direction promising — remains essentially unsolved. LLM-as-Judge is not a solution; it's a symptom.</p>
-
 <h3>Compounding T5</h3>
-<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. If someone does, it will be a phase transition. If no one can, the long-term ceiling of the field is T3/T4 plateauing at base-model capability.</p>
+<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. </p>
 
 <p>This one experiment — demonstrating or falsifying compounding T5 — is probably the single most important empirical question in self-evolving agents. Everything else is variations on it.</p>
 
