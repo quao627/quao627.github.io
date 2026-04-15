@@ -650,33 +650,26 @@
   <text x="190" y="129" text-anchor="middle" font-size="10" fill="#6e6e6e" font-style="italic">who does the evolving</text>
   <line x1="76" y1="140" x2="304" y2="140" stroke="#e7e4dd" stroke-width="1"/>
 
-  <!-- Weak → strong headers -->
-  <text x="170" y="154" text-anchor="middle" font-size="8" fill="#a2a09a" letter-spacing="0.14em">WEAKEST</text>
-  <text x="280" y="154" text-anchor="middle" font-size="8" fill="#a2a09a" letter-spacing="0.14em">STRONGEST</text>
-
   <!-- ── Capacity row ── -->
   <text x="60" y="178" font-size="10" font-weight="600" fill="#a07b28" letter-spacing="0.06em">CAPACITY</text>
   <!-- Weak: LLM single call -->
   <g transform="translate(148, 168)">
     <rect x="0" y="0" width="44" height="18" rx="9" fill="#ffffff" stroke="#6e6e6e" stroke-width="1"/>
     <text x="22" y="13" text-anchor="middle" font-size="9" font-weight="600" fill="#141414">LLM</text>
-    <text x="22" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">single call</text>
+    <text x="22" y="30" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">E1</text>
   </g>
   <!-- Arrow -->
   <line x1="197" y1="177" x2="215" y2="177" stroke="#a2a09a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
-  <!-- Strong: agent — miniature of the layered agent diagram (LLM core + tools around it) -->
+  <!-- Strong: agent (LLM core + tools) -->
   <g transform="translate(222, 168)">
     <rect x="0" y="0" width="68" height="18" rx="3" fill="#ffffff" stroke="#141414" stroke-width="1.2"/>
-    <!-- Central LLM core -->
     <rect x="5" y="4" width="22" height="10" rx="5" fill="#141414"/>
     <text x="16" y="12" text-anchor="middle" font-size="6.5" font-weight="700" fill="#fafaf7" letter-spacing="0.05em">LLM</text>
-    <!-- Peripheral tools/memory -->
     <rect x="32" y="4" width="8" height="10" rx="1.5" fill="#6e6e6e"/>
     <rect x="42" y="4" width="8" height="10" rx="1.5" fill="#a07b28"/>
     <rect x="52" y="4" width="8" height="10" rx="1.5" fill="#6e6e6e"/>
-    <!-- Connector showing LLM interacts with tools -->
     <line x1="27" y1="9" x2="31" y2="9" stroke="#141414" stroke-width="0.6"/>
-    <text x="34" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">agent · LLM + tools</text>
+    <text x="34" y="30" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">E3</text>
   </g>
 
   <!-- ── Reference row ── -->
@@ -685,7 +678,7 @@
   <g transform="translate(148, 207)">
     <rect x="0" y="0" width="44" height="18" rx="2" fill="none" stroke="#6e6e6e" stroke-width="1" stroke-dasharray="2 2"/>
     <text x="22" y="14" text-anchor="middle" font-size="10" fill="#a2a09a">∅</text>
-    <text x="22" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">none (R1)</text>
+    <text x="22" y="30" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">R1</text>
   </g>
   <line x1="197" y1="216" x2="215" y2="216" stroke="#a2a09a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
   <!-- Strong: R6 indexed library with top-K retrieval (3 cells lit at once) -->
@@ -711,7 +704,7 @@
       <animate attributeName="x" values="51;0;34;17" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
       <animate attributeName="y" values="11;0;0;11" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
     </rect>
-    <text x="33" y="32" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">library · top-K retrieval</text>
+    <text x="33" y="32" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">R6</text>
   </g>
 
   <!-- ── Mechanism row ── -->
@@ -731,7 +724,7 @@
     <circle cx="15" cy="18" r="1.3" fill="#6e6e6e"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" repeatCount="indefinite" begin="0.3s"/></circle>
     <circle cx="29" cy="18" r="1.3" fill="#6e6e6e"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" repeatCount="indefinite" begin="0.6s"/></circle>
     <circle cx="39" cy="18" r="1.3" fill="#6e6e6e"><animate attributeName="opacity" values="0.2;1;0.2" dur="1.4s" repeatCount="indefinite" begin="0.9s"/></circle>
-    <text x="22" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">search (M1)</text>
+    <text x="22" y="30" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">M1</text>
   </g>
   <line x1="197" y1="255" x2="215" y2="255" stroke="#a2a09a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
   <!-- Strong: M5 weights grid (shimmering dots) -->
@@ -757,7 +750,7 @@
     <circle cx="43" cy="17" r="1.5" fill="#23405e"><animate attributeName="opacity" values="1;0.35;0.9" dur="2s" repeatCount="indefinite" begin="0.6s"/></circle>
     <circle cx="53" cy="17" r="1.5" fill="#23405e"><animate attributeName="opacity" values="1;0.35;0.9" dur="2s" repeatCount="indefinite" begin="1.4s"/></circle>
     <circle cx="63" cy="17" r="1.5" fill="#23405e"><animate attributeName="opacity" values="1;0.35;0.9" dur="2s" repeatCount="indefinite" begin="0.8s"/></circle>
-    <text x="33" y="32" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">weights (M5)</text>
+    <text x="33" y="32" text-anchor="middle" font-size="8" font-weight="600" fill="#a2a09a" letter-spacing="0.12em">M5</text>
   </g>
 
   <!-- ═════════ TARGET = LAYERED AGENT ═════════ -->
@@ -783,7 +776,7 @@
   <text x="790" y="186" text-anchor="middle" font-size="11.5" fill="#141414" font-weight="600">CONTEXT</text>
   <text x="790" y="203" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">runtime memory</text>
 
-  <text x="730" y="270" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">any component can be the target of evolution</text>
+  <text x="730" y="270" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">any component can evolve</text>
 
   <!-- ═════════ FEEDBACK LOOP ARROWS ═════════ -->
   <path id="cm-fwd" d="M 330 150 Q 460 80 590 150" fill="none" stroke="#3a3a3a" stroke-width="1.4" marker-end="url(#cm-ar)"/>
@@ -890,7 +883,7 @@
   <!-- ═════════ PHYSICS STRIP ═════════ -->
   <line x1="50" y1="460" x2="870" y2="460" stroke="#e7e4dd" stroke-width="1"/>
   <text x="50" y="480" font-size="11" font-weight="700" fill="#34795f" letter-spacing="0.12em">PHYSICS</text>
-  <text x="130" y="480" font-size="10" fill="#6e6e6e" font-style="italic">three forces that keep the loop compounding</text>
+  <text x="130" y="480" font-size="10" fill="#6e6e6e" font-style="italic">three forces</text>
 
   <!-- RATCHET: accumulating staircase -->
   <g transform="translate(50, 496)">
