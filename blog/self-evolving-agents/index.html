@@ -1081,7 +1081,7 @@
 
 <p><em>Why T3 is fragile.</em> A self-modifier can break its own self-modification ability. T3 works only with strong grounding (to distinguish good modifications from bad) and a retention mechanism that survives bad modifications (an archive to roll back to). DGM's archive of every historical variant is not decorative. It's what keeps the system alive.</p>
 
-<p><em>The open question.</em> Does T3 actually transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly.</p>
+<p><em>The open question.</em> Does T3 transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly.</p>
 
 <h4>T4 <em>· dual co-evolution</em></h4>
 <p>Two agents drive each other. Often proposer ↔ solver: Absolute Zero, SPIN, WebRL. In T4, problem difficulty is <em>endogenous</em>: it scales with solver capability. That's what gave AlphaGo Zero its magic. Without a game-like dual structure, it's hard to get this property.</p>
@@ -1089,7 +1089,7 @@
 <p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
 
 <h4>T5 <em>· nested / multi-scale</em></h4>
-<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense could live, but nobody has yet shown that the outer loop actually makes the inner loop evolve faster over time.</p>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is the one topology where the outer loop could accelerate the inner; whether existing systems achieve durable acceleration is still an open empirical question (see §4).</p>
 
 <!-- 3.2 PHYSICS -->
 <h3>Lens 2 · The physics — ratchet, entropy, grounding</h3>
@@ -1164,7 +1164,7 @@
 <!-- ─── PART 4: OPEN CHALLENGES ─── -->
 <h2 id="challenges"><span class="section-num">§4 · Open challenges</span>Where the frontier actually is</h2>
 
-<p class="section-open">Running the two lenses across the literature produces a fairly clear map of where the frontier actually is.</p>
+<p class="section-open">Running the two lenses across the literature produces a fairly clear map of where the frontier is.</p>
 
 <h3>Extending beyond verifier-rich domains</h3>
 <p>The verifier-generator asymmetry is why the field works. It's also narrow: it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
@@ -1173,14 +1173,14 @@
 <p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
 
 <h3>Internalizing hindsight</h3>
-<p>A self-evolving system gets much of its signal from what didn't work. Two questions decide how much of that signal actually compounds.</p>
+<p>A self-evolving system gets much of its signal from what didn't work. Two questions decide how much of that signal compounds.</p>
 
 <p><em>Does hindsight stick across iterations?</em> The basic compounding question: whether insights from one attempt make the next attempt better. The answer depends on where hindsight lands. Into context (Reflexion, ExpeL, Voyager): works, but is bounded by retrieval and context capacity. Into weights (STaR, Self-Rewarding, Absolute Zero, and recent 2026 work like SDPO and SDFT): escapes that bound in principle, but several documented cases plateau within a few iterations. Whether self-distillation sustains gains across many rounds without external fresh signal is an open empirical question.</p>
 
 <p><em>Does hindsight transfer across domains?</em> AlphaEvolve discovers algorithms on one problem. Those algorithms do not become primitives for AlphaEvolve's next campaign on a different problem; each run starts fresh. Voyager composes skills within one Minecraft environment, but those skills do not carry to a new environment. Closing this loop, so that insights compound across problems and not just across iterations of the same problem, would add a second compounding mechanism on top of the verifier-generator engine.</p>
 
 <h3>Does T5 actually accelerate?</h3>
-<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. What nobody has shown is that the outer loop's modifications actually make the inner loop evolve faster over time. Without that, T5 is just T2 with an extra layer.</p>
+<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents (DGM-H) goes further: it makes the meta-level modification procedure itself modifiable, and reports preliminary evidence that meta-improvements transfer across domains. Seeded with a hyperagent from prior paper-review and robotics-reward runs, DGM-H reaches a higher median score on held-out Olympiad math grading than DGM-H starting fresh. The effect is modest and not statistically significant (p&nbsp;&gt;&nbsp;0.05), and the measured acceleration is across a single transfer step, not across many rounds of one continuous loop. Whether T5 sustains strong, repeated acceleration at scale is the question to watch.</p>
 
 <hr>
 
