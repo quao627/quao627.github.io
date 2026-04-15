@@ -564,9 +564,9 @@
 <!-- ─── TL;DR ─── -->
 <section class="tldr" aria-label="Summary">
 <div class="tldr-head">TL;DR</div>
-<p>A self-evolving agent is a <strong>feedback loop</strong> with two parts: a <strong>target</strong> (what gets evolved) and an <strong>evolver</strong> (the thing doing the evolving — which itself has Model / Harness / Context structure, and varies sharply in capacity, what it reads, and what operation it performs).</p>
-<p>Two <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5, from open-loop to co-evolving to nested) and <strong>the physics</strong> — a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
-<p>One asymmetry — cheap verifier + strong generator — is doing most of the heavy lifting in modern self-evolution. <strong>Extending the field outside verifier-cheap domains</strong> is the hard open problem, and the most interesting one.</p>
+<p>A self-evolving agent is a <strong>feedback loop</strong> with two parts: a <strong>target</strong> (what gets evolved) and an <strong>evolver</strong> (the thing doing the evolving, which itself has Model / Harness / Context structure, and varies sharply in capacity, what it reads, and what operation it performs).</p>
+<p>Two <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5, from open-loop to co-evolving to nested) and <strong>the physics</strong>: a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
+<p>One asymmetry, cheap verifier + strong generator, is doing most of the heavy lifting in modern self-evolution. <strong>Extending the field outside verifier-cheap domains</strong> is the hard open problem, and the most interesting one.</p>
 </section>
 
 <aside><strong>Who this is for.</strong> If you're new to the area, read top-to-bottom — it's self-contained. If you know RL and have built LLM agents, skim §1; if you've also been following the self-evolving-agents literature, skim §2 as well. Either way, §3 is where the insight is.</aside>
@@ -574,17 +574,17 @@
 <!-- ─── PUZZLE ─── -->
 <h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Three systems, three different things evolving</h2>
 
-<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>Meta-Harness</strong>, and <strong>HyperAgents</strong>. They share the same building blocks — LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
+<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>Meta-Harness</strong>, and <strong>HyperAgents</strong>. They share the same building blocks: LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
 
 <p>They are doing categorically different things.</p>
 
-<p><strong>AlphaEvolve</strong> evolves <em>solutions</em>. The LLM is frozen; a population of candidate programs evolves through mutation-and-selection, filtered by automated evaluators. What improves is the population — AlphaEvolve discovered an algorithm for 4×4 complex matrix multiplication that Strassen missed for 56 years.</p>
+<p><strong>AlphaEvolve</strong> evolves <em>solutions</em>. The LLM is frozen; a population of candidate programs evolves through mutation-and-selection, filtered by automated evaluators. What improves is the population. AlphaEvolve discovered an algorithm for 4×4 complex matrix multiplication that Strassen missed for 56 years.</p>
 
-<p><strong>Meta-Harness</strong> evolves <em>the harness</em>. The code wrapping an LLM — context assembly, retrieval, prompt construction, tool orchestration — is iteratively rewritten by an agentic proposer. The model stays fixed. What improves is the operating system around it.</p>
+<p><strong>Meta-Harness</strong> evolves <em>the harness</em>. The code wrapping an LLM (context assembly, retrieval, prompt construction, tool orchestration) is iteratively rewritten by an agentic proposer. The model stays fixed. What improves is the operating system around it.</p>
 
 <p><strong>HyperAgents</strong> evolves <em>the meta-process</em>. The task agent modifies itself (that is already DGM's trick); the meta-procedure that does the modification is itself editable. What improves is not only the agent but the procedure by which the agent improves.</p>
 
-<p>Three systems. Three different targets of evolution. Three different loop topologies. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This essay is about seeing the differences — and about three questions that decide whether a self-evolving system actually <em>compounds</em>: how is the loop wired, where does new information enter, and what keeps it from collapsing.</p>
+<p>Three systems. Three different targets of evolution. Three different loop topologies. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This essay is about seeing the differences, and about two questions that decide whether a self-evolving system actually <em>compounds</em>: how is the loop wired, and what keeps it from collapsing.</p>
 
 <figure class="fig-wide">
 <svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve, Meta-Harness, HyperAgents — three self-evolving systems">
@@ -704,13 +704,13 @@
 
 <h3>Modern agents have internal structure</h3>
 
-<p>A 2024-era LLM agent is not a single policy network. It has at least two parts: the <strong>Model</strong> (weights) and the <strong>Harness</strong> — code, prompts, tool schemas, retrieval, memory, orchestration, scaffolding. If you've built an agent beyond a chatbot wrapper, the harness is where the real work lives. The model is the CPU; the harness is the OS.</p>
+<p>A 2024-era LLM agent is not a single policy network. It has at least two parts: the <strong>Model</strong> (weights) and the <strong>Harness</strong> (code, prompts, tool schemas, retrieval, memory, orchestration, scaffolding). If you've built an agent beyond a chatbot wrapper, the harness is where the real work lives. The model is the CPU; the harness is the OS.</p>
 
 <h3>Harness vs Context — a temporal split</h3>
 
-<p>A load-bearing distinction. The <strong>Harness</strong> is what's fixed during a run — system prompts, tool catalogues, scaffolding code, retrieval logic — all compiled in before deployment. (Weights are also fixed at runtime, but conceptually they're their own thing — the Model — distinct from the orchestration code around them.)</p>
+<p>A load-bearing distinction. The <strong>Harness</strong> is what's fixed during a run: system prompts, tool catalogues, scaffolding code, retrieval logic, all compiled in before deployment. (Weights are also fixed at runtime, but conceptually they're their own thing, the Model, distinct from the orchestration code around them.)</p>
 
-<p>The <strong>Context</strong> is what changes during a run — conversation history, scratchpad, skills written this session, reflections stored. In this broad sense, context is the direct generalization of RL's trajectory.</p>
+<p>The <strong>Context</strong> is what changes during a run: conversation history, scratchpad, skills written this session, reflections stored. In this broad sense, context is the direct generalization of RL's trajectory.</p>
 
 <p>Two systems with identical outputs can have very different learning dynamics based on what lives in harness vs context. A prompt optimized offline (harness) is a fundamentally different object from a reflection written mid-run (context), even when the resulting string looks similar. Most confusions in this field come from conflating these two.</p>
 
@@ -745,19 +745,19 @@
   <text x="512" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#2a553b">changes at runtime</text>
   <text x="512" y="186" text-anchor="middle" font-size="10" fill="#2a553b">(Reflexion, Voyager, …)</text>
 </svg>
-<figcaption><span class="fig-label">Figure 2.</span> Four components. The reward function is part of the Environment — it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
+<figcaption><span class="fig-label">Figure 2.</span> Four components. The reward function is part of the Environment: it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
 </figure>
 
 <h3>What "self-evolving" means</h3>
 
-<p>A system is self-evolving if, during operation, it causes at least one of its four components — Model, Harness, Context, or Environment — to systematically change based on its own outputs and the signal it receives. Deliberately broad, but tight enough to exclude one-shot LLM calls, human-driven iteration, and plain supervised training.</p>
+<p>A system is self-evolving if, during operation, it causes at least one of its four components (Model, Harness, Context, or Environment) to systematically change based on its own outputs and the signal it receives. Deliberately broad, but tight enough to exclude one-shot LLM calls, human-driven iteration, and plain supervised training.</p>
 
 <hr>
 
 <!-- ─── PART 2: CLASSIFICATION ─── -->
 <h2 id="classification"><span class="section-num">§2 · Classification</span>Target and evolver</h2>
 
-<p class="section-open">Every self-evolving system has two parts worth describing: a <strong>target</strong> — what gets modified — and an <strong>evolver</strong> — the thing doing the modifying. Target is one concept. The evolver has several facets. Tagging both is where most classifications start, and where they stop.</p>
+<p class="section-open">Every self-evolving system has two parts worth describing: a <strong>target</strong> (what gets modified) and an <strong>evolver</strong> (the thing doing the modifying). Target is one concept. The evolver has several facets. Tagging both is where most classifications start, and where they stop.</p>
 
 <h3>Target <em>— what gets evolved</em></h3>
 
@@ -779,9 +779,9 @@
 
 <h3>The evolver <em>— the thing doing the evolving</em></h3>
 
-<p>The evolver is itself a system. Applied recursively, the framework from §1 says: <strong>the evolver has its own Model, Harness, and Context</strong>. Three facets of it are worth tagging separately — <em>what kind of system</em> it is (capacity), <em>what it reads</em> (reference), and <em>what operation</em> it performs (mechanism). Tag all three and you've located the evolver in design space.</p>
+<p>The evolver is itself a system. Applied recursively, the framework from §1 says: <strong>the evolver has its own Model, Harness, and Context</strong>. Three facets of it are worth tagging separately: <em>what kind of system</em> it is (capacity), <em>what it reads</em> (reference), and <em>what operation</em> it performs (mechanism). Tag all three and you've located the evolver in design space.</p>
 
-<p class="footnote" style="margin: 6px 0 18px;">These facets are not perfectly orthogonal: capacity constrains what references and mechanisms are feasible, and some mechanisms overlap at the edges. They are pragmatic vocabulary that captures what papers actually do, rather than a carved-at-the-joints ontology — which is fine if you know where the joints do and don't cut.</p>
+<p class="footnote" style="margin: 6px 0 18px;">These facets are not perfectly orthogonal: capacity constrains what references and mechanisms are feasible, and some mechanisms overlap at the edges. They are pragmatic vocabulary that captures what papers actually do, rather than a carved-at-the-joints ontology, which is fine if you know where the joints do and don't cut.</p>
 
 <h4>Capacity <em>— what kind of system is the evolver?</em></h4>
 
@@ -886,12 +886,12 @@
   <line x1="40" y1="322" x2="860" y2="322" stroke="#e7e4dd" stroke-width="1" marker-end="url(#ea)"/>
   <text x="450" y="316" text-anchor="middle" font-size="10.5" fill="#a2a09a" font-style="italic" letter-spacing="0.04em">autonomy &amp; information richness rise  ·  the evolver becomes more like an agent in its own right</text>
 </svg>
-<figcaption><span class="fig-label">Figure 3.</span> The evolver itself has Model / Harness / Context structure. Three levels cover most of the field. Within a target type, systems can differ dramatically in evolver capacity — and this difference often decides whether they produce real work or just reshuffle.</figcaption>
+<figcaption><span class="fig-label">Figure 3.</span> The evolver itself has Model / Harness / Context structure. Three levels cover most of the field. Within a target type, systems can differ dramatically in evolver capacity, and this difference often decides whether they produce real work or just reshuffle.</figcaption>
 </figure>
 
 <h4>Reference <em>— what does the evolver read?</em></h4>
 
-<p>The evolver's runtime context: the archive or memory it consults each time it produces a new variant. This is separate from any memory the deployed agent might use at inference. Listed roughly from weakest to richest reference structure. <strong>Scope</strong> — whether the reference persists across iterations or is built and discarded per-task — is an orthogonal axis; R1 holds nothing, R2 is per-task by definition, and R3–R6 are persistent across iterations.</p>
+<p>The evolver's runtime context: the archive or memory it consults each time it produces a new variant. This is separate from any memory the deployed agent might use at inference. Listed roughly from weakest to richest reference structure. <strong>Scope</strong> (whether the reference persists across iterations or is built and discarded per-task) is an orthogonal axis; R1 holds nothing, R2 is per-task by definition, and R3–R6 are persistent across iterations.</p>
 
 <table>
 <thead><tr><th style="width:6%">ID</th><th>Reference type</th><th style="width:34%">Examples</th></tr></thead>
@@ -905,7 +905,7 @@
 </tbody>
 </table>
 
-<p>This is where a lot of the real design in strong self-evolving systems lives. Two systems with the same target and same capacity can have wildly different dynamics based on their archive: an ordered log (R3) can only hill-climb; a structured archive (R5) maintains diversity and escapes local optima. AlphaEvolve's island topology, DGM's archive of past agent variants, and OMNI-EPIC's interestingness bins are all R5 — and all are doing most of their work in this facet.</p>
+<p>This is where a lot of the real design in strong self-evolving systems lives. Two systems with the same target and same capacity can have wildly different dynamics based on their archive: an ordered log (R3) can only hill-climb; a structured archive (R5) maintains diversity and escapes local optima. AlphaEvolve's island topology, DGM's archive of past agent variants, and OMNI-EPIC's interestingness bins are all R5, and all are doing most of their work in this facet.</p>
 
 <h4>Mechanism <em>— what operation produces the variant?</em></h4>
 
@@ -922,22 +922,22 @@
 </tbody>
 </table>
 
-<p>Strong systems combine two or three. DGM = M4 + M3. Agent Q = M5 + M1. AlphaEvolve = M4 + M3. The M2/M3 boundary (text vs code) is the main place these tags overlap — which is fine, since they're labels, not disjoint bins.</p>
+<p>Strong systems combine two or three. DGM = M4 + M3. Agent Q = M5 + M1. AlphaEvolve = M4 + M3. The M2/M3 boundary (text vs code) is the main place these tags overlap, which is fine, since they're labels, not disjoint bins.</p>
 
 <h4>How the three facets fit together</h4>
 
-<p>Capacity, reference, and mechanism are correlated — a richer evolver tends to support richer references and more sophisticated mechanisms — but they are not redundant. A system can be fixed on one facet and vary on another, and this is where most of the interesting differentiation within a target type lives.</p>
+<p>Capacity, reference, and mechanism are correlated (a richer evolver tends to support richer references and more sophisticated mechanisms), but they are not redundant. A system can be fixed on one facet and vary on another, and this is where most of the interesting differentiation within a target type lives.</p>
 
-<p>The sharpest case study is <strong>DGM vs Meta-Harness</strong>. Both evolve the agent's own scaffolding (same target). Both run code-rewriting as their mechanism (M3). But DGM's evolver is <em>E2</em> with an R5 archive of past agent variants; Meta-Harness's evolver is <em>E3</em> — an agentic proposer (think Claude Code) with filesystem access, execution traces, and retrieval, using an R3 history. Same target, same core operation, categorically different evolvers. The wider information pipe of the E3 evolver is part of what makes Meta-Harness's rewrites qualitatively different from DGM's: the evolver can <em>notice</em> things a simpler mutator cannot.</p>
+<p>The sharpest case study is <strong>DGM vs Meta-Harness</strong>. Both evolve the agent's own scaffolding (same target). Both run code-rewriting as their mechanism (M3). But DGM's evolver is <em>E2</em> with an R5 archive of past agent variants; Meta-Harness's evolver is <em>E3</em>, an agentic proposer (think Claude Code) with filesystem access, execution traces, and retrieval, using an R3 history. Same target, same core operation, categorically different evolvers. The wider information pipe of the E3 evolver is part of what makes Meta-Harness's rewrites qualitatively different from DGM's: the evolver can <em>notice</em> things a simpler mutator cannot.</p>
 
-<p>This is where most classifications stop. You now know what every paper <em>does</em>. You still can't tell <em>why</em> AlphaEvolve discovers mathematics while Self-Rewarding asymptotes after a few iterations — at this resolution their structural similarities are real and their dynamical differences are invisible. That's what Part 3 is for.</p>
+<p>This is where most classifications stop. You now know what every paper <em>does</em>. You still can't tell <em>why</em> AlphaEvolve discovers mathematics while Self-Rewarding asymptotes after a few iterations. At this resolution their structural similarities are real and their dynamical differences are invisible. That's what Part 3 is for.</p>
 
 <hr>
 
 <!-- ─── PART 3: LENSES ─── -->
 <h2 id="lenses"><span class="section-num">§3 · Two lenses</span>Topology and Physics</h2>
 
-<p class="section-open">The dimensions above classify a system's structure. The two lenses below ask about its dynamics — whether the loop is well-formed, and whether it compounds or just reshuffles.</p>
+<p class="section-open">The dimensions above classify a system's structure. The two lenses below ask about its dynamics: whether the loop is well-formed, and whether it compounds or just reshuffles.</p>
 
 <table style="margin: 22px 0 32px;">
 <thead><tr><th style="width:14%">Lens</th><th>Question it answers</th><th style="width:24%">Resolves</th></tr></thead>
@@ -1072,29 +1072,29 @@
 <p>One pass, no feedback. Most "use an LLM to write a better prompt" setups. Useful as a baseline.</p>
 
 <h4>T2 <em>· single-target loop</em></h4>
-<p>Fixed evolver iteratively modifies a target, informed by a signal. Where most of the field lives: OPRO, AlphaEvolve, FunSearch, Reflexion, Voyager, Eureka, ADAS, STaR, Self-Rewarding — all T2. The differences between them are <em>inside</em> the loop, not in the topology.</p>
+<p>Fixed evolver iteratively modifies a target, informed by a signal. Where most of the field lives: OPRO, AlphaEvolve, FunSearch, Reflexion, Voyager, Eureka, ADAS, STaR, Self-Rewarding, all T2. The differences between them are <em>inside</em> the loop, not in the topology.</p>
 
 <p><em>The T2 ceiling.</em> A T2 system is bounded by its evolver. AlphaEvolve is only ever as clever as Gemini; make Gemini better and AlphaEvolve improves, but AlphaEvolve cannot independently transcend Gemini. Most "self-evolving" systems have a hard ceiling they cannot cross without a base-model upgrade.</p>
 
 <h4>T3 <em>· self-referential loop</em></h4>
-<p>The evolver <em>is</em> the target. DGM rewrites its own code. STOP improves its own improver. This is what people usually mean by recursive self-improvement — each modification changes both what you produce and how you produce the next one.</p>
+<p>The evolver <em>is</em> the target. DGM rewrites its own code. STOP improves its own improver. This is what people usually mean by recursive self-improvement: each modification changes both what you produce and how you produce the next one.</p>
 
-<p><em>Why T3 is fragile.</em> A self-modifier can break its own self-modification ability. T3 works only with strong grounding (to distinguish good modifications from bad) and a retention mechanism that survives bad modifications (an archive to roll back to). DGM's archive of every historical variant is not decorative — it's what keeps the system alive.</p>
+<p><em>Why T3 is fragile.</em> A self-modifier can break its own self-modification ability. T3 works only with strong grounding (to distinguish good modifications from bad) and a retention mechanism that survives bad modifications (an archive to roll back to). DGM's archive of every historical variant is not decorative. It's what keeps the system alive.</p>
 
 <p><em>The open question.</em> Does T3 actually transcend the base model, or does it asymptote near the base model's capability after exploiting low-hanging self-modifications? Nobody has demonstrated transcendence convincingly.</p>
 
 <h4>T4 <em>· dual co-evolution</em></h4>
-<p>Two agents drive each other. Often proposer ↔ solver: Absolute Zero, SPIN, WebRL. In T4, problem difficulty is <em>endogenous</em> — it scales with solver capability. That's what gave AlphaGo Zero its magic. Without a game-like dual structure, it's hard to get this property.</p>
+<p>Two agents drive each other. Often proposer ↔ solver: Absolute Zero, SPIN, WebRL. In T4, problem difficulty is <em>endogenous</em>: it scales with solver capability. That's what gave AlphaGo Zero its magic. Without a game-like dual structure, it's hard to get this property.</p>
 
 <p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
 
 <h4>T5 <em>· nested / multi-scale</em></h4>
-<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has yet demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner.</p>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives, but nobody has yet demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner.</p>
 
 <!-- 3.2 PHYSICS -->
 <h3>Lens 2 · The physics — ratchet, entropy, grounding</h3>
 
-<p>Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> — reliably get better rather than plateauing or degenerating — it needs three forces in balance.</p>
+<p>Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> (reliably get better rather than plateauing or degenerating), it needs three forces in balance.</p>
 
 <p>I call this the <strong>physics</strong> of self-evolution because the three forces correspond cleanly to physical concepts that happen to carve the field exactly right. Each has a physical analogue, a specific role, and a predictable failure mode when absent. Remove any one and the loop dies in a characteristic way.</p>
 
@@ -1147,17 +1147,17 @@
 <p>Common ratchets, weakest to strongest: gradient descent on weights (permanent but compressed); quality-diversity archive (best-in-niche); append-only textual memory or skill library (gated by verification); version-controlled archive of all history (perfect; storage-heavy). <em>Failure mode when weak:</em> catastrophic forgetting.</p>
 
 <h4>Entropy <em>— what keeps it from freezing?</em></h4>
-<p>The tendency toward disorder, the source of variation. Without entropy, the ratchet grinds to a halt at the first local optimum — the best candidate survives, every nearby mutation is downhill, the system freezes.</p>
+<p>The tendency toward disorder, the source of variation. Without entropy, the ratchet grinds to a halt at the first local optimum: the best candidate survives, every nearby mutation is downhill, the system freezes.</p>
 <p>Sources: sampling temperature, mutation operators, quality-diversity pressure, self-play, explicit novelty rewards. <em>Failure mode when weak:</em> mode collapse. Self-play converges to repetitive strategies. Prompt optimizers produce convergent templates. Archives without diversity pressure collapse to one solution.</p>
 
 <h4>Grounding <em>— what anchors to reality?</em></h4>
 <p>A reference tied to physical earth, preventing potential from drifting. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); self-judgment (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
 
-<div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three — ratchet, entropy, grounding — are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
+<div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three (ratchet, entropy, grounding) are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
 
 <p>This is a design checklist. When you read a self-evolving-agent paper, <em>name the three forces explicitly</em>. Where is the ratchet? What is the entropy source? What is the grounding? If you can't answer any one clearly, either you don't understand the system or the system doesn't work the way the paper implies. The second case is common.</p>
 
-<p>Strong grounding is where the field's biggest wins live. AlphaEvolve, FunSearch, DGM, STaR, Absolute Zero, Eureka — all operate in domains with <strong>cheap verifiers and strong generators</strong>. That one asymmetry is the engine driving most of modern self-evolution: LLMs propose, a cheap evaluator filters, and the loop extracts bits from the generator that no single inference pass could have surfaced. Extending the field to domains without cheap automated grounding is the hard open problem.</p>
+<p>Strong grounding is where the field's biggest wins live. AlphaEvolve, FunSearch, DGM, STaR, Absolute Zero, Eureka all operate in domains with <strong>cheap verifiers and strong generators</strong>. That one asymmetry is the engine driving most of modern self-evolution: LLMs propose, a cheap evaluator filters, and the loop extracts bits from the generator that no single inference pass could have surfaced. Extending the field to domains without cheap automated grounding is the hard open problem.</p>
 
 <hr>
 
@@ -1167,18 +1167,20 @@
 <p class="section-open">Running the two lenses across the literature produces a fairly clear map of where the frontier actually is.</p>
 
 <h3>Extending beyond verifier-rich domains</h3>
-<p>The verifier-generator asymmetry is why the field works. It's also narrow — it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
+<p>The verifier-generator asymmetry is why the field works. It's also narrow: it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
 
 <h3>Stabilizing T3 and T4 at scale</h3>
 <p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
 
 <h3>Internalizing hindsight</h3>
-<p>A self-evolving system gets much of its signal from what didn't work. Where that hindsight lands determines how far it can compound. Three paths, different ceilings: <strong>into context</strong> (Reflexion, ExpeL, Voyager — bounded by retrieval and context capacity); <strong>into weights</strong> (STaR, Self-Rewarding, Absolute Zero, and recent 2026 work like SDPO and SDFT — variants of using the model's own feedback- or demonstration-conditioned outputs as a self-teaching signal); <strong>into primitives</strong> (AlphaEvolve's discovered algorithms do not yet become primitives for AlphaEvolve 2).</p>
+<p>A self-evolving system gets much of its signal from what didn't work. Two questions decide how much of that signal actually compounds.</p>
 
-<p>Whether hindsight-into-weights sustains compounding across many rounds without external fresh signal is an open empirical question — several documented cases plateau within a few iterations. Closing the primitives loop would add a second compounding mechanism on top of the verifier-generator engine.</p>
+<p><strong>Does hindsight stick across iterations?</strong> The basic compounding question: whether insights from one attempt make the next attempt better. The answer depends on where hindsight lands. Into context (Reflexion, ExpeL, Voyager): works, but is bounded by retrieval and context capacity. Into weights (STaR, Self-Rewarding, Absolute Zero, and recent 2026 work like SDPO and SDFT): escapes that bound in principle, but several documented cases plateau within a few iterations. Whether self-distillation sustains gains across many rounds without external fresh signal is an open empirical question.</p>
+
+<p><strong>Does hindsight transfer across domains?</strong> AlphaEvolve discovers algorithms on one problem. Those algorithms do not become primitives for AlphaEvolve's next campaign on a different problem; each run starts fresh. Voyager composes skills within one Minecraft environment, but those skills do not carry to a new environment. Closing this loop, so that insights compound across problems and not just across iterations of the same problem, would add a second compounding mechanism on top of the verifier-generator engine.</p>
 
 <h3>Compounding T5</h3>
-<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. </p>
+<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5, where improvements at the meta-level measurably accelerate object-level progress. </p>
 
 <p></p>
 
@@ -1187,13 +1189,13 @@
 <!-- ─── CLOSING ─── -->
 <h2 id="closing"><span class="section-num">§5 · Closing</span>If you internalize one thing</h2>
 
-<p class="section-open">The field is in a confusing phase. Every paper uses some subset of the same tooling — LLMs as mutation operators, archives, automated evaluators — and every paper claims some flavor of "self-improvement." The surface similarity hides profound structural difference.</p>
+<p class="section-open">The field is in a confusing phase. Every paper uses some subset of the same tooling (LLMs as mutation operators, archives, automated evaluators), and every paper claims some flavor of "self-improvement." The surface similarity hides profound structural difference.</p>
 
 <p>The structural difference is what this essay is about. A T2 system can be brilliant and a T3 system can be trivial; the topology determines what's possible, not the cleverness of the components. A loop with strong ratchet and grounding but no entropy will look impressive for a few iterations and then freeze. A loop with weak grounding will reshuffle latent knowledge into apparent novelty and then plateau.</p>
 
 <p>Distinguishing these failure modes from genuine compounding is the work the field has yet to do.</p>
 
-<div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology and the three forces that keep it productive — ratchet, entropy, grounding — are what determine whether it actually evolves, or just reshuffles forever in place.</div>
+<div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology and the three forces that keep it productive (ratchet, entropy, grounding) are what determine whether it actually evolves, or just reshuffles forever in place.</div>
 
 <hr>
 
@@ -1223,7 +1225,7 @@
 <dt>Evolver</dt><dd><em>E2</em> · Gemini reads the island archive + scores; not itself an agent</dd>
 <dt>Reference</dt><dd><em>R5</em> · island-based program archive</dd>
 <dt>Mechanism</dt><dd><em>M4 + M3</em> · evolutionary search, LLM-as-mutator generating code</dd>
-<dt>Topology</dt><dd><em>T2</em>. Fixed Gemini, fixed evaluator, fixed algorithm — only the population evolves.</dd>
+<dt>Topology</dt><dd><em>T2</em>. Fixed Gemini, fixed evaluator, fixed algorithm; only the population evolves.</dd>
 <dt>Forces</dt><dd>Ratchet = island archive · Entropy = island topology + temperature + mutation prompt diversity · Grounding = deterministic evaluator</dd>
 <dt>Ceiling</dt><dd>Bounded by Gemini's ability to propose good candidates. AlphaEvolve is a Gemini-amplifier, not a Gemini-transcender.</dd>
 </dl>
@@ -1281,7 +1283,7 @@
 <dt>Mechanism</dt><dd><em>M2</em> · LLM-as-extractor distills reusable insights; the library accumulates <em>across</em> tasks, not just within one (unlike Reflexion)</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed LLM. The library is the thing that changes.</dd>
 <dt>Forces</dt><dd>Ratchet = experience library (append-only, LLM-gated insight distillation) · Entropy = diversity of training tasks + sampled trajectory outcomes · Grounding = task outcome on training tasks</dd>
-<dt>Ceiling</dt><dd>Bounded by what insights the LLM can extract from trajectories and re-surface as relevant when retrieved. Library quality degrades as size grows and retrieval noise rises — a ceiling shared by all R6 systems.</dd>
+<dt>Ceiling</dt><dd>Bounded by what insights the LLM can extract from trajectories and re-surface as relevant when retrieved. Library quality degrades as size grows and retrieval noise rises, a ceiling shared by all R6 systems.</dd>
 </dl>
 </div>
 
