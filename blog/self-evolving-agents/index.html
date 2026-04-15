@@ -851,7 +851,7 @@
 <h3>Four components</h3>
 
 <figure>
-<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four components of a modern agent system">
+<svg viewBox="0 0 680 240" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Four components of a modern agent system, with signal flow animation">
   <!-- Env outer -->
   <rect x="20" y="20" width="640" height="200" rx="10" fill="#fbf0d8" stroke="#8a5e10" stroke-width="1.2" opacity="0.55"/>
   <text x="40" y="48" font-size="12" font-weight="600" fill="#8a5e10" letter-spacing="0.12em">ENVIRONMENT</text>
@@ -861,23 +861,35 @@
   <rect x="56" y="88" width="568" height="116" rx="7" fill="#ffffff" stroke="#3a3a3a" stroke-width="1.2"/>
   <text x="76" y="114" font-size="12" font-weight="600" fill="#3a3a3a" letter-spacing="0.12em">AGENT</text>
 
-  <!-- Model -->
-  <rect x="80" y="130" width="160" height="60" rx="5" fill="#f4e3de" stroke="#7a3520" stroke-width="1"/>
+  <!-- Model: pulses when "thinking" -->
+  <rect x="80" y="130" width="160" height="60" rx="5" fill="#f4e3de" stroke="#7a3520" stroke-width="1">
+    <animate attributeName="stroke-width" values="1;1;2.4;1;1" keyTimes="0;0.35;0.45;0.55;1" dur="4s" repeatCount="indefinite"/>
+  </rect>
   <text x="160" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Model</text>
   <text x="160" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#7a3520">weights</text>
   <text x="160" y="186" text-anchor="middle" font-size="10" fill="#7a3520">(STaR, Abs Zero, …)</text>
 
-  <!-- Harness -->
-  <rect x="256" y="130" width="160" height="60" rx="5" fill="#e4ecf4" stroke="#23405e" stroke-width="1"/>
+  <!-- Harness: pulses when orchestrating -->
+  <rect x="256" y="130" width="160" height="60" rx="5" fill="#e4ecf4" stroke="#23405e" stroke-width="1">
+    <animate attributeName="stroke-width" values="1;2.4;1;1;2.4;1" keyTimes="0;0.2;0.3;0.5;0.6;0.7" dur="4s" repeatCount="indefinite"/>
+  </rect>
   <text x="336" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Harness</text>
   <text x="336" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#23405e">fixed at runtime</text>
   <text x="336" y="186" text-anchor="middle" font-size="10" fill="#23405e">(DSPy, DGM, ADAS, …)</text>
 
-  <!-- Context -->
-  <rect x="432" y="130" width="160" height="60" rx="5" fill="#dfeadf" stroke="#2a553b" stroke-width="1"/>
+  <!-- Context: pulses when memory is written -->
+  <rect x="432" y="130" width="160" height="60" rx="5" fill="#dfeadf" stroke="#2a553b" stroke-width="1">
+    <animate attributeName="stroke-width" values="1;1;1;2.4;1" keyTimes="0;0.5;0.6;0.7;1" dur="4s" repeatCount="indefinite"/>
+  </rect>
   <text x="512" y="154" text-anchor="middle" font-size="14" font-weight="600" fill="#141414">Context</text>
   <text x="512" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#2a553b">changes at runtime</text>
   <text x="512" y="186" text-anchor="middle" font-size="10" fill="#2a553b">(Reflexion, Voyager, …)</text>
+
+  <!-- Signal flow: observation enters Env → Harness, Harness calls Model, Model returns, Harness writes Context, action exits to Env -->
+  <circle r="4" fill="#8a5e10">
+    <animateMotion dur="4s" repeatCount="indefinite" path="M 340 30 L 340 88 L 336 130 L 240 160 L 336 160 L 432 160 L 432 88 L 340 30"/>
+    <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.05;0.95;1" dur="4s" repeatCount="indefinite"/>
+  </circle>
 </svg>
 <figcaption><span class="fig-label">Figure 3.</span> Four components. The reward function is part of the Environment: it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
 </figure>
@@ -1104,6 +1116,11 @@
       <line x1="68" y1="47" x2="92" y2="47" stroke="#3a3a3a" stroke-width="1.2" marker-end="url(#tpar)"/>
       <rect x="94" y="30" width="56" height="34" rx="5" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1.1"/>
       <text x="122" y="51" text-anchor="middle" font-size="13" font-weight="600" fill="#141414">T</text>
+      <!-- Particle: one-way traversal, no feedback -->
+      <circle r="3.5" fill="#6e6e6e">
+        <animateMotion dur="2.6s" repeatCount="indefinite" path="M 66 47 L 92 47"/>
+        <animate attributeName="opacity" values="0;1;1;0;0" keyTimes="0;0.12;0.42;0.55;1" dur="2.6s" repeatCount="indefinite"/>
+      </circle>
     </g>
     <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">no feedback</text>
     <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(baseline)</text>
@@ -1125,6 +1142,10 @@
       <path d="M 122 44 L 122 72 L 106 92" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
       <!-- signal → E -->
       <path d="M 54 92 L 38 72 L 38 44" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- Particle circulating the loop: E → T → signal → E → … -->
+      <circle r="3.5" fill="#23405e">
+        <animateMotion dur="3.2s" repeatCount="indefinite" path="M 66 27 L 92 27 L 122 44 L 122 72 L 106 92 L 80 93 L 54 92 L 38 72 L 38 44 L 66 27"/>
+      </circle>
     </g>
     <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">fixed evolver iterates</text>
     <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(the workhorse)</text>
@@ -1146,6 +1167,16 @@
       <path d="M 80 44 L 80 78" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
       <!-- signal → E=T -->
       <path d="M 54 92 L 30 72 L 30 27 L 44 27" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- Particle 1: orbiting the self-modify loop (top arc) -->
+      <circle r="3.5" fill="#a73825">
+        <animateMotion dur="2.2s" repeatCount="indefinite" path="M 56 10 Q 56 -12 80 -12 Q 104 -12 104 10"/>
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="2.2s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Particle 2: signal feedback -->
+      <circle r="3" fill="#3a3a3a">
+        <animateMotion dur="2.2s" repeatCount="indefinite" begin="1.1s" path="M 80 44 L 80 78 L 80 92 L 54 92 L 30 72 L 30 27 L 44 27"/>
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.08;0.92;1" dur="2.2s" repeatCount="indefinite" begin="1.1s"/>
+      </circle>
     </g>
     <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">evolver ≡ target</text>
     <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(recursive)</text>
@@ -1169,6 +1200,16 @@
       <!-- B → signal → A -->
       <path d="M 120 44 L 106 72 L 106 80" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
       <path d="M 54 92 L 40 72 L 40 44" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- Particle: A → B (top arc) -->
+      <circle r="3.5" fill="#23405e">
+        <animateMotion dur="2.4s" repeatCount="indefinite" path="M 68 18 Q 80 2 92 18"/>
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.45;0.5" dur="2.4s" repeatCount="indefinite"/>
+      </circle>
+      <!-- Particle: B → A (bottom arc), staggered -->
+      <circle r="3.5" fill="#8a5e10">
+        <animateMotion dur="2.4s" repeatCount="indefinite" begin="1.2s" path="M 92 36 Q 80 52 68 36"/>
+        <animate attributeName="opacity" values="0;1;1;0" keyTimes="0;0.1;0.45;0.5" dur="2.4s" repeatCount="indefinite" begin="1.2s"/>
+      </circle>
     </g>
     <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">each drives the other</text>
     <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(adversarial)</text>
@@ -1178,8 +1219,10 @@
   <g transform="translate(706, 30)">
     <text x="80" y="0" text-anchor="middle" font-size="11.5" font-weight="600" fill="#6c3483" letter-spacing="0.08em">T5 · NESTED</text>
     <g transform="translate(0, 30)">
-      <!-- outer meta-loop frame -->
-      <rect x="0" y="6" width="160" height="112" rx="6" fill="none" stroke="#6c3483" stroke-width="1.3" stroke-dasharray="4,3"/>
+      <!-- outer meta-loop frame: animated marching-ants effect -->
+      <rect x="0" y="6" width="160" height="112" rx="6" fill="none" stroke="#6c3483" stroke-width="1.3" stroke-dasharray="4,3">
+        <animate attributeName="stroke-dashoffset" from="0" to="-14" dur="3s" repeatCount="indefinite"/>
+      </rect>
       <text x="80" y="-2" text-anchor="middle" font-size="10" fill="#6c3483" font-style="italic">outer meta-loop</text>
       <rect x="14" y="20" width="52" height="30" rx="5" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1.1"/>
       <text x="40" y="39" text-anchor="middle" font-size="12" font-weight="600" fill="#141414">E</text>
@@ -1190,6 +1233,14 @@
       <text x="80" y="101" text-anchor="middle" font-size="11" fill="#141414">signal</text>
       <path d="M 120 50 L 106 78 L 106 84" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
       <path d="M 54 96 L 40 78 L 40 50" stroke="#3a3a3a" stroke-width="1.2" fill="none" marker-end="url(#tpar)"/>
+      <!-- Inner-loop particle (fast: object-level iterations) -->
+      <circle r="3" fill="#23405e">
+        <animateMotion dur="1.6s" repeatCount="indefinite" path="M 66 35 L 92 35 L 120 50 L 106 78 L 106 96 L 80 101 L 54 96 L 40 78 L 40 50 L 66 35"/>
+      </circle>
+      <!-- Outer-loop particle (slow: meta-level revisions) -->
+      <circle r="3.5" fill="#6c3483">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M 0 6 L 160 6 L 160 118 L 0 118 Z" rotate="auto"/>
+      </circle>
     </g>
     <text x="80" y="158" text-anchor="middle" font-size="11" fill="#6e6e6e" font-style="italic">loop on a loop</text>
     <text x="80" y="173" text-anchor="middle" font-size="10" fill="#a2a09a">(the frontier)</text>
@@ -1252,6 +1303,25 @@
     <text x="32" y="98" font-size="11" fill="#3a3a3a">weights · archive · skill library ·</text>
     <text x="32" y="112" font-size="11" fill="#3a3a3a">quality-diversity bins</text>
     <text x="32" y="128" font-size="10" fill="#a73825" font-style="italic">✗ weak → catastrophic forgetting</text>
+    <!-- Animated demo: bars stacking, never disappearing within a cycle -->
+    <g transform="translate(232, 50)">
+      <line x1="0" y1="78" x2="58" y2="78" stroke="#b5731a" stroke-width="1.2" opacity="0.6"/>
+      <rect x="2"  y="62" width="8" height="16" rx="1" fill="#b5731a" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes="0;0.05;0.1;0.92;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="14" y="50" width="8" height="28" rx="1" fill="#b5731a" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes="0;0.22;0.27;0.92;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="26" y="38" width="8" height="40" rx="1" fill="#b5731a" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes="0;0.42;0.47;0.92;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="38" y="26" width="8" height="52" rx="1" fill="#b5731a" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes="0;0.62;0.67;0.92;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+      <rect x="50" y="14" width="8" height="64" rx="1" fill="#b5731a" opacity="0">
+        <animate attributeName="opacity" values="0;0;1;1;1;0" keyTimes="0;0.82;0.87;0.92;0.95;1" dur="5s" repeatCount="indefinite"/>
+      </rect>
+    </g>
   </g>
 
   <!-- Entropy -->
@@ -1262,6 +1332,41 @@
     <text x="558" y="98" font-size="11" fill="#3a3a3a">temperature · mutation · QD ·</text>
     <text x="558" y="112" font-size="11" fill="#3a3a3a">self-play · novelty rewards</text>
     <text x="558" y="128" font-size="10" fill="#a73825" font-style="italic">✗ weak → mode collapse</text>
+    <!-- Animated demo: dots scattering outward from center -->
+    <g transform="translate(788, 82)">
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;-22" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="0;-18" dur="2s" repeatCount="indefinite"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite"/>
+      </circle>
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;22" dur="2s" repeatCount="indefinite" begin="0.25s"/>
+        <animate attributeName="cy" values="0;-18" dur="2s" repeatCount="indefinite" begin="0.25s"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite" begin="0.25s"/>
+      </circle>
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;-26" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+        <animate attributeName="cy" values="0;6" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite" begin="0.5s"/>
+      </circle>
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;26" dur="2s" repeatCount="indefinite" begin="0.75s"/>
+        <animate attributeName="cy" values="0;6" dur="2s" repeatCount="indefinite" begin="0.75s"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite" begin="0.75s"/>
+      </circle>
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;-12" dur="2s" repeatCount="indefinite" begin="1s"/>
+        <animate attributeName="cy" values="0;26" dur="2s" repeatCount="indefinite" begin="1s"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite" begin="1s"/>
+      </circle>
+      <circle r="2.5" fill="#34795f">
+        <animate attributeName="cx" values="0;14" dur="2s" repeatCount="indefinite" begin="1.25s"/>
+        <animate attributeName="cy" values="0;28" dur="2s" repeatCount="indefinite" begin="1.25s"/>
+        <animate attributeName="opacity" values="1;1;0" keyTimes="0;0.6;1" dur="2s" repeatCount="indefinite" begin="1.25s"/>
+      </circle>
+      <!-- Center seed point -->
+      <circle r="3" fill="#34795f" opacity="0.9"/>
+    </g>
   </g>
 
   <!-- Grounding -->
@@ -1271,6 +1376,24 @@
     <text x="224" y="312" font-size="12.5" fill="#141414" font-weight="600">What anchors to reality?</text>
     <text x="224" y="330" font-size="11" fill="#3a3a3a">deterministic verifier · env reward · human oversight</text>
     <text x="224" y="348" font-size="10" fill="#a73825" font-style="italic">✗ weak → drift / reward hacking</text>
+    <!-- Animated demo: a candidate dot drifting up/sideways is pulled back to a fixed anchor -->
+    <g transform="translate(560, 285)">
+      <!-- Anchor / ground line -->
+      <line x1="-4" y1="64" x2="60" y2="64" stroke="#9a3f35" stroke-width="1.4"/>
+      <line x1="2"  y1="64" x2="-4" y2="72" stroke="#9a3f35" stroke-width="1"/>
+      <line x1="14" y1="64" x2="8"  y2="72" stroke="#9a3f35" stroke-width="1"/>
+      <line x1="26" y1="64" x2="20" y2="72" stroke="#9a3f35" stroke-width="1"/>
+      <line x1="38" y1="64" x2="32" y2="72" stroke="#9a3f35" stroke-width="1"/>
+      <line x1="50" y1="64" x2="44" y2="72" stroke="#9a3f35" stroke-width="1"/>
+      <text x="28" y="84" text-anchor="middle" font-size="9" font-style="italic" fill="#9a3f35">reality</text>
+      <!-- Tether line (always visible) -->
+      <line x1="28" y1="64" x2="28" y2="14" stroke="#9a3f35" stroke-width="1" stroke-dasharray="2,2" opacity="0.6"/>
+      <!-- Candidate dot drifting away then snapped back -->
+      <circle r="3.5" fill="#9a3f35" cx="28" cy="14">
+        <animate attributeName="cx" values="28;42;42;28;28" keyTimes="0;0.35;0.4;0.45;1" dur="3s" repeatCount="indefinite"/>
+        <animate attributeName="cy" values="14;6;6;14;14" keyTimes="0;0.35;0.4;0.45;1" dur="3s" repeatCount="indefinite"/>
+      </circle>
+    </g>
   </g>
 </svg>
 <figcaption><span class="fig-label">Figure 6.</span> The minimal feature set of a compounding self-evolving loop. Each force has a named implementation in ML systems and a predictable failure mode when absent.</figcaption>
