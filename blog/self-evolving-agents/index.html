@@ -1147,11 +1147,11 @@
 <p>Common ratchets, weakest to strongest: gradient descent on weights (permanent but compressed); quality-diversity archive (best-in-niche); append-only textual memory or skill library (gated by verification); version-controlled archive of all history (perfect; storage-heavy). <em>Failure mode when weak:</em> catastrophic forgetting.</p>
 
 <h4>Entropy <em>— what keeps it from freezing?</em></h4>
-<p>The tendency toward disorder, the source of variation. Without entropy, the ratchet grinds to a halt at the first local optimum: the best candidate survives, every nearby mutation is downhill, the system freezes.</p>
+<p>The source of variation in the loop. In a self-evolving system, entropy is whatever keeps new candidates different enough from old ones to escape local optima. Without it, the best candidate survives, every nearby mutation is downhill, and the system freezes.</p>
 <p>Sources: sampling temperature, mutation operators, quality-diversity pressure, self-play, explicit novelty rewards. <em>Failure mode when weak:</em> mode collapse. Self-play converges to repetitive strategies. Prompt optimizers produce convergent templates. Archives without diversity pressure collapse to one solution.</p>
 
 <h4>Grounding <em>— what anchors to reality?</em></h4>
-<p>A reference tied to physical earth, preventing potential from drifting. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); self-judgment (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
+<p>A signal from outside the loop that the loop cannot manipulate. In a self-evolving system, grounding is what keeps candidate quality tied to the world rather than to the loop's own self-assessment. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); self-judgment (weakest; not really a source of new bits). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
 
 <div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three (ratchet, entropy, grounding) are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
 
