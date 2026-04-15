@@ -470,6 +470,63 @@
     font-weight: 500;
   }
 
+  /* ─── Tag tooltips (hover to see definition) ─── */
+  .tag-def {
+    position: relative;
+    cursor: help;
+    border-bottom: 1px dotted rgba(162, 160, 154, 0.45);
+  }
+  .tag-def:hover {
+    border-bottom-color: var(--ink-2);
+  }
+  .tag-def::after {
+    content: attr(data-def);
+    position: absolute;
+    bottom: calc(100% + 8px);
+    left: 50%;
+    transform: translateX(-50%);
+    background: #141414;
+    color: #fafaf7;
+    padding: 7px 11px;
+    border-radius: 4px;
+    font-family: "Inter", sans-serif;
+    font-size: 11.5px;
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.45;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: normal;
+    width: max-content;
+    max-width: 260px;
+    text-align: left;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+    z-index: 50;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.18);
+  }
+  .tag-def:hover::after {
+    opacity: 1;
+  }
+  /* Arrow on the tooltip */
+  .tag-def::before {
+    content: "";
+    position: absolute;
+    bottom: calc(100% + 2px);
+    left: 50%;
+    transform: translateX(-50%);
+    border: 4px solid transparent;
+    border-top-color: #141414;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.12s ease;
+    z-index: 50;
+  }
+  .tag-def:hover::before {
+    opacity: 1;
+  }
+
   /* ─── Section dividers ─── */
   hr {
     border: none;
@@ -557,7 +614,7 @@
 <li><a href="#challenges"><span class="num">§4</span><span>Open challenges</span></a></li>
 <li><a href="#closing"><span class="num">§5</span><span>Closing</span></a></li>
 <li><a href="#method"><span class="num">§A</span><span>How to analyze a paper</span></a></li>
-<li><a href="#master"><span class="num">§B</span><span>Master table of 65 works</span></a></li>
+<li><a href="#master"><span class="num">§B</span><span>Papers classified</span></a></li>
 </ol>
 </nav>
 
@@ -1290,7 +1347,7 @@
 <hr>
 
 <!-- ─── APPENDIX B ─── -->
-<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 65 works</h2>
+<h2 id="master"><span class="section-num">§B · Reference</span>Papers classified</h2>
 
 <small>Grouped by target. Tagged <em>evolver · reference · mechanism · topology</em>. Keys in §2 and §3.</small>
 
@@ -1387,5 +1444,73 @@
 </footer>
 
 </article>
+
+<script>
+(function () {
+  var defs = {
+    'E1': 'Raw evolver: LLM prompted directly, no external archive beyond its own context.',
+    'E2': 'Archived evolver: LLM reads an explicit external archive of past candidates and scores.',
+    'E3': 'Agentic evolver: the evolver is itself an agent with Model / Harness / Context, using tools, retrieval, and execution traces.',
+    'R1': 'No external archive. The evolver sees only the current candidate.',
+    'R2': 'Per-task search tree (MCTS, beam, etc.), built and discarded within a single task.',
+    'R3': 'Ordered log of past (candidate, score) items: replay buffers, prompt-score histories.',
+    'R4': 'Flat population: unordered candidate set with no topology.',
+    'R5': 'Structured archive with topology: QD bins, island sub-populations, or similar geometry.',
+    'R6': 'Content-indexed library: textual or code items retrieved by semantic match.',
+    'M1': 'Per-task search: tree / MCTS / beam built and discarded within one task.',
+    'M2': 'Iterative LLM refinement: LLM edits a text artifact (prompt, reflection, summary) given feedback.',
+    'M3': 'Code generation: LLM produces novel code — solutions, tools, self-modifications.',
+    'M4': 'Evolutionary search: population + variation + selection across iterations.',
+    'M5': 'Gradient training: weight updates via SFT, DPO, RL, RLAIF.',
+    'T1': 'Open loop: no feedback (baseline).',
+    'T2': 'Single-target: fixed evolver iterates on one target. Where most of the field lives.',
+    'T3': 'Self-referential: the evolver is the target. The agent modifies itself.',
+    'T4': 'Co-evolution: two agents drive each other, often proposer ↔ solver.',
+    'T4·lite': 'Mild co-evolution: e.g., verifier and generator both trained, but not fully symmetric.',
+    'T5': 'Nested: a loop operating on another loop.'
+  };
+  var tagPattern = /\b(E[1-3]|R[1-6]|M[1-5]|T[1-5](?:·lite)?)\b/g;
+
+  function wrap(root) {
+    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
+      acceptNode: function (node) {
+        var p = node.parentNode;
+        if (!p) return NodeFilter.FILTER_REJECT;
+        var tag = (p.tagName || '').toLowerCase();
+        if (tag === 'script' || tag === 'style') return NodeFilter.FILTER_REJECT;
+        if (p.classList && p.classList.contains('tag-def')) return NodeFilter.FILTER_REJECT;
+        return NodeFilter.FILTER_ACCEPT;
+      }
+    });
+    var nodes = [];
+    var n;
+    while ((n = walker.nextNode())) nodes.push(n);
+    nodes.forEach(function (node) {
+      if (!tagPattern.test(node.textContent)) return;
+      tagPattern.lastIndex = 0;
+      var frag = document.createDocumentFragment();
+      var text = node.textContent;
+      var last = 0;
+      var m;
+      while ((m = tagPattern.exec(text)) !== null) {
+        if (m.index > last) frag.appendChild(document.createTextNode(text.slice(last, m.index)));
+        var span = document.createElement('span');
+        span.className = 'tag-def';
+        var key = m[0].replace(/^T4·lite$/, 'T4·lite');
+        span.setAttribute('data-def', defs[key] || defs[m[0].replace('·lite', '')] || '');
+        span.textContent = m[0];
+        frag.appendChild(span);
+        last = m.index + m[0].length;
+      }
+      if (last < text.length) frag.appendChild(document.createTextNode(text.slice(last)));
+      node.parentNode.replaceChild(frag, node);
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    wrap(document.querySelector('article'));
+  });
+})();
+</script>
 </body>
 </html>
