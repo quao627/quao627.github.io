@@ -541,7 +541,7 @@
 <p class="h1-sub">Classification, Topology, and Physics</p>
 <p class="dek">An anatomy of self-evolving agents — and what comes next.</p>
 <div class="byline">
-  <span>Self-evolving agents · 69 works · 2022–2026</span>
+  <span>Self-evolving agents · 65 works · 2022–2026</span>
   <span>April 2026</span>
 </div>
 </header>
@@ -557,7 +557,7 @@
 <li><a href="#challenges"><span class="num">§4</span><span>Open challenges</span></a></li>
 <li><a href="#closing"><span class="num">§5</span><span>Closing</span></a></li>
 <li><a href="#method"><span class="num">§A</span><span>How to analyze a paper</span></a></li>
-<li><a href="#master"><span class="num">§B</span><span>Master table of 69 works</span></a></li>
+<li><a href="#master"><span class="num">§B</span><span>Master table of 65 works</span></a></li>
 </ol>
 </nav>
 
@@ -1089,7 +1089,7 @@
 <p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
 
 <h4>T5 <em>· nested / multi-scale</em></h4>
-<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has yet demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner. (Why this question is load-bearing for the field's long-term trajectory: see §4.)</p>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is where compounding in the strong sense lives — but nobody has yet demonstrated <em>compounding</em> T5, where the outer loop's improvements measurably accelerate the inner.</p>
 
 <!-- 3.2 PHYSICS -->
 <h3>Lens 2 · The physics — ratchet, entropy, grounding</h3>
@@ -1164,7 +1164,7 @@
 <!-- ─── PART 4: OPEN CHALLENGES ─── -->
 <h2 id="challenges"><span class="section-num">§4 · Open challenges</span>Where the frontier actually is</h2>
 
-<p class="section-open">Running the three lenses across the literature produces a fairly clear map of where the frontier actually is. It is not where most press coverage suggests.</p>
+<p class="section-open">Running the two lenses across the literature produces a fairly clear map of where the frontier actually is.</p>
 
 <h3>Extending beyond verifier-rich domains</h3>
 <p>The verifier-generator asymmetry is why the field works. It's also narrow — it applies cleanly to code, math, formal reasoning, and not much else. Extending self-evolution to domains without cheap verification is the biggest open problem. Two paths: (a) find new grounding that carries similar weight (scalable human-in-the-loop, multi-judge consensus, adversarial probing); (b) decompose un-verifiable tasks into verifiable sub-tasks and compose.</p>
@@ -1173,9 +1173,9 @@
 <p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
 
 <h3>Internalizing hindsight</h3>
-<p>A self-evolving system gets much of its signal from what didn't work. Where that hindsight lands determines how far it can compound. Three paths, different ceilings: <strong>into context</strong> (Reflexion, ExpeL, Voyager — bounded by retrieval and context capacity); <strong>into weights</strong> (STaR, Self-Rewarding, Absolute Zero, and a wave of early-2026 work — SDFT, SDPO, OPSD, RLSD, SSD, HDPO — all variants of using the model's own feedback- or demonstration-conditioned outputs as a self-teaching signal); <strong>into primitives</strong> (AlphaEvolve's discovered algorithms do not yet become primitives for AlphaEvolve 2).</p>
+<p>A self-evolving system gets much of its signal from what didn't work. Where that hindsight lands determines how far it can compound. Three paths, different ceilings: <strong>into context</strong> (Reflexion, ExpeL, Voyager — bounded by retrieval and context capacity); <strong>into weights</strong> (STaR, Self-Rewarding, Absolute Zero, and recent 2026 work like SDPO and SDFT — variants of using the model's own feedback- or demonstration-conditioned outputs as a self-teaching signal); <strong>into primitives</strong> (AlphaEvolve's discovered algorithms do not yet become primitives for AlphaEvolve 2).</p>
 
-<p>Whether hindsight-into-weights sustains compounding across many rounds without external fresh signal is one of the most important open empirical questions in the field — the 2026 burst of activity here suggests it is the question people are actively betting on. Closing the primitives loop would add a second compounding mechanism on top of the verifier-generator engine.</p>
+<p>Whether hindsight-into-weights sustains compounding across many rounds without external fresh signal is an open empirical question — several documented cases plateau within a few iterations. Closing the primitives loop would add a second compounding mechanism on top of the verifier-generator engine.</p>
 
 <h3>Compounding T5</h3>
 <p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. </p>
@@ -1194,8 +1194,6 @@
 <p>Distinguishing these failure modes from genuine compounding is the work the field has yet to do.</p>
 
 <div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology and the three forces that keep it productive — ratchet, entropy, grounding — are what determine whether it actually evolves, or just reshuffles forever in place.</div>
-
-<p>The next decade of AI progress runs through these questions. The systems that compound will be the ones that get them right.</p>
 
 <hr>
 
@@ -1292,7 +1290,7 @@
 <hr>
 
 <!-- ─── APPENDIX B ─── -->
-<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 69 works</h2>
+<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 65 works</h2>
 
 <small>Grouped by target. Tagged <em>evolver · reference · mechanism · topology</em>. Keys in §2 and §3.</small>
 
@@ -1313,10 +1311,6 @@
 <tr><td>TTT-Discover</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
 <tr><td>SDFT</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
 <tr><td>SDPO</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
-<tr><td>OPSD</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
-<tr><td>RLSD</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
-<tr><td>SSD</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
-<tr><td>HDPO</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
 
 <tr class="group-row"><td colspan="6">Harness · Prompts — prompts evolve offline</td></tr>
 <tr><td>APE</td><td>'23</td><td>E1</td><td>R3</td><td>M2</td><td>T2</td></tr>
