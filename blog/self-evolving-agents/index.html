@@ -664,13 +664,19 @@
   </g>
   <!-- Arrow -->
   <line x1="197" y1="177" x2="215" y2="177" stroke="#a2a09a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
-  <!-- Strong: agent -->
+  <!-- Strong: agent — miniature of the layered agent diagram (LLM core + tools around it) -->
   <g transform="translate(222, 168)">
     <rect x="0" y="0" width="68" height="18" rx="3" fill="#ffffff" stroke="#141414" stroke-width="1.2"/>
-    <rect x="4" y="3" width="16" height="12" rx="1.5" fill="#141414"/>
-    <rect x="24" y="3" width="16" height="12" rx="1.5" fill="#6e6e6e"/>
-    <rect x="44" y="3" width="20" height="12" rx="1.5" fill="#a2a09a"/>
-    <text x="34" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">agent</text>
+    <!-- Central LLM core -->
+    <rect x="5" y="4" width="22" height="10" rx="5" fill="#141414"/>
+    <text x="16" y="12" text-anchor="middle" font-size="6.5" font-weight="700" fill="#fafaf7" letter-spacing="0.05em">LLM</text>
+    <!-- Peripheral tools/memory -->
+    <rect x="32" y="4" width="8" height="10" rx="1.5" fill="#6e6e6e"/>
+    <rect x="42" y="4" width="8" height="10" rx="1.5" fill="#a07b28"/>
+    <rect x="52" y="4" width="8" height="10" rx="1.5" fill="#6e6e6e"/>
+    <!-- Connector showing LLM interacts with tools -->
+    <line x1="27" y1="9" x2="31" y2="9" stroke="#141414" stroke-width="0.6"/>
+    <text x="34" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">agent · LLM + tools</text>
   </g>
 
   <!-- ── Reference row ── -->
@@ -682,7 +688,7 @@
     <text x="22" y="30" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">none (R1)</text>
   </g>
   <line x1="197" y1="216" x2="215" y2="216" stroke="#a2a09a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
-  <!-- Strong: R6 indexed library with animated retrieval -->
+  <!-- Strong: R6 indexed library with top-K retrieval (3 cells lit at once) -->
   <g transform="translate(222, 205)">
     <rect x="0" y="0" width="15" height="9" rx="1" fill="#ffffff" stroke="#6e6e6e" stroke-width="0.8"/>
     <rect x="17" y="0" width="15" height="9" rx="1" fill="#ffffff" stroke="#6e6e6e" stroke-width="0.8"/>
@@ -692,12 +698,20 @@
     <rect x="17" y="11" width="15" height="9" rx="1" fill="#ffffff" stroke="#6e6e6e" stroke-width="0.8"/>
     <rect x="34" y="11" width="15" height="9" rx="1" fill="#ffffff" stroke="#6e6e6e" stroke-width="0.8"/>
     <rect x="51" y="11" width="15" height="9" rx="1" fill="#ffffff" stroke="#6e6e6e" stroke-width="0.8"/>
-    <!-- retrieval highlight jumps between cells -->
-    <rect width="15" height="9" rx="1" fill="#a07b28" opacity="0.88">
-      <animate attributeName="x" values="0;34;17;51;34;0" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
-      <animate attributeName="y" values="0;11;0;11;0;0" keyTimes="0;0.2;0.4;0.6;0.8;1" dur="3.5s" repeatCount="indefinite" calcMode="discrete"/>
+    <!-- Three highlight rects cycling in lockstep — top-K retrieval -->
+    <rect width="15" height="9" rx="1" fill="#a07b28" opacity="0.85">
+      <animate attributeName="x" values="0;34;17;51" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
+      <animate attributeName="y" values="0;0;11;11" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
     </rect>
-    <text x="33" y="32" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">library (R6)</text>
+    <rect width="15" height="9" rx="1" fill="#a07b28" opacity="0.85">
+      <animate attributeName="x" values="17;51;0;34" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
+      <animate attributeName="y" values="11;11;0;0" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
+    </rect>
+    <rect width="15" height="9" rx="1" fill="#a07b28" opacity="0.85">
+      <animate attributeName="x" values="51;0;34;17" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
+      <animate attributeName="y" values="11;0;0;11" dur="3.2s" calcMode="discrete" repeatCount="indefinite"/>
+    </rect>
+    <text x="33" y="32" text-anchor="middle" font-size="7.5" fill="#a2a09a" font-style="italic">library · top-K retrieval</text>
   </g>
 
   <!-- ── Mechanism row ── -->
@@ -790,84 +804,87 @@
   <text x="50" y="360" font-size="11" font-weight="700" fill="#a07b28" letter-spacing="0.12em">TOPOLOGY</text>
   <text x="140" y="360" font-size="10" fill="#6e6e6e" font-style="italic">the shape of the loop</text>
 
+  <!-- Legend for the topology visual language -->
+  <g transform="translate(540, 358)">
+    <rect x="0" y="-7" width="12" height="10" rx="1.5" fill="none" stroke="#6e6e6e" stroke-width="1"/>
+    <text x="16" y="2" font-size="8.5" fill="#6e6e6e" font-style="italic">fixed</text>
+    <rect x="58" y="-7" width="12" height="10" rx="1.5" fill="#c8c2b0" stroke="#6e6e6e" stroke-width="1"/>
+    <text x="74" y="2" font-size="8.5" fill="#6e6e6e" font-style="italic">evolves</text>
+  </g>
+
+  <!-- T1 OPEN: both static outlines, no loop -->
   <g transform="translate(60, 380)">
     <text x="64" y="0" text-anchor="middle" font-size="9" font-weight="700" fill="#6e6e6e" letter-spacing="0.1em">T1 · OPEN</text>
-    <rect x="10" y="12" width="38" height="26" rx="3" fill="#f3efe6" stroke="#3a3a3a" stroke-width="1"/>
-    <text x="29" y="29" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">E</text>
-    <rect x="80" y="12" width="38" height="26" rx="3" fill="#e4ecf4" stroke="#3a3a3a" stroke-width="1"/>
-    <text x="99" y="29" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">T</text>
-    <line x1="48" y1="25" x2="79" y2="25" stroke="#3a3a3a" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
+    <rect x="10" y="16" width="38" height="22" rx="3" fill="none" stroke="#6e6e6e" stroke-width="1"/>
+    <text x="29" y="31" text-anchor="middle" font-size="11" font-weight="600" fill="#6e6e6e">E</text>
+    <rect x="80" y="16" width="38" height="22" rx="3" fill="none" stroke="#6e6e6e" stroke-width="1"/>
+    <text x="99" y="31" text-anchor="middle" font-size="11" font-weight="600" fill="#6e6e6e">T</text>
+    <line x1="48" y1="27" x2="79" y2="27" stroke="#6e6e6e" stroke-width="1" marker-end="url(#cm-ar-sm)"/>
     <text x="64" y="58" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">no feedback</text>
   </g>
 
+  <!-- T2 LOOP: E fixed (outlined), T evolves (filled + subtle pulse) -->
   <g transform="translate(222, 380)">
     <text x="64" y="0" text-anchor="middle" font-size="9" font-weight="700" fill="#23405e" letter-spacing="0.1em">T2 · LOOP</text>
-    <rect x="10" y="12" width="38" height="26" rx="3" fill="#f3efe6" stroke="#23405e" stroke-width="1.2"/>
-    <text x="29" y="29" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">E</text>
-    <rect x="80" y="12" width="38" height="26" rx="3" fill="#e4ecf4" stroke="#23405e" stroke-width="1.2"/>
-    <text x="99" y="29" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">T</text>
-    <path id="t2m-top" d="M 48 18 Q 64 4 80 18" fill="none" stroke="#23405e" stroke-width="1" marker-end="url(#cm-ar-blue)"/>
-    <path id="t2m-bot" d="M 80 32 Q 64 46 48 32" fill="none" stroke="#23405e" stroke-width="1" marker-end="url(#cm-ar-blue)"/>
-    <circle r="2" fill="#23405e"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#t2m-top"/></animateMotion></circle>
-    <circle r="2" fill="#23405e"><animateMotion dur="1.8s" repeatCount="indefinite" begin="0.9s"><mpath href="#t2m-bot"/></animateMotion></circle>
-    <text x="64" y="58" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">fixed evolver iterates</text>
+    <!-- E: fixed -->
+    <rect x="10" y="16" width="38" height="22" rx="3" fill="none" stroke="#23405e" stroke-width="1.2"/>
+    <text x="29" y="31" text-anchor="middle" font-size="11" font-weight="600" fill="#23405e">E</text>
+    <!-- T: evolves -->
+    <rect x="80" y="16" width="38" height="22" rx="3" fill="#cfdce9" stroke="#23405e" stroke-width="1.2">
+      <animate attributeName="fill" values="#cfdce9;#e9f0f7;#cfdce9" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="99" y="31" text-anchor="middle" font-size="11" font-weight="600" fill="#141414">T</text>
+    <!-- Simple arrows -->
+    <path d="M 48 22 Q 64 8 80 22" fill="none" stroke="#23405e" stroke-width="1.2" marker-end="url(#cm-ar-blue)"/>
+    <path d="M 80 32 Q 64 46 48 32" fill="none" stroke="#23405e" stroke-width="1.2" marker-end="url(#cm-ar-blue)"/>
+    <text x="64" y="58" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">E fixed · T evolves</text>
   </g>
 
+  <!-- T3 SELF: single node (filled + pulse), self-loop -->
   <g transform="translate(384, 380)">
     <text x="64" y="0" text-anchor="middle" font-size="9" font-weight="700" fill="#a73825" letter-spacing="0.1em">T3 · SELF</text>
-    <rect x="34" y="22" width="60" height="24" rx="3" fill="#f6e5df" stroke="#a73825" stroke-width="1.3"/>
-    <text x="64" y="38" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">E = T</text>
-    <path id="t3m-loop" d="M 44 22 C 44 8, 84 8, 84 22" fill="none" stroke="#a73825" stroke-width="1" marker-end="url(#cm-ar-red)"/>
-    <circle r="2" fill="#a73825"><animateMotion dur="2s" repeatCount="indefinite"><mpath href="#t3m-loop"/></animateMotion></circle>
+    <rect x="34" y="22" width="60" height="22" rx="3" fill="#eec8bd" stroke="#a73825" stroke-width="1.3">
+      <animate attributeName="fill" values="#eec8bd;#f7ddd2;#eec8bd" dur="2.2s" repeatCount="indefinite"/>
+    </rect>
+    <text x="64" y="37" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">E = T</text>
+    <path d="M 44 22 C 44 8, 84 8, 84 22" fill="none" stroke="#a73825" stroke-width="1.2" marker-end="url(#cm-ar-red)"/>
     <text x="64" y="62" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">evolver = target</text>
   </g>
 
+  <!-- T4 CO-EVOLVE: both peers evolve, alternating pulses show reciprocity -->
   <g transform="translate(546, 380)">
     <text x="64" y="0" text-anchor="middle" font-size="9" font-weight="700" fill="#8a5e10" letter-spacing="0.1em">T4 · CO-EVOLVE</text>
-    <!-- Two peer circles (symmetric, identical) -->
-    <circle cx="30" cy="26" r="14" fill="#fbf0d8" stroke="#8a5e10" stroke-width="1.4"/>
-    <text x="30" y="30" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">A</text>
-    <circle cx="98" cy="26" r="14" fill="#fbf0d8" stroke="#8a5e10" stroke-width="1.4"/>
-    <text x="98" y="30" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">B</text>
-    <!-- symmetric arrows -->
-    <path id="t4m-top" d="M 43 20 Q 64 10 85 20" fill="none" stroke="#8a5e10" stroke-width="1" marker-end="url(#cm-ar-amber)"/>
-    <path id="t4m-bot" d="M 85 32 Q 64 42 43 32" fill="none" stroke="#8a5e10" stroke-width="1" marker-end="url(#cm-ar-amber)"/>
-    <!-- simultaneous particles → symmetric co-evolution -->
-    <circle r="2.2" fill="#8a5e10"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#t4m-top"/></animateMotion></circle>
-    <circle r="2.2" fill="#8a5e10"><animateMotion dur="1.8s" repeatCount="indefinite"><mpath href="#t4m-bot"/></animateMotion></circle>
-    <!-- both peers pulse to show both evolve -->
-    <circle cx="30" cy="26" r="14" fill="none" stroke="#8a5e10" stroke-width="1" opacity="0">
-      <animate attributeName="r" values="14;18;14" dur="2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.55;0;0.55" dur="2s" repeatCount="indefinite"/>
+    <circle cx="30" cy="28" r="13" fill="#f0d891" stroke="#8a5e10" stroke-width="1.4">
+      <animate attributeName="fill" values="#f0d891;#fbf0d8;#f0d891" dur="2.2s" repeatCount="indefinite"/>
     </circle>
-    <circle cx="98" cy="26" r="14" fill="none" stroke="#8a5e10" stroke-width="1" opacity="0">
-      <animate attributeName="r" values="14;18;14" dur="2s" repeatCount="indefinite"/>
-      <animate attributeName="opacity" values="0.55;0;0.55" dur="2s" repeatCount="indefinite"/>
+    <text x="30" y="32" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">A</text>
+    <circle cx="98" cy="28" r="13" fill="#f0d891" stroke="#8a5e10" stroke-width="1.4">
+      <animate attributeName="fill" values="#f0d891;#fbf0d8;#f0d891" dur="2.2s" begin="1.1s" repeatCount="indefinite"/>
     </circle>
-    <text x="64" y="62" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">peers modify each other</text>
+    <text x="98" y="32" text-anchor="middle" font-size="10.5" font-weight="600" fill="#141414">B</text>
+    <path d="M 43 22 Q 64 12 85 22" fill="none" stroke="#8a5e10" stroke-width="1.2" marker-end="url(#cm-ar-amber)"/>
+    <path d="M 85 34 Q 64 44 43 34" fill="none" stroke="#8a5e10" stroke-width="1.2" marker-end="url(#cm-ar-amber)"/>
+    <text x="64" y="62" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">both evolve</text>
   </g>
 
+  <!-- T5 NESTED: outer meta-frame pulses first, then inner responds -->
   <g transform="translate(708, 380)">
     <text x="64" y="0" text-anchor="middle" font-size="9" font-weight="700" fill="#6c3483" letter-spacing="0.1em">T5 · NESTED</text>
-    <!-- Outer meta-loop: pill-shaped dashed boundary -->
-    <rect x="4" y="12" width="120" height="38" rx="19" fill="#f0e6f2" stroke="#6c3483" stroke-width="1.1" stroke-dasharray="3 2"/>
-    <!-- Invisible elliptical path for outer meta-particle -->
-    <path id="t5m-outer" d="M 8 31 A 56 15 0 1 1 120 31 A 56 15 0 1 1 8 31" fill="none" stroke="none"/>
-    <!-- Inner loop: compact E-T -->
-    <rect x="22" y="24" width="26" height="14" rx="2" fill="#ffffff" stroke="#6c3483" stroke-width="1"/>
-    <text x="35" y="34" text-anchor="middle" font-size="8.5" font-weight="600" fill="#141414">E</text>
-    <rect x="80" y="24" width="26" height="14" rx="2" fill="#ffffff" stroke="#6c3483" stroke-width="1"/>
-    <text x="93" y="34" text-anchor="middle" font-size="8.5" font-weight="600" fill="#141414">T</text>
-    <path id="t5m-top" d="M 48 27 Q 64 19 80 27" fill="none" stroke="#6c3483" stroke-width="0.9" marker-end="url(#cm-ar-purple)"/>
-    <path id="t5m-bot" d="M 80 35 Q 64 43 48 35" fill="none" stroke="#6c3483" stroke-width="0.9" marker-end="url(#cm-ar-purple)"/>
-    <!-- Inner particles (small, fast) -->
-    <circle r="1.6" fill="#6c3483"><animateMotion dur="1.4s" repeatCount="indefinite"><mpath href="#t5m-top"/></animateMotion></circle>
-    <circle r="1.6" fill="#6c3483"><animateMotion dur="1.4s" repeatCount="indefinite" begin="0.7s"><mpath href="#t5m-bot"/></animateMotion></circle>
-    <!-- Outer meta-particle (bigger, slower) — circles the whole inner loop -->
-    <circle r="3" fill="#6c3483" opacity="0.9">
-      <animateMotion dur="5s" repeatCount="indefinite"><mpath href="#t5m-outer"/></animateMotion>
-    </circle>
-    <text x="64" y="62" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">outer loop evolves inner</text>
+    <!-- Outer meta-frame: pulses at t=0 → signals "outer acts" -->
+    <rect x="4" y="14" width="120" height="34" rx="17" fill="#f0e6f2" stroke="#6c3483" stroke-width="1.3" stroke-dasharray="3 2">
+      <animate attributeName="stroke-width" values="1.3;2.6;1.3;1.3" keyTimes="0;0.12;0.28;1" dur="3s" repeatCount="indefinite"/>
+    </rect>
+    <text x="11" y="24" font-size="6.5" fill="#6c3483" font-weight="600" letter-spacing="0.12em">META</text>
+    <!-- Inner loop: E fixed in the inner sense; but the WHOLE inner structure is modifiable by outer. Show T pulsing AFTER outer pulse. -->
+    <rect x="22" y="26" width="26" height="14" rx="2" fill="none" stroke="#6c3483" stroke-width="1"/>
+    <text x="35" y="36" text-anchor="middle" font-size="8.5" font-weight="600" fill="#6c3483">E</text>
+    <rect x="80" y="26" width="26" height="14" rx="2" fill="#dcc3e4" stroke="#6c3483" stroke-width="1">
+      <animate attributeName="fill" values="#dcc3e4;#f0e0f6;#dcc3e4" dur="3s" keyTimes="0;0.15;1" repeatCount="indefinite" begin="1.2s"/>
+    </rect>
+    <text x="93" y="36" text-anchor="middle" font-size="8.5" font-weight="600" fill="#141414">T</text>
+    <path d="M 48 29 Q 64 21 80 29" fill="none" stroke="#6c3483" stroke-width="0.9" marker-end="url(#cm-ar-purple)"/>
+    <path d="M 80 37 Q 64 45 48 37" fill="none" stroke="#6c3483" stroke-width="0.9" marker-end="url(#cm-ar-purple)"/>
+    <text x="64" y="62" text-anchor="middle" font-size="8.5" fill="#a2a09a" font-style="italic">outer modifies inner</text>
   </g>
 
   <!-- ═════════ PHYSICS STRIP ═════════ -->
@@ -950,7 +967,6 @@
       <line x1="0" y1="12" x2="0" y2="17" stroke="#9a3f35" stroke-width="1"/>
       <line x1="28" y1="12" x2="28" y2="17" stroke="#9a3f35" stroke-width="1"/>
       <line x1="55" y1="12" x2="55" y2="17" stroke="#9a3f35" stroke-width="1"/>
-      <text x="0" y="30" text-anchor="middle" font-size="7.5" fill="#9a3f35" font-style="italic" letter-spacing="0.1em">reality</text>
       <line x1="0" y1="-16" x2="0" y2="12" stroke="#9a3f35" stroke-width="0.8" stroke-dasharray="2 2">
         <animate attributeName="x1" values="-45;45;0;-25;25;-45" dur="5s" repeatCount="indefinite"/>
       </line>
