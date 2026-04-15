@@ -628,6 +628,102 @@
 
 <aside><strong>Who this is for.</strong> If you're new to the area, read top-to-bottom — it's self-contained. If you know RL and have built LLM agents, skim §1; if you've also been following the self-evolving-agents literature, skim §2 as well. Either way, §3 is where the insight is.</aside>
 
+<figure class="fig-wide">
+<svg viewBox="0 0 920 440" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Framework concept map">
+  <!-- Header pill -->
+  <rect x="340" y="10" width="240" height="46" rx="23" fill="#141414"/>
+  <text x="460" y="31" text-anchor="middle" font-size="12" font-weight="700" fill="#fafaf7" letter-spacing="0.12em">THE FRAMEWORK</text>
+  <text x="460" y="48" text-anchor="middle" font-size="10.5" fill="#b8b0a0" font-style="italic">at a glance</text>
+
+  <!-- Connector lines -->
+  <path d="M 460 56 L 460 80 M 240 80 L 680 80 M 240 80 L 240 100 M 680 80 L 680 100" stroke="#a2a09a" stroke-width="1" fill="none"/>
+
+  <!-- §2 CLASSIFICATION panel -->
+  <g>
+    <rect x="30" y="100" width="420" height="330" rx="10" fill="#faf6ed" stroke="#a07b28" stroke-width="1.3"/>
+    <text x="240" y="128" text-anchor="middle" font-size="12" font-weight="700" fill="#a07b28" letter-spacing="0.1em">§2 · CLASSIFICATION</text>
+    <text x="240" y="146" text-anchor="middle" font-size="11" fill="#8a6a30" font-style="italic">what the system is</text>
+
+    <!-- TARGET -->
+    <rect x="52" y="170" width="180" height="240" rx="6" fill="#ffffff" stroke="#a07b28" stroke-width="0.7"/>
+    <text x="142" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#141414" letter-spacing="0.06em">TARGET</text>
+    <text x="142" y="214" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">what evolves</text>
+    <line x1="80" y1="228" x2="204" y2="228" stroke="#e7e4dd" stroke-width="1"/>
+
+    <text x="142" y="254" text-anchor="middle" font-size="11" fill="#141414">Model</text>
+    <text x="142" y="278" text-anchor="middle" font-size="11" fill="#141414">Harness</text>
+    <text x="142" y="302" text-anchor="middle" font-size="11" fill="#141414">Context</text>
+    <text x="142" y="326" text-anchor="middle" font-size="11" fill="#141414">Environment</text>
+
+    <line x1="80" y1="358" x2="204" y2="358" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="142" y="378" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">the component that</text>
+    <text x="142" y="392" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">changes across iterations</text>
+
+    <!-- EVOLVER -->
+    <rect x="248" y="170" width="180" height="240" rx="6" fill="#ffffff" stroke="#a07b28" stroke-width="0.7"/>
+    <text x="338" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#141414" letter-spacing="0.06em">EVOLVER</text>
+    <text x="338" y="214" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">who does the evolving</text>
+    <line x1="276" y1="228" x2="400" y2="228" stroke="#e7e4dd" stroke-width="1"/>
+
+    <text x="338" y="254" text-anchor="middle" font-size="11" font-weight="500" fill="#141414">Capacity</text>
+    <text x="338" y="268" text-anchor="middle" font-size="10" fill="#6e6e6e">E1 · E2 · E3</text>
+
+    <text x="338" y="294" text-anchor="middle" font-size="11" font-weight="500" fill="#141414">Reference</text>
+    <text x="338" y="308" text-anchor="middle" font-size="10" fill="#6e6e6e">R1 … R6</text>
+
+    <text x="338" y="334" text-anchor="middle" font-size="11" font-weight="500" fill="#141414">Mechanism</text>
+    <text x="338" y="348" text-anchor="middle" font-size="10" fill="#6e6e6e">M1 … M5</text>
+
+    <line x1="276" y1="358" x2="400" y2="358" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="338" y="378" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">three facets of</text>
+    <text x="338" y="392" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">the thing doing the work</text>
+  </g>
+
+  <!-- §3 DYNAMICS panel -->
+  <g>
+    <rect x="470" y="100" width="420" height="330" rx="10" fill="#eef4f0" stroke="#34795f" stroke-width="1.3"/>
+    <text x="680" y="128" text-anchor="middle" font-size="12" font-weight="700" fill="#34795f" letter-spacing="0.1em">§3 · DYNAMICS</text>
+    <text x="680" y="146" text-anchor="middle" font-size="11" fill="#2a553b" font-style="italic">how the loop behaves</text>
+
+    <!-- TOPOLOGY -->
+    <rect x="492" y="170" width="180" height="240" rx="6" fill="#ffffff" stroke="#34795f" stroke-width="0.7"/>
+    <text x="582" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#141414" letter-spacing="0.06em">TOPOLOGY</text>
+    <text x="582" y="214" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">loop shape</text>
+    <line x1="520" y1="228" x2="644" y2="228" stroke="#e7e4dd" stroke-width="1"/>
+
+    <text x="582" y="250" text-anchor="middle" font-size="10.5" fill="#141414"><tspan fill="#6e6e6e" font-weight="500">T1</tspan>  open</text>
+    <text x="582" y="268" text-anchor="middle" font-size="10.5" fill="#141414"><tspan fill="#23405e" font-weight="500">T2</tspan>  single-target</text>
+    <text x="582" y="286" text-anchor="middle" font-size="10.5" fill="#141414"><tspan fill="#a73825" font-weight="500">T3</tspan>  self-referential</text>
+    <text x="582" y="304" text-anchor="middle" font-size="10.5" fill="#141414"><tspan fill="#8a5e10" font-weight="500">T4</tspan>  co-evolving</text>
+    <text x="582" y="322" text-anchor="middle" font-size="10.5" fill="#141414"><tspan fill="#6c3483" font-weight="500">T5</tspan>  nested</text>
+
+    <line x1="520" y1="358" x2="644" y2="358" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="582" y="378" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">how the feedback</text>
+    <text x="582" y="392" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">loop is wired</text>
+
+    <!-- PHYSICS -->
+    <rect x="688" y="170" width="180" height="240" rx="6" fill="#ffffff" stroke="#34795f" stroke-width="0.7"/>
+    <text x="778" y="196" text-anchor="middle" font-size="12" font-weight="700" fill="#141414" letter-spacing="0.06em">PHYSICS</text>
+    <text x="778" y="214" text-anchor="middle" font-size="10.5" fill="#6e6e6e" font-style="italic">three forces</text>
+    <line x1="716" y1="228" x2="840" y2="228" stroke="#e7e4dd" stroke-width="1"/>
+
+    <text x="778" y="254" text-anchor="middle" font-size="11" font-weight="500" fill="#b5731a">Ratchet</text>
+    <text x="778" y="268" text-anchor="middle" font-size="9.5" fill="#6e6e6e" font-style="italic">what accumulates</text>
+
+    <text x="778" y="294" text-anchor="middle" font-size="11" font-weight="500" fill="#34795f">Entropy</text>
+    <text x="778" y="308" text-anchor="middle" font-size="9.5" fill="#6e6e6e" font-style="italic">source of variation</text>
+
+    <text x="778" y="334" text-anchor="middle" font-size="11" font-weight="500" fill="#9a3f35">Grounding</text>
+    <text x="778" y="348" text-anchor="middle" font-size="9.5" fill="#6e6e6e" font-style="italic">anchor to reality</text>
+
+    <line x1="716" y1="358" x2="840" y2="358" stroke="#e7e4dd" stroke-width="1"/>
+    <text x="778" y="378" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">all three required</text>
+    <text x="778" y="392" text-anchor="middle" font-size="9.5" fill="#a2a09a" font-style="italic">for a loop to compound</text>
+  </g>
+</svg>
+<figcaption><span class="fig-label">Figure 1.</span> The framework at a glance. <strong>§2</strong> classifies a system's <em>structure</em> (what changes, and who changes it). <strong>§3</strong> analyzes its <em>dynamics</em> (how the loop is wired, and what keeps it compounding rather than plateauing). Every concept on this map is developed in its own section.</figcaption>
+</figure>
+
 <!-- ─── PUZZLE ─── -->
 <h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Three systems, three different things evolving</h2>
 
@@ -741,7 +837,7 @@
     <text x="140" y="320" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">that does the rewriting is also editable.</text>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 1.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). Meta-Harness evolves the code wrapping the model (the model is frozen). HyperAgents evolves the agent and the procedure that modifies the agent. The framework developed below makes these three coordinates explicit.</figcaption>
+<figcaption><span class="fig-label">Figure 2.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). Meta-Harness evolves the code wrapping the model (the model is frozen). HyperAgents evolves the agent and the procedure that modifies the agent. The framework developed below makes these three coordinates explicit.</figcaption>
 </figure>
 
 <hr>
@@ -802,7 +898,7 @@
   <text x="512" y="172" text-anchor="middle" font-size="11" font-style="italic" fill="#2a553b">changes at runtime</text>
   <text x="512" y="186" text-anchor="middle" font-size="10" fill="#2a553b">(Reflexion, Voyager, …)</text>
 </svg>
-<figcaption><span class="fig-label">Figure 2.</span> Four components. The reward function is part of the Environment: it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
+<figcaption><span class="fig-label">Figure 3.</span> Four components. The reward function is part of the Environment: it is <em>R</em> in the MDP tuple <code>(S, A, P, R, γ)</code>, not a harness component. Systems like Eureka that evolve reward functions are modifying the environment, not the agent.</figcaption>
 </figure>
 
 <h3>What "self-evolving" means</h3>
@@ -943,7 +1039,7 @@
   <line x1="40" y1="322" x2="860" y2="322" stroke="#e7e4dd" stroke-width="1" marker-end="url(#ea)"/>
   <text x="450" y="316" text-anchor="middle" font-size="10.5" fill="#a2a09a" font-style="italic" letter-spacing="0.04em">autonomy &amp; information richness rise  ·  the evolver becomes more like an agent in its own right</text>
 </svg>
-<figcaption><span class="fig-label">Figure 3.</span> The evolver itself has Model / Harness / Context structure. Three levels cover most of the field. Within a target type, systems can differ dramatically in evolver capacity, and this difference often decides whether they produce real work or just reshuffle.</figcaption>
+<figcaption><span class="fig-label">Figure 4.</span> The evolver itself has Model / Harness / Context structure. Three levels cover most of the field. Within a target type, systems can differ dramatically in evolver capacity, and this difference often decides whether they produce real work or just reshuffle.</figcaption>
 </figure>
 
 <h4>Reference <em>— what does the evolver read?</em></h4>
@@ -1122,7 +1218,7 @@
   <line x1="40" y1="250" x2="840" y2="250" stroke="#e7e4dd" stroke-width="1" marker-end="url(#tpar)"/>
   <text x="440" y="244" text-anchor="middle" font-size="10.5" fill="#a2a09a" font-style="italic" letter-spacing="0.04em">each topology strictly subsumes the previous  ·  ceiling rises, stability cost rises</text>
 </svg>
-<figcaption><span class="fig-label">Figure 4.</span> <strong>E</strong> = evolver, <strong>T</strong> = target. Each topology strictly subsumes the previous. Most papers that claim "recursive self-improvement" operate at T2, not T3. Draw the loop to check.</figcaption>
+<figcaption><span class="fig-label">Figure 5.</span> <strong>E</strong> = evolver, <strong>T</strong> = target. Each topology strictly subsumes the previous. Most papers that claim "recursive self-improvement" operate at T2, not T3. Draw the loop to check.</figcaption>
 </figure>
 
 <h4>T1 <em>· open loop</em></h4>
@@ -1196,7 +1292,7 @@
     <text x="224" y="348" font-size="10" fill="#a73825" font-style="italic">✗ weak → drift / reward hacking</text>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 5.</span> The minimal feature set of a compounding self-evolving loop. Each force has a named implementation in ML systems and a predictable failure mode when absent.</figcaption>
+<figcaption><span class="fig-label">Figure 6.</span> The minimal feature set of a compounding self-evolving loop. Each force has a named implementation in ML systems and a predictable failure mode when absent.</figcaption>
 </figure>
 
 <h4>Ratchet <em>— what accumulates?</em></h4>
@@ -1479,6 +1575,12 @@
         var tag = (p.tagName || '').toLowerCase();
         if (tag === 'script' || tag === 'style') return NodeFilter.FILTER_REJECT;
         if (p.classList && p.classList.contains('tag-def')) return NodeFilter.FILTER_REJECT;
+        // Skip anything inside SVG — HTML spans don't work there and break rendering.
+        var n = p;
+        while (n) {
+          if (n.namespaceURI === 'http://www.w3.org/2000/svg') return NodeFilter.FILTER_REJECT;
+          n = n.parentNode;
+        }
         return NodeFilter.FILTER_ACCEPT;
       }
     });
