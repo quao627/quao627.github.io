@@ -541,7 +541,7 @@
 <p class="h1-sub">Classification, Topology, and Physics</p>
 <p class="dek">An anatomy of self-evolving agents — and what comes next.</p>
 <div class="byline">
-  <span>Self-evolving agents · 63 works · 2022–2026</span>
+  <span>Self-evolving agents · 67 works · 2022–2026</span>
   <span>April 2026</span>
 </div>
 </header>
@@ -557,7 +557,7 @@
 <li><a href="#challenges"><span class="num">§4</span><span>Open challenges</span></a></li>
 <li><a href="#closing"><span class="num">§5</span><span>Closing</span></a></li>
 <li><a href="#method"><span class="num">§A</span><span>How to analyze a paper</span></a></li>
-<li><a href="#master"><span class="num">§B</span><span>Master table of 63 works</span></a></li>
+<li><a href="#master"><span class="num">§B</span><span>Master table of 67 works</span></a></li>
 </ol>
 </nav>
 
@@ -1172,13 +1172,21 @@
 <h3>Stabilizing T3 and T4 at scale</h3>
 <p>T3 and T4 can in principle transcend their starting capability. Both are fragile. We have existence proofs (DGM, Absolute Zero) but no theory of when they're stable.</p>
 
-<h3>Composition of discovered artifacts</h3>
-<p>AlphaEvolve discovers algorithms. Those algorithms do not feed back into AlphaEvolve 2 as primitives. Each campaign starts from a fixed library. Closing this loop — discovered components becoming the substrate for future discovery — would add a second compounding mechanism on top of the verifier-generator engine. Voyager does this at skill-level; AlphaEvolve does not yet do it at algorithm-level. The first serious attempt will matter.</p>
+<h3>Internalizing hindsight</h3>
+<p>A self-evolving system gets much of its signal from what didn't work — failed attempts, surprising observations, corrections. The question is what the system <em>does</em> with that signal: where hindsight lands determines how far it can compound. Three paths, in rough order of increasing ambition and difficulty.</p>
+
+<p><strong>Into context.</strong> Reflexion writes reflections into an episodic buffer; ExpeL distills cross-task insights into a retrievable library; Voyager builds a skill library keyed by content. Hindsight lives in retrievable text or code. This is the most practical path and the most populated quadrant of the field. Its ceiling is what the context window can hold and what retrieval can surface — Reflexion flattens on long horizons, and skill libraries saturate as they grow and retrieval noise rises.</p>
+
+<p><strong>Into weights.</strong> STaR, ReST, ReST<sup>EM</sup>, V-STaR, RISE, Self-Rewarding LMs, Absolute Zero distill their own outputs — filtered by a verifier or reward — back into the substrate via SFT or RL. In principle this escapes the context ceiling: hindsight becomes part of the model itself, not something retrieved alongside it. In practice, the empirical question is wide open. Several of these plateau after two or three iterations — Self-Rewarding is the clearest published case — and no one has yet shown self-distillation compounding across many rounds without an external source of fresh signal. <strong>Whether hindsight-distillation sustains compounding gains is one of the most important unresolved empirical questions in the field.</strong></p>
+
+<p><strong>Into primitives.</strong> AlphaEvolve discovers algorithms; those algorithms do not feed back into AlphaEvolve 2 as primitives. Each campaign starts from a fixed library. Closing this loop — discovered components re-entering the substrate as building blocks — would add a second compounding mechanism on top of the verifier-generator engine. Voyager does this at skill level; AlphaEvolve does not yet do it at algorithm level. The first serious attempt at algorithm-level composition will matter.</p>
+
+<p>The common thread: a self-evolving system compounds only to the extent that what it discovers becomes available to what it does next. The three paths have different ceilings and different open problems, and the field's long-run ceiling is set by how many of them are working at once.</p>
 
 <h3>Compounding T5</h3>
 <p>PromptBreeder shows T5 tooling works at small scale. HyperAgents shows it can be built with agentic self-modification. Nobody has demonstrated <em>compounding</em> T5 — where improvements at the meta-level measurably accelerate object-level progress. </p>
 
-<p>This one experiment — demonstrating or falsifying compounding T5 — is probably the single most important empirical question in self-evolving agents. Everything else is variations on it.</p>
+<p></p>
 
 <hr>
 
@@ -1290,7 +1298,7 @@
 <hr>
 
 <!-- ─── APPENDIX B ─── -->
-<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 63 works</h2>
+<h2 id="master"><span class="section-num">§B · Reference</span>Master table of 67 works</h2>
 
 <small>Grouped by target. Tagged <em>evolver · reference · mechanism · topology</em>. Keys in §2 and §3.</small>
 
@@ -1307,6 +1315,10 @@
 <tr><td>Agent Q</td><td>'24</td><td>E2</td><td>R2+R3</td><td>M5+M1</td><td>T2</td></tr>
 <tr><td>RAGEN</td><td>'25</td><td>E2</td><td>R3</td><td>M5</td><td>T2</td></tr>
 <tr><td>ARPO</td><td>'25</td><td>E2</td><td>R3</td><td>M5</td><td>T2</td></tr>
+<tr><td>ReST</td><td>'23</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
+<tr><td>ReST<sup>EM</sup></td><td>'23</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
+<tr><td>V-STaR</td><td>'24</td><td>E1</td><td>R1</td><td>M5</td><td>T4·lite</td></tr>
+<tr><td>RISE</td><td>'24</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
 <tr><td>Absolute Zero</td><td>'25</td><td>E1</td><td>R1</td><td>M5</td><td>T4</td></tr>
 <tr><td>TTT-Discover</td><td>'26</td><td>E1</td><td>R1</td><td>M5</td><td>T2</td></tr>
 
