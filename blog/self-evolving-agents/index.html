@@ -681,7 +681,6 @@
 <div class="tldr-head">TL;DR</div>
 <p>A self-evolving agent is a <strong>feedback loop</strong> with two parts: a <strong>target</strong> (what gets evolved) and an <strong>evolver</strong> (the thing doing the evolving, which itself has Model / Harness / Context structure, and varies sharply in capacity, what it reads, and what operation it performs).</p>
 <p>Two <strong>lenses</strong> go further: <strong>loop topology</strong> (T1 through T5, from open-loop to co-evolving to nested) and <strong>the physics</strong>: a loop compounds iff it has all three of <em>ratchet</em>, <em>entropy</em>, <em>grounding</em>.</p>
-<p><strong>Most of the framework is RL vocabulary.</strong> Self-play is T4, meta-RL is T5, replay buffers are a ratchet. What's new traces to one thing: <strong>LLMs made the agent's internals (code, prompts, trajectories) legible and editable by the evolver itself.</strong> Everything distinctively modern (harness-as-target, context as a durable artifact, agentic evolvers, code-generation mechanism, LLM-as-judge) is downstream of that. See <a href="#why-llms">§1</a> for the causal claim and <a href="#rl-map">§C</a> for the RL concept-by-concept correspondence.</p>
 <p>One asymmetry, cheap verifier + strong generator, is doing most of the work in modern self-evolution. <strong>Extending the field outside verifier-cheap domains</strong> is the hard open problem.</p>
 </section>
 
