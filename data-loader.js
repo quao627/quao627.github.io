@@ -93,12 +93,12 @@ function loadPublicationsData() {
     const papersList = document.querySelector('.papers-list');
     if (papersList && PUBLICATIONS_DATA.selectedWorks) {
         papersList.innerHTML = PUBLICATIONS_DATA.selectedWorks.map(paper => {
-            const linkButtons = ['paper','code','project','video','demo']
+            const linkButtons = ['paper','code','project','video','demo','poster']
                 .filter(key => paper.links && (key in paper.links))
                 .map((type) => {
                     const url = paper.links[type];
-                    const icons = { paper: 'fa-file-pdf', code: 'fab fa-github', project: 'fa-globe', video: 'fa-video', demo: 'fa-rocket' };
-                    const labels = { paper: 'Paper', code: 'Code', project: 'Project', video: 'Video', demo: 'Demo' };
+                    const icons = { paper: 'fa-file-pdf', code: 'fab fa-github', project: 'fa-globe', video: 'fa-video', demo: 'fa-rocket', poster: 'fa-image' };
+                    const labels = { paper: 'Paper', code: 'Code', project: 'Project', video: 'Video', demo: 'Demo', poster: 'Poster' };
                     const isComing = !url || url === '#' || url === '';
                     if (isComing) {
                         return `<span class="paper-link-disabled"><i class="fas ${icons[type] || 'fa-link'}"></i> ${labels[type] || type}: Coming soon</span>`;

@@ -12,7 +12,8 @@ const PUBLICATIONS_DATA = {
                 paper: "https://arxiv.org/abs/2506.15841",
                 code: "https://github.com/MIT-MI/MEM1",
                 project: "https://mit-mi.github.io/mem1-site/",
-                video: "https://drive.google.com/file/d/1jiVTdCokBwkHOJPnI4xKNLeWaXixvAow/view?usp=sharing"
+                video: "https://drive.google.com/file/d/1jiVTdCokBwkHOJPnI4xKNLeWaXixvAow/view?usp=sharing",
+                poster: "posters/mem1-poster.pdf"
             },
             media: [
                 { name: "MarkTechPost", url: "https://www.marktechpost.com/2025/06/26/mit-and-nus-researchers-introduce-mem1-a-memory-efficient-framework-for-long-horizon-language-agents/" },
