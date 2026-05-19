@@ -17,7 +17,7 @@
     --accent:      #a73825;
     --accent-soft: #f6e5df;
     --code-bg:     #f1efe7;
-    --ratchet:     #b5731a;
+    --retention:   #b5731a;
     --entropy:     #34795f;
     --grounding:   #9a3f35;
     --model:       #8e3a24;
@@ -676,7 +676,7 @@
 </ol>
 </nav>
 
-<aside><strong>Who this is for.</strong> If you're new to the area, read top-to-bottom; it's self-contained. If you know RL and have built LLM agents, skim §1 and §2; §3 is where the framework insight is. Appendix §C is a quick RL reference: a concept-by-concept dictionary, and the five places where self-evolving agents do something RL didn't.</aside>
+<aside><strong>Who this is for.</strong> If you're new to the area, read top-to-bottom; it's self-contained. If you know RL and have built LLM agents, skim §1 and §2; §3 is where the framework insight is. Appendix §C is a quick RL reference: a concept-by-concept dictionary mapping RL onto the framework.</aside>
 
 <figure class="fig-wide">
 <svg viewBox="0 0 920 620" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Framework concept map — fully animated">
@@ -932,11 +932,11 @@
   <text x="50" y="480" font-size="11" font-weight="700" fill="#34795f" letter-spacing="0.12em">PHYSICS</text>
   <text x="130" y="480" font-size="10" fill="#6e6e6e" font-style="italic">three forces</text>
 
-  <!-- RATCHET: accumulating staircase -->
+  <!-- RETENTION: accumulating staircase -->
   <g transform="translate(50, 496)">
     <rect x="0" y="0" width="260" height="106" rx="8" fill="#faf0e2" stroke="#b5731a" stroke-width="1.3"/>
-    <text x="130" y="23" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b5731a" letter-spacing="0.1em">RATCHET</text>
-    <text x="130" y="38" text-anchor="middle" font-size="9.5" fill="#6e6e6e" font-style="italic">what accumulates</text>
+    <text x="130" y="23" text-anchor="middle" font-size="11.5" font-weight="700" fill="#b5731a" letter-spacing="0.08em">RETENTION</text>
+    <text x="130" y="38" text-anchor="middle" font-size="9.5" fill="#6e6e6e" font-style="italic">what persists</text>
     <g transform="translate(55, 88)">
       <line x1="-5" y1="0" x2="160" y2="0" stroke="#b5731a" stroke-width="0.7" opacity="0.4" stroke-dasharray="1.5 2"/>
       <rect x="0" y="-6" width="28" height="6" fill="#b5731a" opacity="0">
@@ -1016,13 +1016,13 @@
     </g>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 1.</span> The framework, animated. A self-evolving system is a feedback loop between an <strong>evolver</strong> and a <strong>target</strong> (an agent embedded in an environment; any of its components can be what evolves). The loop has a <strong>topology</strong> (its shape) and is kept alive by three <strong>forces</strong> (ratchet / entropy / grounding). Every concept is developed in §2 and §3.</figcaption>
+<figcaption><span class="fig-label">Figure 1.</span> The framework, animated. A self-evolving system is a feedback loop between an <strong>evolver</strong> and a <strong>target</strong> (an agent embedded in an environment; any of its components can be what evolves). The loop has a <strong>topology</strong> (its shape) and is kept alive by three <strong>forces</strong> (retention / entropy / grounding). Every concept is developed in §2 and §3.</figcaption>
 </figure>
 
 <!-- ─── PUZZLE ─── -->
 <h2 id="puzzle"><span class="section-num">§0 · The puzzle</span>Three systems, three different things evolving</h2>
 
-<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>Meta-Harness</strong>, and <strong>HyperAgents</strong>. They share the same building blocks: LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
+<p class="section-open">Three of the most-discussed self-evolving systems of the past year: <strong>AlphaEvolve</strong>, <strong>Meta-Harness</strong>, and the <strong>Darwin Gödel Machine</strong>. They share the same building blocks: LLMs as intelligent operators, automated evaluators, iterative loops of modify-score-select. On paper, they are the same kind of system.</p>
 
 <p>They are doing categorically different things.</p>
 
@@ -1030,12 +1030,12 @@
 
 <p><strong>Meta-Harness</strong> evolves <em>the harness</em>. The code wrapping an LLM (context assembly, retrieval, prompt construction, tool orchestration) is iteratively rewritten by an agentic proposer. The model stays fixed. What improves is the operating system around it.</p>
 
-<p><strong>HyperAgents</strong> evolves <em>the meta-process</em>. The task agent modifies itself (that is already DGM's trick); the meta-procedure that does the modification is itself editable. What improves is not only the agent but the procedure by which the agent improves.</p>
+<p>The <strong>Darwin Gödel Machine</strong> evolves <em>the agent itself</em>. The agent rewrites its own code (scaffolding, tools, control flow), keeps an archive of every variant, and selects on benchmark score. The evolver and the target are the same system. What improves is the agent that is doing the improving.</p>
 
-<p>Three systems. Three different targets of evolution. Three different loop topologies. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This blog is about seeing the differences, and about two questions that decide whether a self-evolving system actually <em>compounds</em>: how is the loop wired, and what keeps it from collapsing.</p>
+<p>Three systems. Three different targets of evolution: a population of solutions, the harness around a fixed model, and the agent's own code. The surface similarity hides the differences. A casual reader calls them all "self-evolving." This blog is about seeing the differences, and about two questions that decide whether a self-evolving system actually <em>compounds</em>: how is the loop wired, and what keeps it from collapsing.</p>
 
 <figure class="fig-wide">
-<svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve, Meta-Harness, HyperAgents — three self-evolving systems">
+<svg viewBox="0 0 920 340" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="AlphaEvolve, Meta-Harness, Darwin Gödel Machine — three self-evolving systems">
   <defs>
     <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#3a3a3a"/></marker>
     <marker id="arrB" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#a73825"/></marker>
@@ -1100,17 +1100,13 @@
 
   <line x1="630" y1="90" x2="630" y2="290" stroke="#e7e4dd" stroke-width="1" stroke-dasharray="4,4"/>
 
-  <!-- ─── Panel 3: HyperAgents ─── -->
+  <!-- ─── Panel 3: Darwin Gödel Machine ─── -->
   <g transform="translate(640, 0)">
-    <text x="140" y="32" text-anchor="middle" font-size="13" font-weight="600" fill="#6c3483" letter-spacing="0.06em">HYPERAGENTS</text>
-    <text x="140" y="50" text-anchor="middle" font-size="11" font-style="italic" fill="#6e6e6e">evolves <tspan font-weight="600" fill="#6c3483" font-style="normal">the meta-process</tspan>  ·  T5</text>
-
-    <!-- Outer dashed meta-procedure frame -->
-    <rect x="6" y="78" width="268" height="208" rx="8" fill="none" stroke="#6c3483" stroke-width="1.4" stroke-dasharray="4,3"/>
-    <text x="140" y="72" text-anchor="middle" font-size="10.5" font-style="italic" fill="#6c3483">meta-procedure (also editable)</text>
+    <text x="140" y="32" text-anchor="middle" font-size="12" font-weight="600" fill="#6c3483" letter-spacing="0.02em">DARWIN GÖDEL MACHINE</text>
+    <text x="140" y="50" text-anchor="middle" font-size="11" font-style="italic" fill="#6e6e6e">evolves <tspan font-weight="600" fill="#6c3483" font-style="normal">the agent itself</tspan>  ·  T3</text>
 
     <!-- Self-modifies label for Agent — placed above the self-loop arc -->
-    <text x="140" y="98" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">self-modifies</text>
+    <text x="140" y="98" text-anchor="middle" font-size="10" font-style="italic" fill="#a73825">rewrites its own code</text>
 
     <!-- Self-loop above Agent (apex pushed lower so text sits cleanly above) -->
     <path d="M 100 134 Q 100 110 140 110 Q 180 110 180 134" fill="none" stroke="#a73825" stroke-width="1.3" marker-end="url(#arrB)"/>
@@ -1128,11 +1124,11 @@
     <path d="M 140 184 L 140 224" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
     <path d="M 90 246 Q 40 246 40 184 Q 40 157 80 157" stroke="#3a3a3a" stroke-width="1.3" fill="none" marker-end="url(#arrA)"/>
 
-    <text x="140" y="304" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">Agent rewrites itself; the procedure</text>
-    <text x="140" y="320" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">that does the rewriting is also editable.</text>
+    <text x="140" y="304" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">The agent rewrites its own code.</text>
+    <text x="140" y="320" text-anchor="middle" font-size="11" fill="#6c3483" font-style="italic">Evolver and target are the same system.</text>
   </g>
 </svg>
-<figcaption><span class="fig-label">Figure 2.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). Meta-Harness evolves the code wrapping the model (the model is frozen). HyperAgents evolves the agent and the procedure that modifies the agent. The framework developed below makes these three coordinates explicit.</figcaption>
+<figcaption><span class="fig-label">Figure 2.</span> Three systems sharing the same building blocks. AlphaEvolve evolves a population of programs (the model is frozen). Meta-Harness evolves the code wrapping the model (the model is frozen). The Darwin Gödel Machine evolves the agent's own code, with the evolver and target being the same system. The framework developed below makes these three coordinates explicit.</figcaption>
 </figure>
 
 <hr>
@@ -1198,7 +1194,7 @@
 
 <h3>What "self-evolving" means</h3>
 
-<p>A system is self-evolving if, during operation, it causes at least one of its four components (Model, Harness, Context, or Environment) to systematically change based on its own outputs and the signal it receives. Deliberately broad, but tight enough to exclude one-shot LLM calls, human-driven iteration, and plain supervised training.</p>
+<p>A system is self-evolving if, during operation, it causes at least one of its four components (Model, Harness, Context, or Environment) to systematically change, based on its own outputs and the signal it receives, in order to better achieve a specified goal. The change is directed: components are updated toward an objective, not altered at random.</p>
 
 <h3 id="why-llms">Why it took LLMs: <em>the shift that made this a distinct field</em></h3>
 
@@ -1208,7 +1204,7 @@
 
 <p>The <strong>harness</strong> becomes an addressable target, because the evolver can now edit code; in RL there is no harness, a policy is monolithic. <strong>Context</strong> becomes a durable, inspectable, composable artifact (a skill library, a reflection buffer, a workspace), whereas RL's only runtime memory is recurrent hidden state or an opaque replay buffer. The <strong>evolver itself can be an agent</strong> (E3) that reads source, traces, and documentation; RL's outer loops are fixed procedures that consume only gradients or fitness scores. <strong>Code generation (M3)</strong> becomes a mechanism, replacing Gaussian-noise mutation with semantic mutation. And <strong>LLM-as-judge</strong> becomes a new weak-but-scalable grounding source, sitting between environment reward and human feedback.</p>
 
-<p>Topology (T1–T5) and physics (ratchet / entropy / grounding) carry over unchanged from RL. The structural novelties live entirely on the <em>target</em> and <em>evolver</em> axes. Appendix <a href="#rl-map">§C</a> works out the correspondence concept-by-concept.</p>
+<p>Topology (T1–T5) and physics (retention / entropy / grounding) carry over unchanged from RL. The structural novelties live entirely on the <em>target</em> and <em>evolver</em> axes. Appendix <a href="#rl-map">§C</a> works out the correspondence concept-by-concept.</p>
 
 <hr>
 
@@ -1272,7 +1268,7 @@
 <thead><tr><th style="width:14%">Lens</th><th>Question it answers</th><th style="width:24%">Resolves</th></tr></thead>
 <tbody>
 <tr><td><strong>Topology</strong></td><td>How is the feedback loop wired? Can the evolver modify itself? Are there nested or co-evolving loops?</td><td><em>What's the ceiling?</em></td></tr>
-<tr><td><strong>Physics</strong></td><td>Are ratchet, entropy, and grounding all present and strong?</td><td><em>Will it stall, collapse, or drift?</em></td></tr>
+<tr><td><strong>Physics</strong></td><td>Are retention, entropy, and grounding all present and strong?</td><td><em>Will it stall, collapse, or drift?</em></td></tr>
 </tbody>
 </table>
 
@@ -1417,12 +1413,12 @@
 <p><em>T4's risk.</em> Collapse into uninformative equilibria. The two agents can find a mutually-satisfying-but-useless local optimum. Stability is an art.</p>
 
 <h4>T5 <em>· nested / multi-scale</em></h4>
-<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. HyperAgents extends DGM with a self-modifying meta-procedure. T5 is the one topology where the outer loop could accelerate the inner; whether existing systems achieve durable acceleration is still an open empirical question (see §4).</p>
+<p>A loop operating on another loop. PromptBreeder evolves task-prompts (inner) and mutation-prompts (outer): it gets better at getting better. T5 is the one topology where the outer loop could accelerate the inner; whether existing systems achieve durable acceleration is still an open empirical question (see §4).</p>
 
-<p>What defines T5 is the <em>outer meta-loop</em>, not what sits inside it. The diagram nests a T3 for concreteness, but the inner loop can be any of the previous topologies (T2, T3, or T4). PromptBreeder, for instance, nests a T2 inner loop; HyperAgents nests a T3.</p>
+<p>What defines T5 is the <em>outer meta-loop</em>, not what sits inside it. The diagram nests a T3 for concreteness, but the inner loop can be any of the previous topologies (T2, T3, or T4) — PromptBreeder, for instance, nests a T2 inner loop.</p>
 
 <!-- 3.2 PHYSICS -->
-<h3>Lens 2 · The physics: ratchet, entropy, grounding</h3>
+<h3>Lens 2 · The physics: retention, entropy, grounding</h3>
 
 <p>Even with a good topology and a real information source, loops can stall, collapse, or drift. For a loop to <em>compound</em> (reliably get better rather than plateauing or degenerating), it needs three forces in balance.</p>
 
@@ -1441,11 +1437,11 @@
   <text x="420" y="190" text-anchor="middle" font-size="12.5" font-weight="600" fill="#141414" letter-spacing="-0.01em">a loop</text>
   <text x="420" y="208" text-anchor="middle" font-size="12.5" font-weight="600" fill="#141414" letter-spacing="-0.01em">that compounds</text>
 
-  <!-- Ratchet -->
+  <!-- Retention -->
   <g>
     <rect x="12" y="28" width="290" height="108" rx="7" fill="#faf0e2" stroke="#b5731a" stroke-width="1.4"/>
-    <text x="32" y="54" font-size="16" font-weight="700" fill="#b5731a" letter-spacing="0.02em">RATCHET</text>
-    <text x="32" y="80" font-size="12.5" fill="#141414" font-weight="600">What accumulates?</text>
+    <text x="32" y="54" font-size="16" font-weight="700" fill="#b5731a" letter-spacing="0.02em">RETENTION</text>
+    <text x="32" y="80" font-size="12.5" fill="#141414" font-weight="600">What persists?</text>
     <text x="32" y="98" font-size="11" fill="#3a3a3a">weights · archive · skill library ·</text>
     <text x="32" y="112" font-size="11" fill="#3a3a3a">quality-diversity bins</text>
     <text x="32" y="128" font-size="10" fill="#a73825" font-style="italic">✗ weak → catastrophic forgetting</text>
@@ -1473,9 +1469,9 @@
 <figcaption><span class="fig-label">Figure 5.</span> The minimal feature set of a compounding self-evolving loop. Each force has a named implementation in ML systems and a predictable failure mode when absent.</figcaption>
 </figure>
 
-<h4>Ratchet: <em>what accumulates?</em></h4>
-<p>A device that permits motion in only one direction. Biology has Muller's ratchet; culture has Tomasello's ratchet effect. In a self-evolving loop, the ratchet is whatever makes good modifications persist and bad ones reversible. Without it, gains and losses are symmetric and capability random-walks.</p>
-<p>Common ratchets, weakest to strongest: gradient descent on weights (permanent but compressed); quality-diversity archive (best-in-niche); append-only textual memory or skill library (gated by verification); version-controlled archive of all history (perfect; storage-heavy). <em>Failure mode when weak:</em> catastrophic forgetting.</p>
+<h4>Retention: <em>what persists across iterations?</em></h4>
+<p>The mechanism that makes good modifications stick and bad ones wash out — asymmetrically, so the loop keeps gains instead of rediscovering them each round (the cultural ratchet effect). Without that asymmetry, gains and losses are symmetric and capability random-walks.</p>
+<p>Common retention mechanisms, weakest to strongest: gradient descent on weights (permanent but compressed); quality-diversity archive (best-in-niche); append-only textual memory or skill library (gated by verification); version-controlled archive of all history (perfect; storage-heavy). <em>Failure mode when weak:</em> catastrophic forgetting.</p>
 
 <h4>Entropy: <em>what new information enters the loop per iteration</em></h4>
 <p>Not variation alone. A loop with high temperature but no information entering per iteration is a closed thermodynamic system. Iterate it N times and you just resample the base model's distribution. That is <strong>test-time scaling dressed as evolution</strong>, not evolution. Real entropy is information flowing across the loop's boundary, and it requires two preconditions coupled: <em>variation</em> (so there are candidates to distinguish: sampling temperature, mutation, quality-diversity pressure, self-play, novelty rewards) and a <em>grounding signal</em> that certifies which variants add something the base model couldn't have produced on its own.</p>
@@ -1484,9 +1480,9 @@
 <h4>Grounding: <em>what anchors to reality?</em></h4>
 <p>A signal from outside the loop that the loop cannot manipulate. In a self-evolving system, grounding is what keeps candidate quality tied to the world rather than to the loop's own self-assessment. Strongest to weakest: deterministic verifier (code, proofs); environment reward (strong but gameable); human oversight (strong, doesn't scale); self-judgment (weakest; doesn't bring in anything the base model didn't already have). <em>Failure mode when weak:</em> drift, reward hacking, self-delusion.</p>
 
-<div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three (ratchet, entropy, grounding) are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
+<div class="claim"><span class="label">Claim</span>A self-evolving loop compounds if and only if all three (retention, entropy, grounding) are present and strong. Remove or weaken any one, and the loop degenerates into a predictable failure mode.</div>
 
-<p>This is a design checklist. When you read a self-evolving-agent paper, <em>name the three forces explicitly</em>. Where is the ratchet? What is the entropy source? What is the grounding? If you can't answer any one clearly, either you don't understand the system or the system doesn't work the way the paper implies. The second case is common.</p>
+<p>This is a design checklist. When you read a self-evolving-agent paper, <em>name the three forces explicitly</em>. Where is the retention? What is the entropy source? What is the grounding? If you can't answer any one clearly, either you don't understand the system or the system doesn't work the way the paper implies. The second case is common.</p>
 
 <p>Strong grounding is where the field's biggest wins live. AlphaEvolve, FunSearch, DGM, STaR, Absolute Zero, Eureka all operate in domains with <strong>cheap verifiers and strong generators</strong>. That one asymmetry is the engine driving most of modern self-evolution: LLMs propose, a cheap evaluator filters, and the loop extracts from the generator what no single inference pass could have surfaced. Extending the field to domains without cheap automated grounding is the hard open problem.</p>
 
@@ -1511,7 +1507,7 @@
 <p><em>Does hindsight transfer across domains?</em> AlphaEvolve discovers algorithms on one problem. Those algorithms do not become primitives for AlphaEvolve's next campaign on a different problem; each run starts fresh. Voyager composes skills within one Minecraft environment, but those skills do not carry to a new environment. Closing this loop, so that insights compound across problems and not just across iterations of the same problem, would add a second compounding mechanism on top of the verifier-generator engine.</p>
 
 <h3>Does T5 actually accelerate?</h3>
-<p>PromptBreeder shows T5 tooling works at small scale. HyperAgents (DGM-H) goes further: it makes the meta-level modification procedure itself modifiable, and reports preliminary evidence that meta-improvements transfer across domains. Seeded with a hyperagent from prior paper-review and robotics-reward runs, DGM-H reaches a higher median score on held-out Olympiad math grading than DGM-H starting fresh. The effect is modest and not statistically significant (p&nbsp;&gt;&nbsp;0.05), and the measured acceleration is across a single transfer step, not across many rounds of one continuous loop. Whether T5 sustains strong, repeated acceleration at scale is the question to watch.</p>
+<p>PromptBreeder shows T5 tooling works at small scale: an outer loop that evolves the mutation-prompts driving an inner loop. But "works" here means the nested loop runs and improves, not that the outer loop measurably <em>accelerates</em> the inner one. No system has yet demonstrated durable, repeated meta-level acceleration across many rounds of one continuous loop. Whether T5 delivers compounding speedup at scale, rather than a one-time tooling gain, is the question to watch.</p>
 
 <hr>
 
@@ -1520,11 +1516,11 @@
 
 <p class="section-open">The field is in a confusing phase. Every paper uses some subset of the same tooling (LLMs as mutation operators, archives, automated evaluators), and every paper claims some flavor of "self-improvement." The surface similarity hides real structural difference.</p>
 
-<p>The structural difference is what this blog is about. A T2 system can be brilliant and a T3 system can be trivial; the topology determines what's possible, not the cleverness of the components. A loop with strong ratchet and grounding but no entropy will look impressive for a few iterations and then freeze. A loop with weak grounding will reshuffle latent knowledge into apparent novelty and then plateau.</p>
+<p>The structural difference is what this blog is about. A T2 system can be brilliant and a T3 system can be trivial; the topology determines what's possible, not the cleverness of the components. A loop with strong retention and grounding but no entropy will look impressive for a few iterations and then freeze. A loop with weak grounding will reshuffle latent knowledge into apparent novelty and then plateau.</p>
 
 <p>Distinguishing these failure modes from genuine compounding is the work the field has yet to do.</p>
 
-<div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology and the three forces that keep it productive (ratchet, entropy, grounding) are what determine whether it actually evolves, or just reshuffles forever in place.</div>
+<div class="claim"><span class="label">If you remember one thing</span>A self-evolving agent is not a model with tricks attached. It is a feedback loop. The loop's topology and the three forces that keep it productive (retention, entropy, grounding) are what determine whether it actually evolves, or just reshuffles forever in place.</div>
 
 <hr>
 
@@ -1540,7 +1536,7 @@
 <li><strong>Reference.</strong> What does the outer loop look at? R1–R6.</li>
 <li><strong>Mechanism.</strong> What procedure produces the variant? M1–M5.</li>
 <li><strong>Draw the loop. Identify the topology.</strong> T1–T5. Does the evolver modify itself?</li>
-<li><strong>Name the three forces.</strong> Ratchet. Entropy. Grounding. Explicitly.</li>
+<li><strong>Name the three forces.</strong> Retention. Entropy. Grounding. Explicitly.</li>
 <li><strong>Ceiling.</strong> What bounds this system? What would raise it?</li>
 </ol>
 
@@ -1555,7 +1551,7 @@
 <dt>Reference</dt><dd><em>R5</em> · island-based program archive</dd>
 <dt>Mechanism</dt><dd><em>M4 + M3</em> · evolutionary search, LLM-as-mutator generating code</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed Gemini, fixed evaluator, fixed algorithm; only the population evolves.</dd>
-<dt>Forces</dt><dd>Ratchet = island archive · Entropy = island topology + temperature + mutation prompt diversity · Grounding = deterministic evaluator</dd>
+<dt>Forces</dt><dd>Retention = island archive · Entropy = island topology + temperature + mutation prompt diversity · Grounding = deterministic evaluator</dd>
 <dt>Ceiling</dt><dd>Bounded by Gemini's ability to propose good candidates. AlphaEvolve is a Gemini-amplifier, not a Gemini-transcender.</dd>
 </dl>
 </div>
@@ -1569,7 +1565,7 @@
 <dt>Reference</dt><dd><em>R5</em> · archive of all historical agent variants</dd>
 <dt>Mechanism</dt><dd><em>M4 + M3</em> · evolutionary archive of self-rewritten code</dd>
 <dt>Topology</dt><dd><em>T3</em>. Evolver = target. The agent modifies itself.</dd>
-<dt>Forces</dt><dd>Ratchet = full archive (load-bearing: bad self-modifications cannot wipe prior progress) · Entropy = archive diversity + LLM temperature · Grounding = SWE-bench</dd>
+<dt>Forces</dt><dd>Retention = full archive (load-bearing: bad self-modifications cannot wipe prior progress) · Entropy = archive diversity + LLM temperature · Grounding = SWE-bench</dd>
 <dt>Ceiling</dt><dd>Unresolved. T3 can in principle transcend the base model; DGM has not yet convincingly demonstrated it.</dd>
 </dl>
 </div>
@@ -1583,7 +1579,7 @@
 <dt>Reference</dt><dd><em>R1</em> on both sides. Weights are the memory.</dd>
 <dt>Mechanism</dt><dd><em>M5</em> · RL applied to a model playing two roles</dd>
 <dt>Topology</dt><dd><em>T4</em>. Proposer ↔ solver. Same base model, different heads.</dd>
-<dt>Forces</dt><dd>Ratchet = model weights · Entropy = stochastic task proposal + RL rollout variance · Grounding = code executor</dd>
+<dt>Forces</dt><dd>Retention = model weights · Entropy = stochastic task proposal + RL rollout variance · Grounding = code executor</dd>
 <dt>Ceiling</dt><dd>Bounded by what the proposer can imagine, itself bounded by pretraining. Extends within a distribution; unclear whether it escapes the base model's envelope.</dd>
 </dl>
 </div>
@@ -1597,7 +1593,7 @@
 <dt>Reference</dt><dd><em>R6</em> · textual memory of prior reflections</dd>
 <dt>Mechanism</dt><dd><em>M2</em> · LLM writes a new reflection each iteration; the memory grows via R6</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed LLM, accumulating memory.</dd>
-<dt>Forces</dt><dd>Ratchet = memory buffer · Entropy = each retry is fresh-sampled · Grounding = task outcome from env</dd>
+<dt>Forces</dt><dd>Retention = memory buffer · Entropy = each retry is fresh-sampled · Grounding = task outcome from env</dd>
 <dt>Ceiling</dt><dd>Bounded by what the LLM can profitably use as in-context memory. Finite context and reflection noise mean Reflexion cannot compound indefinitely.</dd>
 </dl>
 </div>
@@ -1611,7 +1607,7 @@
 <dt>Reference</dt><dd><em>R6</em> · content-indexed library of insights and trajectories, retrieved by task similarity at inference</dd>
 <dt>Mechanism</dt><dd><em>M2</em> · LLM-as-extractor distills reusable insights; the library accumulates <em>across</em> tasks, not just within one (unlike Reflexion)</dd>
 <dt>Topology</dt><dd><em>T2</em>. Fixed LLM. The library is the thing that changes.</dd>
-<dt>Forces</dt><dd>Ratchet = experience library (append-only, LLM-gated insight distillation) · Entropy = diversity of training tasks + sampled trajectory outcomes · Grounding = task outcome on training tasks</dd>
+<dt>Forces</dt><dd>Retention = experience library (append-only, LLM-gated insight distillation) · Entropy = diversity of training tasks + sampled trajectory outcomes · Grounding = task outcome on training tasks</dd>
 <dt>Ceiling</dt><dd>Bounded by what insights the LLM can extract from trajectories and re-surface as relevant when retrieved. Library quality degrades as size grows and retrieval noise rises, a ceiling shared by all R6 systems.</dd>
 </dl>
 </div>
@@ -1672,7 +1668,7 @@
 <tr><td><span class="id">T2</span></td><td><strong>Single-target loop.</strong> Fixed evolver iteratively modifies a target, informed by a signal.</td><td>OPRO, AlphaEvolve, Reflexion, Voyager</td></tr>
 <tr><td><span class="id">T3</span></td><td><strong>Self-referential.</strong> The evolver <em>is</em> the target.</td><td>DGM, STOP, SICA</td></tr>
 <tr><td><span class="id">T4</span></td><td><strong>Co-evolution.</strong> Two agents drive each other (often proposer ↔ solver).</td><td>Absolute Zero, SPIN, WebRL</td></tr>
-<tr><td><span class="id">T5</span></td><td><strong>Nested / multi-scale.</strong> A loop operating on another loop — inner loop can be any of T2/T3/T4.</td><td>PromptBreeder, HyperAgents</td></tr>
+<tr><td><span class="id">T5</span></td><td><strong>Nested / multi-scale.</strong> A loop operating on another loop — inner loop can be any of T2/T3/T4.</td><td>PromptBreeder</td></tr>
 </tbody>
 </table>
 
@@ -1725,7 +1721,6 @@
 <tr><td>MAS-ZERO</td><td>'25</td><td>E2</td><td>R4</td><td>M1</td><td>T2</td></tr>
 <tr><td>Confucius Code Agent</td><td>'25</td><td>E3</td><td>R3</td><td>M3</td><td>T2</td></tr>
 <tr><td>Meta-Harness</td><td>'26</td><td>E3</td><td>R3</td><td>M3</td><td>T2</td></tr>
-<tr><td>HyperAgents</td><td>'26</td><td>E3</td><td>R5</td><td>M3</td><td>T5</td></tr>
 
 <tr class="group-row"><td colspan="6">Context · Memory: runtime memory grows</td></tr>
 <tr><td>Reflexion</td><td>'23</td><td>E1</td><td>R6</td><td>M2</td><td>T2</td></tr>
@@ -1772,11 +1767,7 @@
 <!-- ─── APPENDIX C: RL REFERENCE ─── -->
 <h2 id="rl-map"><span class="section-num">§C · RL reference</span>Concepts, and where they differ</h2>
 
-<p class="section-open">The framework is paradigm-agnostic: most concepts in §2 and §3 have direct RL antecedents. This appendix is a quick reference for readers coming from RL. <strong>§C.1</strong> maps common RL concepts onto the framework's cells. <strong>§C.2</strong> names the five places where self-evolving agents do something RL didn't have, and what each difference buys.</p>
-
-<h3>§C.1 <em>· Common RL concepts, mapped</em></h3>
-
-<p>Not exhaustive, just the concepts most readers will bring from an RL background. Rows are ordered from the most basic MDP primitives to the more structured methods.</p>
+<p class="section-open">The framework is paradigm-agnostic: most concepts in §2 and §3 have direct RL antecedents. This appendix maps the concepts most readers will bring from an RL background onto the framework's cells. Rows run from the most basic MDP primitives to the more structured methods. (The five places where self-evolving agents do something RL had no vocabulary for are covered in <a href="#why-llms">§1</a>.)</p>
 
 <table class="rl-map-table">
 <thead><tr><th style="width:30%">RL concept</th><th style="width:26%">Framework location</th><th>Self-evolving counterpart</th></tr></thead>
@@ -1785,7 +1776,7 @@
 <tr><td>Trajectory <code>τ</code></td><td>Context</td><td>Rollout transcript, reflections, workspace</td></tr>
 <tr><td>Reward <code>R</code></td><td>grounding; Env·Rewards target</td><td>Deterministic verifier; task-completion score</td></tr>
 <tr><td>Value function <code>V</code>, <code>Q</code></td><td>—</td><td>mostly absent; occasional learned judges</td></tr>
-<tr><td>Replay buffer</td><td>Reference R3; ratchet</td><td>Archive of past candidates (AlphaEvolve, DGM)</td></tr>
+<tr><td>Replay buffer</td><td>Reference R3; retention</td><td>Archive of past candidates (AlphaEvolve, DGM)</td></tr>
 <tr><td>Exploration (temperature, ε-greedy, novelty)</td><td>entropy force</td><td>Sampling temperature; QD bins; island diversity</td></tr>
 <tr><td>Policy gradient / PPO / DQN</td><td>M5 · T2</td><td>SFT / DPO / RL on self-generated data (STaR, SDFT)</td></tr>
 <tr><td>Imitation learning / behavior cloning</td><td>M5 on offline data</td><td>SFT on human demonstrations</td></tr>
@@ -1794,34 +1785,13 @@
 <tr><td>Reward shaping / inverse RL</td><td>Env·Rewards target</td><td>Eureka, Auto MC-Reward</td></tr>
 <tr><td>Curriculum / PCG / domain randomization</td><td>Env·Tasks target</td><td>OMNI-EPIC, AgentGen, Absolute Zero's proposer</td></tr>
 <tr><td>Self-play</td><td>T4 topology</td><td>Absolute Zero, SPIN, WebRL</td></tr>
-<tr><td>Meta-learning (MAML, RL², PEARL)</td><td>T5 topology</td><td>PromptBreeder, HyperAgents</td></tr>
+<tr><td>Meta-learning (MAML, RL², PEARL)</td><td>T5 topology</td><td>PromptBreeder</td></tr>
 <tr><td>Hierarchical RL / options</td><td>T5·lite</td><td>Skills-as-options (Voyager)</td></tr>
 <tr><td>Model-based RL / world model</td><td>auxiliary grounding</td><td>LLM as imagined-rollout oracle (Tree of Thoughts)</td></tr>
 </tbody>
 </table>
 
-<p>The pattern is that topology (<em>T1–T5</em>), mechanism (<em>M1–M5</em>), and the three physics forces accommodate almost every RL method without strain. The differences live on the target and evolver axes.</p>
-
-<h3>§C.2 <em>· What self-evolving agents do that RL didn't</em></h3>
-
-<p>Five structural differences, each a consequence of the shift in <a href="#why-llms">§1</a>. They are the places where the framework accommodates moves classical RL had no natural vocabulary for, and each buys something specific.</p>
-
-<h4>① The harness is a new target</h4>
-<p>A policy network is monolithic. There is no separate scaffold around the weights to evolve. An LLM agent's prompts, tool schemas, retrieval logic, and orchestration code form a distinct, code-level layer, and that layer is a legitimate evolution target on its own. DGM, ADAS, and Meta-Harness all evolve the harness with the base model frozen. <em>What it buys:</em> improvement without retraining the model, often much cheaper and more interpretable.</p>
-
-<h4>② Context can be a durable textual artifact</h4>
-<p>RL's runtime memory is either the hidden state of a recurrent policy or an opaque replay buffer. LLM agents can read and write structured skill libraries (Voyager), reflection buffers (Reflexion), and content-indexed workspaces (CORAL, EvolveR). <em>What it buys:</em> memory that is human-inspectable, composable, and directly transferable between agent instances; "copy this skill file to the new agent" is now a meaningful operation.</p>
-
-<h4>③ The evolver can itself be an agent (E3)</h4>
-<p>RL's outer loops consume only a gradient or a fitness score. An agentic evolver reads the source it is modifying, inspects stack traces, runs tests, and retrieves documentation before proposing a change. Meta-Harness and AI Scientist operate this way. <em>What it buys:</em> a qualitatively wider information pipe into the outer loop: the evolver can <em>notice</em> things a fixed procedure cannot.</p>
-
-<h4>④ Code generation as a mechanism (M3)</h4>
-<p>RL mutation is Gaussian noise; RL learning is gradient descent. Neither produces new code. M3, an LLM generating a novel algorithm, tool, or scaffold, is a different kind of operation: the variant is already in the target's native representation and carries semantics the base mechanism cannot see. <em>What it buys:</em> mutation with semantic priors. FunSearch and AlphaEvolve find things random search cannot, and the reason is entirely the mutation operator.</p>
-
-<h4>⑤ LLM-as-judge, a new grounding source</h4>
-<p>Classical RL had two grounding sources: environment reward and human feedback. LLM-as-judge is neither. It scales cheaply like an environment reward and covers domains where no MDP reward exists, but is gameable in ways an environment reward cannot be. <em>What it buys:</em> partial coverage of verifier-poor domains, at the cost of being, by the physics in §3, the weakest and riskiest grounding source.</p>
-
-<aside><strong>One-line summary.</strong> §C.1 is the dictionary: most RL concepts translate directly into the framework's vocabulary. §C.2 is what's not in the dictionary: five specific moves the LLM substrate enabled that RL had no direct name for. Topology and physics apply to both paradigms unchanged; the novelty is concentrated on target and evolver.</aside>
+<p>The pattern is that topology (<em>T1–T5</em>), mechanism (<em>M1–M5</em>), and the three physics forces accommodate almost every RL method without strain. The differences live on the target and evolver axes — the five specific moves the LLM substrate enabled, which classical RL had no direct name for, are enumerated in <a href="#why-llms">§1</a>.</p>
 
 <footer>
 <p style="margin-bottom: 14px;"><strong style="color: var(--ink-2);">Acknowledgments &amp; sources.</strong> This blog draws on two recent surveys (<a href="https://arxiv.org/abs/2507.21046">arXiv:2507.21046</a>, <a href="https://arxiv.org/abs/2508.07407">arXiv:2508.07407</a>) and the <a href="https://github.com/EvoAgentX/Awesome-Self-Evolving-Agents">Awesome-Self-Evolving-Agents</a> bibliography; many of the more recent works cited here I tracked down independently. The framework developed here (the <em>target / reference / mechanism</em> classification, and the two lenses of <em>topology</em> and <em>physics</em>) is my own framing.</p>
