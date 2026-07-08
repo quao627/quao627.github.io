@@ -878,6 +878,16 @@ h2 {
     object-position: center;
 }
 
+.paper-image.paper-image-icon {
+    min-height: 180px;
+}
+
+.paper-image.paper-image-icon i {
+    font-size: 64px;
+    color: var(--grey);
+    opacity: 0.4;
+}
+
 .paper-info {
     flex: 1;
 }

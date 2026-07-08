@@ -30,6 +30,8 @@ const ABOUT_DATA = {
     ],
     
     researchInterests: [
+        "How can we build <strong>self-evolving multi-agent systems</strong> for <strong>open-ended discovery</strong>? In particular, how can populations of agents coordinate — through shared memory, collaboration, or even <strong>economic interactions</strong> — to accumulate knowledge and sustain long-horizon exploration beyond what any single agent can achieve?",
+
         "From model architecture to training methods, how can we build AI that can engage in <strong>real-time seamless interaction</strong> with humans? In particular, how can we design AI that can <strong>see, listen, think, and speak</strong> with native <strong>temporal alignment</strong>?",
         
         "Given <strong>video generation models</strong>' ability to represent space and time, can they help solve challenging problems in <strong>multimodal and social reasoning</strong>?",

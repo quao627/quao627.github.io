@@ -67,6 +67,9 @@ function loadNewsData() {
                 'AlphaOPT': 'alphaopt',
                 'SPARKLE': 'sparkle',
                 'Sparkle': 'sparkle',
+                'CORAL': 'coral',
+                'FrontierOR': 'frontieror',
+                'Economy of Minds': 'eom',
             };
             let linked = content;
             for (const [name, id] of Object.entries(paperMap)) {
@@ -116,11 +119,13 @@ function loadPublicationsData() {
                 mediaSection = `<div class="paper-media"><i class="fas fa-newspaper"></i> Media: ${mediaLinks}</div>`;
             }
             
+            const imageHtml = paper.image
+                ? `<div class="paper-image"><img src="${paper.image}" alt="${paper.title}" /></div>`
+                : `<div class="paper-image paper-image-icon"><i class="fas ${paper.icon || 'fa-file-alt'}"></i></div>`;
+
             return `
                 <div class="paper-item" id="${paper.id}">
-                    <div class="paper-image">
-                        <img src="${paper.image}" alt="${paper.title}" />
-                    </div>
+                    ${imageHtml}
                     <div class="paper-info">
                         <h3>${paper.title}</h3>
                         <div class="paper-meta">
