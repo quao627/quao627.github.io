@@ -2,7 +2,7 @@
 const ABOUT_DATA = {
     profile: {
         name: "Ao Qu",
-        title: "PhD Student @ <a href='https://idss.mit.edu/' target='_blank'>MIT IDSS</a>",
+        title: "PhD Student @ <a href='https://idss.mit.edu/' target='_blank'>MIT IDSS</a><br>Seattle these days · <a href='https://seed.bytedance.com/' target='_blank'>ByteDance Seed</a>",
         image: "profile.jpg",
         badges: [
             { name: "SMART M3S", url: "https://m3s.mit.edu/", logo: "logos/m3s.avif" },
