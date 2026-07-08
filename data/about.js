@@ -24,7 +24,7 @@ const ABOUT_DATA = {
         
         "I enjoy thinking about how AI can learn from interacting with its environment — an interest that has carried me from early-stage <strong>reinforcement learning</strong> to today's <strong>agents</strong>. The grand mission I am pursuing is to figure out how agents can function as individuals in society and <strong>continually evolve</strong> to specialize their skills, eventually creating novel contributions to society — <strong>scientific discovery in the broadest sense</strong>: uncovering social principles, advancing scientific laws, and improving engineering systems.",
 
-        "Along the way, my goal is to build socially aware AI systems and advance their application in everyday life and societal systems. I envision a future where AI can adaptively and proactively <strong>perceive, reason, and communicate,</strong> seamlessly engaging with humans through rich multimodal interaction.",
+        "Along the way, I also care about the human side of this picture — building socially aware AI that can perceive, reason, and communicate naturally with people in everyday life.",
         
         "If you share similar research interests and would like to chat about research or collaboration, please feel free to reach out via <a href='mailto:qua@mit.edu'>email</a>.",
         
