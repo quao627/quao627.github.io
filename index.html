@@ -1,211 +1,49 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ao Qu - MIT PhD Student</title>
-    <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  </head>
-  <body>
-    <!-- Ubuntu-style Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <!-- <span class="site-logo">🎓</span> -->
-            <span class="app-name">aoqu@mit</span>
-        </div>
-        <div class="top-bar-center">
-            <div class="status-info">
-                <span class="status-badge">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Active</span>
-                </span>
-                <span class="location-info">📍 Boston these days · ✈️ Heading to San Diego this December</span>
-            </div>
-        </div>
-        <div class="top-bar-right">
-            <span class="time" id="current-time"></span>
-        </div>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex, nofollow">
+<title>Under Maintenance</title>
+<style>
+  html, body {
+    height: 100%;
+    margin: 0;
+    background: #0a0a12;
+    color: #e6e6f0;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  }
+  .wrap {
+    min-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    text-align: center;
+  }
+  h1 {
+    font-size: clamp(1.4rem, 3vw, 2rem);
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    background: linear-gradient(135deg, #00d4ff, #a855f7);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    margin: 0 0 12px;
+  }
+  p {
+    color: #9a9ab0;
+    margin: 0;
+    font-size: 0.95rem;
+  }
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div>
+      <h1>Site under maintenance</h1>
+      <p>Back soon.</p>
     </div>
-
-    <!-- Ubuntu-style Sidebar Launcher -->
-    <div class="sidebar">
-        <div class="launcher">
-            <a href="#home" class="launcher-icon active" title="About Me">
-                <i class="fas fa-home"></i>
-                <span class="launcher-text">About</span>
-            </a>
-            <a href="#news" class="launcher-icon" title="News">
-                <i class="fas fa-newspaper"></i>
-                <span class="launcher-text">News</span>
-            </a>
-            <a href="#research" class="launcher-icon" title="Research">
-                <i class="fas fa-flask"></i>
-                <span class="launcher-text">Research</span>
-            </a>
-            <a href="#people" class="launcher-icon" title="People & Network">
-                <i class="fas fa-users"></i>
-                <span class="launcher-text">People</span>
-            </a>
-        </div>
-    </div>
-
-    <!-- Main Content - Scrollable -->
-    <main class="main-content">
-        <!-- Home Section -->
-        <section id="home" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-user-circle"></i>
-                        About Me
-                    </div>
-                </div>
-                <div class="window-content terminal-content">
-                    <div class="terminal-output">
-                        <!-- Profile and Bio -->
-                        <div class="terminal-response" id="profile-bio-output">
-                            <!-- Content loaded from data/about.js -->
-                        </div>
-
-                        <!-- Research Interests -->
-                        <div class="terminal-response" id="research-output">
-                            <!-- Content loaded from data/about.js -->
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- News Section -->
-        <section id="news" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-newspaper"></i>
-                        News
-                    </div>
-                </div>
-                <div class="window-content">
-                <h2>Recent News</h2>
-                <div class="news-list">
-                    <!-- Content loaded from data/news.js -->
-                </div>
-            </div>
-            </div>
-        </section>
-
-        <!-- Research Section -->
-        <section id="research" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-flask"></i>
-                        Research
-                    </div>
-                </div>
-                <div class="window-content">
-                <h2>Selected Recent Works</h2>
-                <div class="section-note">* indicates equal contribution</div>
-                <div class="papers-list">
-                    <!-- Content loaded from data/publications.js -->
-                </div>
-
-                <h2 class="section-subtitle">Early Publications (Before 2023)</h2>
-                <ul class="simple-list">
-                    <!-- Content loaded from data/publications.js -->
-                </ul>
-            </div>
-            </div>
-        </section>
-
-        <!-- People Section -->
-        <section id="people" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-users"></i>
-                        People & Network
-                        </div>
-                    </div>
-                    <div class="window-content">
-                        <div class="people-grid">
-                            <!-- Content loaded from data/people.js -->
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </section>
-
-    </main>
-
-    <!-- Visitor Analytics Footer (Hidden for now, but links/scripts still active) -->
-    <footer class="visitor-footer" style="display: none;">
-        <div class="visitor-footer-content">
-            <!-- Inline Stats and Map -->
-            <div class="visitor-inline">
-                <!-- Stats on the side -->
-                <div class="visitor-stats-side">
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="visitor-counter">---</div>
-                        <div class="stat-mini-label">Visitors</div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="country-counter">---</div>
-                        <div class="stat-mini-label">Countries</div>
-                    </div>
-                </div>
-                
-                <!-- Map in the center -->
-                <div class="visitor-map-inline">
-                    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=zsHdgbYyiBRIcBn7zJhUndNwxu0z71pKTh0fCO_AoVo&cl=ffffff&w=a"></script>
-                </div>
-            </div>
-        </div>
-    </footer>
-
-    <!-- Google Analytics 4 (Replace YOUR_GA4_ID with your actual ID) -->
-    <!-- Get your ID from https://analytics.google.com -->
-    
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XGVM335K55"></script>
-    <script>
-      window.dataLayer = window.dataLayer || [];
-      function gtag(){dataLayer.push(arguments);}
-      gtag('js', new Date());
-      gtag('config', 'G-XGVM335K55');
-    </script>
-   
-
-    <!-- Load data files first -->
-    <script src="data/about.js"></script>
-    <script src="data/news.js"></script>
-    <script src="data/publications.js"></script>
-    <script src="data/people.js"></script>
-    
-    <!-- Then load the data into HTML -->
-    <script src="data-loader.js"></script>
-    
-    <!-- Finally run animations and interactions -->
-    <script src="script.js"></script>
-  </body>
+  </div>
+</body>
 </html>
