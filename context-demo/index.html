@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A real context window</title>
+<style>
+  :root{--bg:#ffffff;--elev:#fff;--ink:#141414;--ink2:#3a3a3a;--mute:#6e6e6e;--fade:#a2a09a;--rule:#e7e4dd;--soft:#f1efe9;--acc:#a73825;
+        --dev:#2b4663;--dev-f:#e4ecf4;--usr:#8a5e10;--usr-f:#fbf0d8;--env:#2d5540;--env-f:#e6efe6;--mod:#8e3a24;--mod-f:#f6e5df}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);font-family:"Inter","Helvetica Neue",-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+  body{display:flex;flex-direction:column;padding:22px 40px 18px;gap:12px}
+  .eyebrow{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--acc);font-weight:600;margin:0}
+  h1{font-family:"Iowan Old Style","Charter","Palatino",Georgia,serif;font-size:38px;line-height:1.05;letter-spacing:-.02em;font-weight:600;margin:4px 0 6px}
+  .meta{font-size:14px;color:var(--mute)} .meta b{color:var(--ink);font-weight:600} .meta code{font-family:Menlo,monospace;font-size:13px;background:var(--soft);padding:1px 6px;border-radius:4px;color:var(--ink)}
+  /* strips */
+  .strip{display:flex;border-radius:9px;overflow:hidden;background:#fff;border:1px solid var(--rule)}
+  #whole{height:54px} #zoom{height:84px}
+  .seg{position:relative;min-width:0;border-right:1.5px solid #fff;cursor:pointer;display:flex;align-items:center;justify-content:center;overflow:hidden;transition:opacity .35s ease,filter .2s}
+  .seg:hover{filter:brightness(.94)} .seg.sel{outline:3px solid var(--ink);outline-offset:-3px;z-index:2}
+  .seg.developer{background:var(--dev-f)} .seg.user{background:var(--usr-f)} .seg.environment{background:var(--env-f)} .seg.model{background:var(--mod-f)}
+  .seg.future{opacity:.12;pointer-events:none}
+  .seg .lab{font-size:12.5px;font-weight:600;color:var(--ink);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding:0 5px;text-align:center;line-height:1.25}
+  .seg .lab small{display:block;font-weight:400;color:var(--mute);font-size:11px}
+  #whole .seg .lab{font-size:12px} #whole .seg.task{background:repeating-linear-gradient(135deg,#f3f1ea 0 6px,#e9e6dd 6px 12px)}
+  .between{display:flex;justify-content:space-between;align-items:flex-end;font-size:12px;color:var(--mute);margin:4px 0 2px}
+  .between b{color:var(--ink);font-weight:600}
+  .zoomwrap{position:relative}
+  .cursor{position:absolute;top:12px;bottom:12px;width:4px;background:var(--ink);border-radius:2px;transition:left .35s ease;pointer-events:none}
+  /* controls */
+  .row{display:flex;align-items:center;gap:18px;flex-wrap:wrap;margin-top:2px}
+  .calls{display:flex;gap:6px;align-items:center}
+  .calls span{font-size:12.5px;color:var(--mute);margin-right:4px}
+  .calls button{font:inherit;font-size:13px;border:1px solid var(--rule);background:#fff;border-radius:6px;padding:5px 11px;cursor:pointer;color:var(--ink2)}
+  .calls button.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .count{font-family:"Iowan Old Style","Charter",Georgia,serif;font-size:26px;letter-spacing:-.01em} .count small{font-family:"Inter",sans-serif;font-size:12.5px;color:var(--mute);margin-left:8px}
+  .legend{display:flex;gap:20px;font-size:13px;color:var(--ink2);margin-left:auto;flex-wrap:wrap}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:3px;vertical-align:-2px;margin-right:6px;border:1px solid rgba(0,0,0,.12)}
+  .legend b{font-weight:600} .legend em{color:var(--mute);font-style:normal;margin-left:4px}
+  /* lower panels */
+  .lower{display:grid;grid-template-columns:1fr 340px;gap:16px;flex:1;min-height:0}
+  .panel{background:var(--elev);border:1px solid var(--rule);border-radius:10px;display:flex;flex-direction:column;min-height:0}
+  .panel .hd{padding:9px 16px;border-bottom:1px solid var(--rule);font-size:13px;color:var(--mute);display:flex;gap:14px;align-items:baseline;flex-wrap:wrap}
+  .panel .hd b{font-size:15px;color:var(--ink);font-weight:600}
+  .who{font-size:11px;letter-spacing:.1em;text-transform:uppercase;font-weight:600;padding:2px 7px;border-radius:4px}
+  .who.developer{background:var(--dev-f);color:var(--dev)} .who.user{background:var(--usr-f);color:var(--usr)} .who.environment{background:var(--env-f);color:var(--env)} .who.model{background:var(--mod-f);color:var(--mod)}
+  pre{margin:0;padding:12px 16px;overflow:auto;flex:1;font-family:Menlo,"SF Mono",monospace;font-size:12px;line-height:1.5;color:var(--ink2);white-space:pre-wrap;word-break:break-word}
+  .empty{padding:18px 16px;color:var(--fade);font-size:14px;font-style:italic}
+  .reply .hd b{color:var(--mod)}
+  .foot{font-size:11.5px;color:var(--fade)}
+</style>
+</head>
+<body>
+<div class="meta"><b>opencode</b> · <code id="m-model"></code> · <code id="m-task"></code></div>
+
+<div>
+  <div class="strip" id="whole"></div>
+  <div class="between"><span>whole window, to scale</span><span id="zoomlab"></span></div>
+  <div class="zoomwrap"><div class="strip" id="zoom"></div><div class="cursor" id="cursor"></div></div>
+</div>
+
+<div class="row">
+  <div class="calls" id="calls"><span>model call</span></div>
+  <div class="count"><span id="tok"></span><small id="tokinfo"></small></div>
+  <div class="legend" id="legend"></div>
+</div>
+
+<div class="lower">
+  <div class="panel" id="detail"></div>
+  <div class="panel reply" id="reply"></div>
+</div>
+
+<script src="context_demo_data.js"></script>
+<script>
+const D = window.CTX, S = D.segments, C = D.calls, N = C.length;
+const WHO = {developer:'developer', user:'user', environment:'environment', model:'the model'};
+const isPrefix = s => s.kind==='system' || s.kind==='tools';
+function widths(vals, floor){ const w = vals.map(v=>Math.max(floor, v)); const sum = w.reduce((a,b)=>a+b,0); return w.map(v=>100*v/sum); }
+const prefixTok = S.filter(isPrefix).reduce((a,s)=>a+s.tokens,0), taskTok = S.filter(s=>!isPrefix(s)).reduce((a,s)=>a+s.tokens,0);
+let call = N, sel = null;
+document.getElementById('m-model').textContent = D.meta.model;
+document.getElementById('m-task').textContent = D.meta.task.replace(/^"|"$/g,'');
+document.getElementById('zoomlab').textContent = `the task, zoomed · ≈${taskTok.toLocaleString()} of ${(prefixTok+taskTok).toLocaleString()} tokens`;
+
+function shortName(s){
+  if(s.who==='model') return s.name.replace('model: ','').replace('text + ','✎ ').replace('read + read','read ×2');
+  if(s.who==='environment') return s.name.replace(' result',' →');
+  if(s.kind==='user') return 'query';
+  return ({'environment':'env','available skills':'skills'})[s.name] || s.name;
+}
+// whole-window strip: prefix segments to scale, then one hatched block for the task
+const whole = document.getElementById('whole');
+const all = prefixTok + taskTok;
+const wholeSegs = S.filter(isPrefix); const wholeW = widths([...wholeSegs.map(s=>100*s.tokens/all), 100*taskTok/all], 5.2);
+wholeSegs.forEach((s,j)=>{
+  const d = document.createElement('div'); d.className='seg '+s.who; d.style.flex=`0 0 ${wholeW[j]}%`;
+  d.innerHTML=`<div class="lab">${shortName(s)}<small>≈${s.tokens} tok</small></div>`; d.title=`${s.name} · ≈${s.tokens} tokens`;
+  d.onclick=()=>select(S.indexOf(s)); whole.appendChild(d);
+});
+const taskBlock = document.createElement('div'); taskBlock.className='seg task'; taskBlock.style.flex=`0 0 ${wholeW[wholeW.length-1]}%`;
+taskBlock.innerHTML=`<div class="lab">the task<small>≈${taskTok} tok</small></div>`; taskBlock.title='zoomed below'; whole.appendChild(taskBlock);
+// zoomed strip: the conversation
+const zoom = document.getElementById('zoom');
+const zoomSegs = S.filter(s=>!isPrefix(s)); const zoomW = widths(zoomSegs.map(s=>100*s.tokens/taskTok), 4.5);
+zoomSegs.forEach((s,j)=>{
+  const i = S.indexOf(s);
+  const d = document.createElement('div'); d.className='seg '+s.who; d.dataset.i=i; d.style.flex=`0 0 ${zoomW[j]}%`;
+  d.innerHTML=`<div class="lab">${shortName(s)}<small>≈${s.tokens} tok</small></div>`; d.title=`${s.name} · ≈${s.tokens} tokens · enters at call ${s.at}`;
+  d.onclick=()=>select(i); zoom.appendChild(d);
+});
+const calls = document.getElementById('calls');
+C.forEach((c,k)=>{ const b=document.createElement('button'); b.textContent=k+1; b.onclick=()=>setCall(k+1); calls.appendChild(b); });
+
+function setCall(k){
+  call = k;
+  [...calls.querySelectorAll('button')].forEach((b,i)=>b.classList.toggle('on', i+1===k));
+  [...zoom.children].forEach(d=>d.classList.toggle('future', S[d.dataset.i].at > k));
+  const c = C[k-1];
+  document.getElementById('tok').textContent = c.prompt_tokens.toLocaleString() + ' tokens in';
+  document.getElementById('tokinfo').textContent = (c.cached? c.cached.toLocaleString()+' cached · ' : '') + c.completion_tokens + ' out';
+  let x = 0; [...zoom.children].forEach(d=>{ if(S[d.dataset.i].at<=k) x = d.offsetLeft + d.offsetWidth; });
+  document.getElementById('cursor').style.left = Math.min(x, zoom.getBoundingClientRect().width-4) + 'px';
+  const tot = {}; S.filter(s=>s.at<=k).forEach(s=>tot[s.who]=(tot[s.who]||0)+s.tokens); const vis = Object.values(tot).reduce((a,b)=>a+b,0);
+  document.getElementById('legend').innerHTML = Object.entries(WHO).map(([w,n])=>`<span><i class="seg ${w}"></i><b>${n}</b><em>${Math.round(100*(tot[w]||0)/vis)}%</em></span>`).join('');
+  const body = (c.text? c.text + '\n\n' : '') + c.tool_calls.map(t=>`→ tool call: ${t.name}\n${pretty(t.args)}`).join('\n\n');
+  document.getElementById('reply').innerHTML = `<div class="hd"><b>reply · call ${k}</b></div><pre>${esc(body)}</pre>`;
+  if(sel!==null && S[sel].at>k) select(null);
+}
+function pretty(a){ try{ return JSON.stringify(JSON.parse(a),null,1) }catch(e){ return a } }
+function select(i){
+  sel = i;
+  [...whole.children, ...zoom.children].forEach(d=>d.classList.remove('sel'));
+  const p = document.getElementById('detail');
+  if(i===null){ p.innerHTML = '<div class="hd"><b>click a segment</b></div>'; return; }
+  const s = S[i];
+  const el = isPrefix(s) ? whole.children[S.filter(isPrefix).indexOf(s)] : zoom.querySelector(`[data-i="${i}"]`); if(el) el.classList.add('sel');
+  const extra = s.tools ? ` · ${s.tools.length} tools: ${s.tools.join(', ')}` : '';
+  p.innerHTML = `<div class="hd"><b>${s.name}</b><span class="who ${s.who}">${WHO[s.who]}</span><span>≈${s.tokens} tokens${extra}</span></div><pre>${esc(s.text)}</pre>`;
+}
+function esc(t){ return t.replace(/[&<>]/g, c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c])); }
+addEventListener('keydown', e=>{ if(e.key==='ArrowRight'||e.key==='ArrowUp'){ if(call<N) setCall(call+1); else parent.postMessage({key:'ArrowRight'},'*'); e.preventDefault(); }
+  else if(e.key==='ArrowLeft'||e.key==='ArrowDown'){ if(call>1) setCall(call-1); else parent.postMessage({key:'ArrowLeft'},'*'); e.preventDefault(); }
+  else if(e.key==='Escape'){ select(null) } });
+addEventListener('resize', ()=>setCall(call));
+const H = Object.fromEntries(location.hash.slice(1).split('&').filter(Boolean).map(kv=>kv.split('=')));
+select(null); setCall(Math.min(N, Math.max(1, parseInt(H.call)||1)));
+if(H.sel!==undefined) select(parseInt(H.sel));
+</script>
+</body>
+</html>
