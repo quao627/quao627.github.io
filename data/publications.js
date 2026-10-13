@@ -143,34 +143,15 @@ const PUBLICATIONS_DATA = {
             }
         },
         {
-            id: 'suite',
-            title: "SUITE: Scaling Up Individualized Theory-of-Mind Evaluation in Large Language Models",
-            authors: "Zhenze Mo, Chance Jiajie Li, <strong>Ao Qu</strong>, Yuhan Tang, Luis Alberto Alonso Pastor, Kent Larson, Jinhua Zhao",
-            venue: "ToM4AI Workshop @ AAAI 2026",
-            icon: "fa-user-friends",
-            links: {
-                paper: "https://arxiv.org/abs/2603.18786"
-            }
-        },
-        {
             id: 'omnisapiens',
             title: "OmniSapiens: A Foundation Model for Social Behavior Processing via Heterogeneity-Aware Relative Policy Optimization",
             authors: "Keane Ong, Sabri Boughorbel, Luwei Xiao, Chanakya Ekbote, Wei Dai, <strong>Ao Qu</strong>, Jingyao Wu, Rui Mao, Ehsan Hoque, Erik Cambria, Gianmarco Mengaldo, Paul Pu Liang",
             venue: "ICML 2026",
             icon: "fa-heartbeat",
+            image: "paper-teasers/omnisapiens.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2602.10635",
                 code: "https://github.com/MIT-MI/human_behavior_atlas"
-            }
-        },
-        {
-            id: 'e3ad',
-            title: "E3AD: An Emotion-Aware Vision-Language-Action Model for Human-Centric End-to-End Autonomous Driving",
-            authors: "Yihong Tang, Haicheng Liao, Tong Nie, Junlin He, <strong>Ao Qu</strong>, Kehua Chen, Wei Ma, Zhenning Li, Lijun Sun, Chengzhong Xu",
-            venue: "CVPR 2026",
-            icon: "fa-car",
-            links: {
-                paper: "https://arxiv.org/abs/2512.04733"
             }
         },
         {
