@@ -4,149 +4,88 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Ao Qu · MIT</title>
-    <meta name="description" content="Ao Qu (瞿骜) is a PhD student at MIT IDSS working on self-evolving agents: experience-driven improvement, multi-agent evolution, benchmarks for scientific discovery, and infrastructure for self-improving agents.">
-    <meta property="og:title" content="Ao Qu · MIT">
-    <meta property="og:description" content="Self-evolving agents that learn from experience. PhD student at MIT IDSS.">
-    <meta property="og:image" content="https://quao627.github.io/profile.jpg">
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230e2a32'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23f2a48f' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
+    <meta name="description" content="Ao Qu (瞿骜), PhD student at MIT IDSS. Self-evolving agents, multi-agent evolution, benchmarks for scientific discovery, and infrastructure for self-improving agents.">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Instrument+Serif&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <script>document.documentElement.classList.add('js');</script>
   </head>
   <body>
-    <header class="site-nav" id="site-nav">
-        <div class="container nav-inner">
-            <a href="#about" class="brand">Ao Qu <span class="brand-zh">瞿骜</span></a>
-            <nav class="nav-links" aria-label="Sections">
-                <a href="#research">Research</a>
-                <a href="#experience">Experience</a>
-                <a href="#open-source">Open Source</a>
-                <a href="#writing">Writing</a>
+    <header class="topbar">
+        <div class="container topbar-inner">
+            <a href="#about" class="topbar-name">Ao Qu</a>
+            <nav class="topbar-nav" aria-label="Sections">
                 <a href="#news">News</a>
+                <a href="#research">Research</a>
+                <a href="#open-source">Open Source</a>
+                <a href="#blogs">Blogs</a>
+                <a href="#experience">Experience</a>
                 <a href="#publications">Publications</a>
                 <a href="#people">People</a>
             </nav>
         </div>
     </header>
 
-    <main>
-        <!-- Hero: content loaded from data/about.js -->
-        <section id="about" class="hero container"></section>
+    <main class="container">
+        <!-- Content loaded from data/about.js -->
+        <section id="about" class="intro"></section>
 
-        <!-- Now -->
-        <section id="now" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">Now</span>
-                <h2>What I'm working on</h2>
-            </div>
-            <div class="bento now-grid"></div>
+        <section id="news">
+            <h2>News</h2>
+            <ul class="news-list"></ul>
+            <button class="more-button" id="news-toggle" type="button"></button>
         </section>
 
-        <!-- Research areas -->
-        <section id="research" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">Research</span>
-                <h2>Research areas</h2>
-                <p class="section-aside">Click an area to filter publications</p>
-            </div>
-            <div class="areas-grid"></div>
+        <section id="research">
+            <h2>My Research</h2>
+            <h3>Research mission</h3>
+            <p class="mission"></p>
+            <h3>Questions I think about these days</h3>
+            <ol class="question-list"></ol>
+            <h3>Previous projects</h3>
+            <div class="area-list"></div>
         </section>
 
-        <!-- Experience + Honors -->
-        <section id="experience" class="section container">
-            <div class="bento">
-                <div class="card span-7">
-                    <div class="card-head">
-                        <span class="eyebrow">Experience</span>
-                    </div>
-                    <ol class="timeline"></ol>
-                </div>
-                <div class="card span-5" id="honors">
-                    <div class="card-head">
-                        <span class="eyebrow">Honors</span>
-                    </div>
-                    <ul class="honors-list"></ul>
-                </div>
-            </div>
+        <div class="cols">
+            <section id="open-source">
+                <h2>Open Source</h2>
+                <p class="note" data-note="openSource"></p>
+                <ul class="repo-list"></ul>
+            </section>
+            <section id="blogs">
+                <h2>Blogs</h2>
+                <p class="note" data-note="blogs"></p>
+                <ul class="blog-list"></ul>
+            </section>
+        </div>
+
+        <section id="experience">
+            <h2>Experience</h2>
+            <ul class="exp-list"></ul>
         </section>
 
-        <!-- Open source -->
-        <section id="open-source" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">Open Source</span>
-                <h2>Things you can run</h2>
-                <a class="section-aside link-arrow" href="https://github.com/quao627" target="_blank">GitHub profile <i class="fas fa-arrow-right"></i></a>
-            </div>
-            <div class="repo-grid"></div>
-        </section>
-
-        <!-- Writing -->
-        <section id="writing" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">Writing</span>
-                <h2>Blogs & long reads</h2>
-            </div>
-            <div class="writing-grid"></div>
-        </section>
-
-        <!-- News + Media -->
-        <section id="news" class="section container">
-            <div class="bento">
-                <div class="card span-8">
-                    <div class="card-head">
-                        <span class="eyebrow">News</span>
-                    </div>
-                    <ul class="news-list"></ul>
-                    <button class="text-button" id="news-toggle" type="button"></button>
-                </div>
-                <div class="card span-4" id="media">
-                    <div class="card-head">
-                        <span class="eyebrow">In the media</span>
-                    </div>
-                    <ul class="media-list"></ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Publications -->
-        <section id="publications" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">Publications</span>
-                <h2>Selected papers</h2>
-                <p class="section-aside">* equal contribution</p>
-            </div>
-            <div class="pub-filters" role="toolbar" aria-label="Filter publications by research area"></div>
+        <section id="publications">
+            <h2>Publications</h2>
+            <p class="note note-small">Selected recent work. * indicates equal contribution.</p>
             <div class="pub-list"></div>
-            <details class="early-pubs">
-                <summary><span>Earlier work (before 2023)</span><i class="fas fa-chevron-down"></i></summary>
+            <details class="early">
+                <summary>Earlier publications (before 2023)</summary>
                 <ul class="early-list"></ul>
             </details>
         </section>
 
-        <!-- People -->
-        <section id="people" class="section container">
-            <div class="section-head">
-                <span class="eyebrow">People</span>
-                <h2>People I work with</h2>
-            </div>
-            <div class="people-grid"></div>
+        <section id="people">
+            <h2>People</h2>
+            <p class="note" data-note="contact"></p>
+            <div class="people"></div>
         </section>
     </main>
 
-    <footer class="site-footer">
-        <div class="container">
-            <div class="contact-card"></div>
-            <div class="footer-bottom">
-                <span>© <span id="year"></span> Ao Qu</span>
-                <span>Last updated Oct 2026</span>
-            </div>
-        </div>
-
+    <footer class="container">
+        <div class="footer">Last updated Oct 2026</div>
         <!-- Visitor map (hidden; script kept for analytics) -->
-        <div class="visitor-map" style="display: none;">
+        <div style="display: none;">
             <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=zsHdgbYyiBRIcBn7zJhUndNwxu0z71pKTh0fCO_AoVo&cl=ffffff&w=a"></script>
         </div>
     </footer>

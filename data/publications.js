@@ -1,5 +1,4 @@
 // Publications and Research Data
-// areas: ids from ABOUT_DATA.researchAreas (used by the filter)
 // badges: kind "award" is highlighted; anything else renders as a quiet note
 const PUBLICATIONS_DATA = {
     selectedWorks: [
@@ -8,7 +7,6 @@ const PUBLICATIONS_DATA = {
             title: "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
             authors: "<strong>Ao Qu*</strong>, Han Zheng*, Zijian Zhou*, Yihao Yan, Yihong Tang, Shao Yong Ong, Fenglu Hong, Kaichen Zhou, Chonghe Jiang, Minwei Kong, Jiacheng Zhu, Xuan Jiang, Sirui Li, Cathy Wu, Bryan Kian Hsiang Low, Jinhua Zhao, Paul Pu Liang",
             venue: "COLM 2026",
-            areas: ['multiagent', 'infra'],
             image: "paper-teasers/coral.png",
             links: {
                 paper: "https://arxiv.org/abs/2604.01658",
@@ -21,7 +19,6 @@ const PUBLICATIONS_DATA = {
             title: "Evolving in Thought Space: Training a Small Model at Test Time Unlocks Better Discoveries",
             authors: "Chonghe Jiang*, <strong>Ao Qu*</strong>, Siyuan Liu, Ruoyun Ma, Zijian Zhou, Dingyi Zhuang, Bo Liu, Han Zheng, Hanfei Yu, Baichuan Mo, Jinhua Zhao, Paul Pu Liang",
             venue: "arXiv 2026",
-            areas: ['experience'],
             image: "paper-teasers/guidance-ttt.png",
             links: {
                 paper: "https://arxiv.org/abs/2610.06269",
@@ -37,7 +34,6 @@ const PUBLICATIONS_DATA = {
                 { text: "Best Paper · NeurIPS MTI-LLM Workshop 2025", kind: "award" },
                 { text: "Oral · COLM RAM2 Workshop 2025" }
             ],
-            areas: ['experience'],
             image: "paper-teasers/mem1.png",
             links: {
                 paper: "https://arxiv.org/abs/2506.15841",
@@ -56,7 +52,6 @@ const PUBLICATIONS_DATA = {
             title: "SPADE: Self-Play in Adaptive Synthetic Executable Environments",
             authors: "Bo Liu*, Simon Yu*, Yiding Jiang, <strong>Ao Qu</strong>, Andrew Zhao, Zichen Liu, Junsu Kim, Zijian Zhou, Seungone Kim, Tongzheng Ren, Mickel Liu, Hanfei Yu, Zhaorun Chen, Weiyan Shi, Paul Pu Liang, Luke Zettlemoyer, Yejin Choi, Natasha Jaques",
             venue: "arXiv 2026",
-            areas: ['experience'],
             image: "paper-teasers/spade.png",
             links: {
                 paper: "https://arxiv.org/abs/2608.19197",
@@ -69,7 +64,6 @@ const PUBLICATIONS_DATA = {
             title: "Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions",
             authors: "Zhenting Qi, Huangyuan Su, <strong>Ao Qu</strong>, Chenyu Wang, Yu Yao, Han Zheng, Kushal Chattopadhyay, Guowei Xu, Zihan Wang, Weirui Ye, Vijay Janapa Reddi, Ju Li, Paul Pu Liang, Himabindu Lakkaraju, Sham Kakade, Yilun Du",
             venue: "NeurIPS 2026",
-            areas: ['multiagent'],
             image: "paper-teasers/economy-of-minds.png",
             links: {
                 paper: "https://arxiv.org/abs/2606.02859",
@@ -82,7 +76,6 @@ const PUBLICATIONS_DATA = {
             title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
             authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
             venue: "arXiv 2025",
-            areas: ['multiagent'],
             image: "paper-teasers/urbanci.png",
             links: {
                 paper: "https://arxiv.org/abs/2504.12345",
@@ -98,7 +91,6 @@ const PUBLICATIONS_DATA = {
                 { text: "Evaluations & Datasets Track" },
                 { text: "ICML AI for Math Workshop 2026" }
             ],
-            areas: ['discovery'],
             image: "paper-teasers/frontieror.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2605.25246",
@@ -113,7 +105,6 @@ const PUBLICATIONS_DATA = {
             badges: [
                 { text: "Best Paper Finalist · INFORMS Data Mining Society 2025", kind: "award" }
             ],
-            areas: ['experience'],
             image: "paper-teasers/alphaopt.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2510.18428",
@@ -128,7 +119,6 @@ const PUBLICATIONS_DATA = {
             badges: [
                 { text: "ICML AI4Research Workshop 2026" }
             ],
-            areas: ['discovery'],
             image: "paper-teasers/ara.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2604.24658",
@@ -140,7 +130,6 @@ const PUBLICATIONS_DATA = {
             title: "HugAgent: A Human Simulation Benchmark for Individual-Level Reasoning",
             authors: "Chance Jiajie Li*, Zhenze Mo*, Yuhan Tang*, <strong>Ao Qu</strong>, Jiayi Wu, Kaiya Ivy Zhao, Yulu Gan, Jie Fan, Jiangbo Yu, Hang Jiang, Paul Pu Liang, Jinhua Zhao, Luis Alonso, Kent Larson",
             venue: "EMNLP 2026",
-            areas: ['social'],
             image: "paper-teasers/hugagent.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2510.15144",
@@ -155,7 +144,6 @@ const PUBLICATIONS_DATA = {
             badges: [
                 { text: "Position Paper Track" }
             ],
-            areas: ['social'],
             image: "paper-teasers/simulating-thought.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2506.06958"
@@ -166,7 +154,6 @@ const PUBLICATIONS_DATA = {
             title: "GEM-4D: Geometry-Enhanced Video World Models for Robot Manipulation",
             authors: "Kaichen Zhou*, Yuzhen Chen*, Fangneng Zhan, Hang Hua, Grace Chen, Xinhai Chang, <strong>Ao Qu</strong>, Yilun Du, Zhuang Liu, Paul Pu Liang, Mengyu Wang",
             venue: "ECCV 2026",
-            areas: [],
             image: "paper-teasers/gem4d.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2605.22882",
@@ -178,7 +165,6 @@ const PUBLICATIONS_DATA = {
             title: "OmniSapiens: A Foundation Model for Social Behavior Processing via Heterogeneity-Aware Relative Policy Optimization",
             authors: "Keane Ong, Sabri Boughorbel, Luwei Xiao, Chanakya Ekbote, Wei Dai, <strong>Ao Qu</strong>, Jingyao Wu, Rui Mao, Ehsan Hoque, Erik Cambria, Gianmarco Mengaldo, Paul Pu Liang",
             venue: "ICML 2026",
-            areas: ['social'],
             image: "paper-teasers/omnisapiens.jpg",
             links: {
                 paper: "https://arxiv.org/abs/2602.10635",
@@ -190,7 +176,6 @@ const PUBLICATIONS_DATA = {
             title: "ClassMind: Scaling Classroom Observation and Instructional Feedback with Multimodal AI",
             authors: "<strong>Ao Qu*</strong>, Yuxi Wen*, Jiayi Zhang*, Yunge Wen, Yibo Zhao, Alok Prakash, Andrés F. Salazar-Gómez, Paul Pu Liang, Jinhua Zhao",
             venue: "arXiv 2025",
-            areas: ['social'],
             image: "paper-teasers/classmind.png",
             links: {
                 paper: "https://arxiv.org/abs/2509.18020",
@@ -205,7 +190,6 @@ const PUBLICATIONS_DATA = {
             badges: [
                 { text: "Best Paper · IJCAI MKLM Workshop 2025", kind: "award" }
             ],
-            areas: [],
             image: "paper-teasers/sparkle.png",
             links: {
                 paper: "https://arxiv.org/abs/2410.16162",
@@ -220,7 +204,6 @@ const PUBLICATIONS_DATA = {
             badges: [
                 { text: "Best Paper · KDD UrbComp Workshop 2024", kind: "award" }
             ],
-            areas: [],
             image: "paper-teasers/itinera.png",
             links: {
                 paper: "https://aclanthology.org/2024.emnlp-industry.104/",

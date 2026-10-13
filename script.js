@@ -1,88 +1,6 @@
-// Interactions: nav state, publication filters, expanders, live GitHub stars, reveal-on-scroll
+// Interactions: news expander, author expander, live GitHub stars
 
-// ======== NAV: shadow on scroll + active section ========
-const nav = document.getElementById('site-nav');
-const navLinks = [...document.querySelectorAll('.nav-links a')];
-
-window.addEventListener('scroll', () => {
-    nav.classList.toggle('scrolled', window.scrollY > 8);
-}, { passive: true });
-
-const sectionObserver = new IntersectionObserver(entries => {
-    entries.forEach(entry => {
-        if (!entry.isIntersecting) return;
-        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`));
-    });
-}, { rootMargin: '-45% 0px -50% 0px' });
-
-navLinks
-    .map(a => document.querySelector(a.getAttribute('href')))
-    .filter(Boolean)
-    .forEach(section => sectionObserver.observe(section));
-
-// ======== PUBLICATION FILTERS ========
-const filterBar = document.querySelector('.pub-filters');
-const pubs = [...document.querySelectorAll('.pub')];
-
-function applyFilter(area) {
-    document.querySelectorAll('.filter-chip').forEach(chip => {
-        chip.classList.toggle('active', chip.dataset.filter === area);
-    });
-    pubs.forEach(pub => {
-        const match = area === 'all' || pub.dataset.areas.split(' ').includes(area);
-        pub.classList.toggle('is-hidden', !match);
-    });
-}
-
-if (filterBar) {
-    filterBar.addEventListener('click', e => {
-        const chip = e.target.closest('.filter-chip');
-        if (chip) applyFilter(chip.dataset.filter);
-    });
-}
-
-// Research area cards filter the publication list
-document.querySelectorAll('.area-card').forEach(card => {
-    const go = () => {
-        const area = card.dataset.area;
-        const hasChip = document.querySelector(`.filter-chip[data-filter="${area}"]`);
-        applyFilter(hasChip ? area : 'all');
-        document.getElementById('publications').scrollIntoView({ behavior: 'smooth' });
-    };
-    card.addEventListener('click', e => {
-        if (e.target.closest('a')) return;   // chips handle themselves
-        go();
-    });
-    card.addEventListener('keydown', e => {
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
-    });
-});
-
-// Links to a paper (#id) reset the filter and flash the card
-document.addEventListener('click', e => {
-    const a = e.target.closest('a[href^="#"]');
-    if (!a) return;
-    const target = document.getElementById(a.getAttribute('href').slice(1));
-    if (!target || !target.classList.contains('pub')) return;
-    e.preventDefault();
-    if (target.classList.contains('is-hidden')) applyFilter('all');
-    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
-    history.replaceState(null, '', `#${target.id}`);
-    target.classList.remove('flash');
-    void target.offsetWidth;
-    target.classList.add('flash');
-});
-
-// ======== EXPANDERS ========
-document.addEventListener('click', e => {
-    const btn = e.target.closest('.authors-toggle');
-    if (!btn) return;
-    const rest = btn.previousElementSibling;
-    const open = rest.hidden;
-    rest.hidden = !open;
-    btn.textContent = open ? btn.dataset.less : btn.dataset.more;
-});
-
+// ======== NEWS: show the latest few, expand on demand ========
 const newsToggle = document.getElementById('news-toggle');
 const newsList = document.querySelector('.news-list');
 if (newsToggle && newsList) {
@@ -90,14 +8,22 @@ if (newsToggle && newsList) {
     if (extra === 0) {
         newsToggle.hidden = true;
     } else {
-        const label = open => open ? 'Show less' : `Show ${extra} earlier updates`;
+        const label = open => open ? 'Show less' : `Show ${extra} more`;
         newsToggle.textContent = label(false);
         newsToggle.addEventListener('click', () => {
-            const open = newsList.classList.toggle('expanded');
-            newsToggle.textContent = label(open);
+            newsToggle.textContent = label(newsList.classList.toggle('expanded'));
         });
     }
 }
+
+// ======== AUTHORS: expand long author lists ========
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.authors-toggle');
+    if (!btn) return;
+    const rest = btn.previousElementSibling;
+    rest.hidden = !rest.hidden;
+    btn.textContent = rest.hidden ? btn.dataset.more : btn.dataset.less;
+});
 
 // ======== LIVE GITHUB STARS (cached for 6 hours) ========
 async function refreshStars() {
@@ -120,31 +46,9 @@ async function refreshStars() {
         try { localStorage.setItem(KEY, JSON.stringify(cache)); } catch (_) { /* ignore */ }
     }
 
-    OPEN_SOURCE_DATA.forEach(r => {
-        if (typeof cache.stars[r.repo] === 'number') r.stars = cache.stars[r.repo];
-    });
     document.querySelectorAll('[data-repo]').forEach(el => {
-        const repo = OPEN_SOURCE_DATA.find(r => r.repo === el.dataset.repo);
-        if (repo) el.textContent = formatStars(repo.stars);
+        const n = cache.stars[el.dataset.repo];
+        if (typeof n === 'number') el.textContent = formatStars(n);
     });
-    const total = document.querySelector('[data-stat="stars"]');
-    if (total) total.textContent = `${formatStars(totalStars())}+`;
 }
 refreshStars();
-
-// ======== REVEAL ON SCROLL ========
-const revealTargets = document.querySelectorAll('.section-head, .card, .area-card, .repo-card, .post-card, .pub');
-if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
-    const revealObserver = new IntersectionObserver(entries => {
-        entries.forEach(entry => {
-            if (entry.isIntersecting) {
-                entry.target.classList.add('in');
-                revealObserver.unobserve(entry.target);
-            }
-        });
-    }, { rootMargin: '0px 0px -40px 0px' });
-    revealTargets.forEach(el => {
-        el.classList.add('reveal');
-        revealObserver.observe(el);
-    });
-}
