@@ -1,6 +1,36 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-10-05",
+        content: "<em>Evolving in Thought Space</em> is now on <a href='https://arxiv.org/abs/2610.06269' target='_blank'>arXiv</a>! Instead of fine-tuning a large model at test time, we train a small guidance model to propose high-level strategies while a frozen, stronger executor writes the code. Without web access, it beats the best previously reported solutions across four domains, from polyomino packing to GPU kernel optimization. Great work with my co–first author, Chonghe Jiang!",
+        highlight: true
+    },
+    {
+        date: "2026-09-24",
+        content: "Three papers accepted to <strong>NeurIPS 2026</strong>: <em>Economy of Minds</em>, <em>FrontierOR</em> (Evaluations & Datasets Track), and <em>The Last Human-Written Paper</em>.",
+        highlight: true
+    },
+    {
+        date: "2026-08-20",
+        content: "<em>HugAgent</em>, a benchmark for simulating individual-level human reasoning, was accepted to the <strong>EMNLP 2026</strong> main conference. Congratulations to Chance Jiajie Li, Zhenze Mo, and Yuhan Tang!",
+        highlight: false
+    },
+    {
+        date: "2026-08-19",
+        content: "We released <em>SPADE</em> (<a href='https://arxiv.org/abs/2608.19197' target='_blank'>arXiv</a>, <a href='https://spade-rl.github.io' target='_blank'>project</a>), a self-play RL framework where a single LLM both designs executable training environments and learns to solve them, producing an adaptive curriculum for language agents. Wonderful collaboration with Bo Liu, Simon Yu, and the team.",
+        highlight: false
+    },
+    {
+        date: "2026-07-08",
+        content: "<em>CORAL</em> was accepted to <strong>COLM 2026</strong>!",
+        highlight: true
+    },
+    {
+        date: "2026-06-17",
+        content: "<em>GEM-4D</em>, a geometry-grounded video world model for robot manipulation, was accepted to <strong>ECCV 2026</strong>. Congratulations to Kaichen Zhou and Yuzhen Chen!",
+        highlight: false
+    },
+    {
         date: "2026-06-01",
         content: "<em>Economy of Minds</em> is now on <a href='https://arxiv.org/abs/2606.02859' target='_blank'>arXiv</a>! We show that agent populations coordinating through economic interactions — auctions, payments, and wealth accumulation — develop emergent multi-agent intelligence that outperforms monolithic baselines. Wonderful collaboration with Zhenting Qi, Huangyuan Su, and the team at Harvard and MIT.",
         highlight: false

@@ -70,6 +70,11 @@ function loadNewsData() {
                 'CORAL': 'coral',
                 'FrontierOR': 'frontieror',
                 'Economy of Minds': 'eom',
+                'Evolving in Thought Space': 'thoughtspace',
+                'SPADE': 'spade',
+                'The Last Human-Written Paper': 'ara',
+                'HugAgent': 'hugagent',
+                'GEM-4D': 'gem4d',
             };
             let linked = content;
             for (const [name, id] of Object.entries(paperMap)) {

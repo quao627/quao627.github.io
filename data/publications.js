@@ -5,11 +5,24 @@ const PUBLICATIONS_DATA = {
             id: 'coral',
             title: "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
             authors: "<strong>Ao Qu*</strong>, Han Zheng*, Zijian Zhou*, Yihao Yan, Yihong Tang, Shao Yong Ong, Fenglu Hong, Kaichen Zhou, Chonghe Jiang, Minwei Kong, Jiacheng Zhu, Xuan Jiang, Sirui Li, Cathy Wu, Bryan Kian Hsiang Low, Jinhua Zhao, Paul Pu Liang",
-            venue: "arXiv 2026",
+            venue: "<span class=\"award\">COLM 2026</span>",
             icon: "fa-network-wired",
+            image: "paper-teasers/coral.png",
             links: {
                 paper: "https://arxiv.org/abs/2604.01658",
                 code: "https://github.com/Human-Agent-Society/CORAL"
+            }
+        },
+        {
+            id: 'thoughtspace',
+            title: "Evolving in Thought Space: Training a Small Model at Test Time Unlocks Better Discoveries",
+            authors: "Chonghe Jiang*, <strong>Ao Qu*</strong>, Siyuan Liu, Ruoyun Ma, Zijian Zhou, Dingyi Zhuang, Bo Liu, Han Zheng, Hanfei Yu, Baichuan Mo, Jinhua Zhao, Paul Pu Liang",
+            venue: "arXiv 2026",
+            icon: "fa-seedling",
+            image: "paper-teasers/guidance-ttt.png",
+            links: {
+                paper: "https://arxiv.org/abs/2610.06269",
+                code: "https://github.com/Human-Agent-Society/reef/tree/guidance-ttt-support"
             }
         },
         {
@@ -32,23 +45,101 @@ const PUBLICATIONS_DATA = {
             ]
         },
         {
+            id: 'spade',
+            title: "SPADE: Self-Play in Adaptive Synthetic Executable Environments",
+            authors: "Bo Liu*, Simon Yu*, Yiding Jiang, <strong>Ao Qu</strong>, Andrew Zhao, Zichen Liu, Junsu Kim, Zijian Zhou, Seungone Kim, Tongzheng Ren, Mickel Liu, Hanfei Yu, Zhaorun Chen, Weiyan Shi, Paul Pu Liang, Luke Zettlemoyer, Yejin Choi, Natasha Jaques",
+            venue: "arXiv 2026",
+            icon: "fa-chess-knight",
+            image: "paper-teasers/spade.png",
+            links: {
+                paper: "https://arxiv.org/abs/2608.19197",
+                code: "https://github.com/spade-rl/spade",
+                project: "https://spade-rl.github.io"
+            }
+        },
+        {
             id: 'eom',
             title: "Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions",
             authors: "Zhenting Qi, Huangyuan Su, <strong>Ao Qu</strong>, Chenyu Wang, Yu Yao, Han Zheng, Kushal Chattopadhyay, Guowei Xu, Zihan Wang, Weirui Ye, Vijay Janapa Reddi, Ju Li, Paul Pu Liang, Himabindu Lakkaraju, Sham Kakade, Yilun Du",
-            venue: "arXiv 2026",
+            venue: "NeurIPS 2026",
             icon: "fa-coins",
+            image: "paper-teasers/economy-of-minds.png",
             links: {
-                paper: "https://arxiv.org/abs/2606.02859"
+                paper: "https://arxiv.org/abs/2606.02859",
+                code: "https://github.com/zhentingqi/EoM",
+                project: "https://zhentingqi.github.io/internal/projects/EoM"
             }
         },
         {
             id: 'frontieror',
             title: "FrontierOR: Benchmarking LLMs' Capacity for Efficient Algorithm Design in Large-Scale Optimization",
-            authors: "Minwei Kong, Chonghe Jiang, <strong>Ao Qu</strong>, Wenbin Ouyang, Zhaoming Zeng, Xiaotong Guo, Zhekai Li, Junyi Li, Yi Fan, Xinshou Zheng, Xi Jing, Yikai Zhang, Zhiwei Liang, Seonghoo Kim, Runqing Yang, Zijian Zhou, Sirui Li, Han Zheng, Wangyang Ying, Ou Zheng, Chonghuan Wang, Jinglong Zhao, Hanzhang Qin, Cathy Wu, Paul Pu Liang, Jinhua Zhao, Hai Wang",
-            venue: "arXiv 2026",
+            authors: "Minwei Kong*, Chonghe Jiang*, <strong>Ao Qu (project lead)</strong>, Wenbin Ouyang, Zhaoming Zeng, Xiaotong Guo, Zhekai Li, Junyi Li, Yi Fan, Xinshou Zheng, Xi Jing, Yikai Zhang, Zhiwei Liang, Seonghoo Kim, Runqing Yang, Zijian Zhou, Sirui Li, Han Zheng, Wangyang Ying, Ou Zheng, Chonghuan Wang, Jinglong Zhao, Hanzhang Qin, Cathy Wu, Paul Pu Liang, Jinhua Zhao, Hai Wang",
+            venue: "<span class=\"award\">NeurIPS 2026</span> (Evaluations & Datasets Track) | ICML AI for Math Workshop 2026",
             icon: "fa-chart-line",
+            image: "paper-teasers/frontieror.jpg",
             links: {
-                paper: "https://arxiv.org/abs/2605.25246"
+                paper: "https://arxiv.org/abs/2605.25246",
+                code: "https://github.com/Minw913/FrontierOR"
+            }
+        },
+        {
+            id: 'alphaopt',
+            title: "AlphaOPT: Formulating Optimization Programs with Self-Improving LLM Experience Library",
+            authors: "Minwei Kong*, <strong>Ao Qu*(corresponding author)</strong>, Xiaotong Guo, Wenbin Ouyang, Chonghe Jiang, Han Zheng, Yining Ma, Dingyi Zhuang, Yuhan Tang, Junyi Li, Hai Wang, Cathy Wu, Jinhua Zhao",
+            venue: "<span class=\"award\">KDD 2026</span> | INFORMS Data Mining Society 2025 <span class=\"award\">(Best Paper Finalist)</span>",
+            icon: "fa-route",
+            image: "paper-teasers/alphaopt.png",
+            links: {
+                paper: "https://arxiv.org/abs/2510.18428",
+                code: "https://github.com/Minw913/AlphaOPT",
+                demo: "#",
+            }
+        },
+        {
+            id: 'ara',
+            title: "The Last Human-Written Paper: Agent-Native Research Artifacts",
+            authors: "Jiachen Liu, Jiaxin Pei, Jintao Huang, Chenglei Si, <strong>Ao Qu</strong>, Xiangru Tang, Runyu Lu, Lichang Chen, Xiaoyan Bai, Haizhong Zheng, et al., Beidi Chen, Alex Pentland, Ang Chen, Mosharaf Chowdhury, Zechen Zhang",
+            venue: "NeurIPS 2026 | ICML AI4Research Workshop 2026",
+            icon: "fa-scroll",
+            image: "paper-teasers/ara.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2604.24658",
+                code: "https://github.com/Orchestra-Research/Agent-Native-Research-Artifact"
+            }
+        },
+        {
+            id: 'hugagent',
+            title: "HugAgent: A Human Simulation Benchmark for Individual-Level Reasoning",
+            authors: "Chance Jiajie Li*, Zhenze Mo*, Yuhan Tang*, <strong>Ao Qu</strong>, Jiayi Wu, Kaiya Ivy Zhao, Yulu Gan, Jie Fan, Jiangbo Yu, Hang Jiang, Paul Pu Liang, Jinhua Zhao, Luis Alonso, Kent Larson",
+            venue: "EMNLP 2026",
+            icon: "fa-user-friends",
+            image: "paper-teasers/hugagent.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2510.15144",
+                code: "https://github.com/jajamoa/HugAgent"
+            }
+        },
+        {
+            id: 'simthought',
+            title: "Position: Simulating Society Requires Simulating Thought",
+            authors: "Chance Jiajie Li*, Jiayi Wu*, Zhenze Mo, <strong>Ao Qu</strong>, Yuhan Tang, Kaiya Ivy Zhao, Yulu Gan, Jie Fan, Jiangbo Yu, Jinhua Zhao, Paul Pu Liang, Luis Alonso, Kent Larson",
+            venue: "NeurIPS 2025 (Position Paper Track)",
+            icon: "fa-users",
+            image: "paper-teasers/simulating-thought.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2506.06958"
+            }
+        },
+        {
+            id: 'gem4d',
+            title: "GEM-4D: Geometry-Enhanced Video World Models for Robot Manipulation",
+            authors: "Kaichen Zhou*, Yuzhen Chen*, Fangneng Zhan, Hang Hua, Grace Chen, Xinhai Chang, <strong>Ao Qu</strong>, Yilun Du, Zhuang Liu, Paul Pu Liang, Mengyu Wang",
+            venue: "ECCV 2026",
+            icon: "fa-robot",
+            image: "paper-teasers/gem4d.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2605.22882",
+                project: "https://gem-4d.github.io/"
             }
         },
         {
@@ -80,19 +171,6 @@ const PUBLICATIONS_DATA = {
             icon: "fa-car",
             links: {
                 paper: "https://arxiv.org/abs/2512.04733"
-            }
-        },
-        {
-            id: 'alphaopt',
-            title: "AlphaOPT: Formulating Optimization Programs with Self-Improving LLM Experience Library",
-            authors: "Minwei Kong*, <strong>Ao Qu*(corresponding author)</strong>, Xiaotong Guo, Wenbin Ouyang, Chonghe Jiang, Han Zheng, Yining Ma, Dingyi Zhuang, Yuhan Tang, Junyi Li, Hai Wang, Cathy Wu, Jinhua Zhao",
-            venue: "<span class=\"award\">KDD 2026</span> | INFORMS Data Mining Society 2025 <span class=\"award\">(Best Paper Finalist)</span>",
-            icon: "fa-route",
-            image: "paper-teasers/alphaopt.png",
-            links: {
-                paper: "https://arxiv.org/abs/2510.18428",
-                code: "https://github.com/Minw913/AlphaOPT",
-                demo: "#",
             }
         },
         {
