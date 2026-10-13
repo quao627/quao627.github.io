@@ -1,178 +1,150 @@
-// Ubuntu-style Single Page Website
+// Interactions: nav state, publication filters, expanders, live GitHub stars, reveal-on-scroll
 
-// ======== CLOCK ========
-function updateClock() {
-    const now = new Date();
-    const hours = String(now.getHours()).padStart(2, '0');
-    const minutes = String(now.getMinutes()).padStart(2, '0');
-    const timeElement = document.getElementById('current-time');
-    if (timeElement) {
-        timeElement.textContent = `${hours}:${minutes}`;
+// ======== NAV: shadow on scroll + active section ========
+const nav = document.getElementById('site-nav');
+const navLinks = [...document.querySelectorAll('.nav-links a')];
+
+window.addEventListener('scroll', () => {
+    nav.classList.toggle('scrolled', window.scrollY > 8);
+}, { passive: true });
+
+const sectionObserver = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+        if (!entry.isIntersecting) return;
+        navLinks.forEach(a => a.classList.toggle('active', a.getAttribute('href') === `#${entry.target.id}`));
+    });
+}, { rootMargin: '-45% 0px -50% 0px' });
+
+navLinks
+    .map(a => document.querySelector(a.getAttribute('href')))
+    .filter(Boolean)
+    .forEach(section => sectionObserver.observe(section));
+
+// ======== PUBLICATION FILTERS ========
+const filterBar = document.querySelector('.pub-filters');
+const pubs = [...document.querySelectorAll('.pub')];
+
+function applyFilter(area) {
+    document.querySelectorAll('.filter-chip').forEach(chip => {
+        chip.classList.toggle('active', chip.dataset.filter === area);
+    });
+    pubs.forEach(pub => {
+        const match = area === 'all' || pub.dataset.areas.split(' ').includes(area);
+        pub.classList.toggle('is-hidden', !match);
+    });
+}
+
+if (filterBar) {
+    filterBar.addEventListener('click', e => {
+        const chip = e.target.closest('.filter-chip');
+        if (chip) applyFilter(chip.dataset.filter);
+    });
+}
+
+// Research area cards filter the publication list
+document.querySelectorAll('.area-card').forEach(card => {
+    const go = () => {
+        const area = card.dataset.area;
+        const hasChip = document.querySelector(`.filter-chip[data-filter="${area}"]`);
+        applyFilter(hasChip ? area : 'all');
+        document.getElementById('publications').scrollIntoView({ behavior: 'smooth' });
+    };
+    card.addEventListener('click', e => {
+        if (e.target.closest('a')) return;   // chips handle themselves
+        go();
+    });
+    card.addEventListener('keydown', e => {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    });
+});
+
+// Links to a paper (#id) reset the filter and flash the card
+document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const target = document.getElementById(a.getAttribute('href').slice(1));
+    if (!target || !target.classList.contains('pub')) return;
+    e.preventDefault();
+    if (target.classList.contains('is-hidden')) applyFilter('all');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    history.replaceState(null, '', `#${target.id}`);
+    target.classList.remove('flash');
+    void target.offsetWidth;
+    target.classList.add('flash');
+});
+
+// ======== EXPANDERS ========
+document.addEventListener('click', e => {
+    const btn = e.target.closest('.authors-toggle');
+    if (!btn) return;
+    const rest = btn.previousElementSibling;
+    const open = rest.hidden;
+    rest.hidden = !open;
+    btn.textContent = open ? btn.dataset.less : btn.dataset.more;
+});
+
+const newsToggle = document.getElementById('news-toggle');
+const newsList = document.querySelector('.news-list');
+if (newsToggle && newsList) {
+    const extra = newsList.querySelectorAll('.news-extra').length;
+    if (extra === 0) {
+        newsToggle.hidden = true;
+    } else {
+        const label = open => open ? 'Show less' : `Show ${extra} earlier updates`;
+        newsToggle.textContent = label(false);
+        newsToggle.addEventListener('click', () => {
+            const open = newsList.classList.toggle('expanded');
+            newsToggle.textContent = label(open);
+        });
     }
 }
 
-updateClock();
-setInterval(updateClock, 1000);
+// ======== LIVE GITHUB STARS (cached for 6 hours) ========
+async function refreshStars() {
+    if (typeof OPEN_SOURCE_DATA === 'undefined') return;
+    const KEY = 'gh-stars-v1';
+    const TTL = 6 * 60 * 60 * 1000;
+    let cache = {};
+    try { cache = JSON.parse(localStorage.getItem(KEY)) || {}; } catch (_) { /* ignore */ }
 
-// ======== SMOOTH SCROLL NAVIGATION ========
-const launcherIcons = document.querySelectorAll('.launcher-icon[href^="#"]');
-const sections = document.querySelectorAll('.section[id]');
+    if (!cache.t || Date.now() - cache.t > TTL) {
+        const results = await Promise.all(OPEN_SOURCE_DATA.map(r =>
+            fetch(`https://api.github.com/repos/${r.repo}`)
+                .then(res => res.ok ? res.json() : null)
+                .then(json => json ? [r.repo, json.stargazers_count] : null)
+                .catch(() => null)
+        ));
+        const stars = Object.fromEntries(results.filter(Boolean));
+        if (Object.keys(stars).length === 0) return;   // offline or rate-limited: keep fallbacks
+        cache = { t: Date.now(), stars };
+        try { localStorage.setItem(KEY, JSON.stringify(cache)); } catch (_) { /* ignore */ }
+    }
 
-// Update active state based on scroll position
-function updateActiveSection() {
-    const scrollPosition = window.scrollY + 100;
-    
-    sections.forEach(section => {
-        const sectionTop = section.offsetTop;
-        const sectionHeight = section.offsetHeight;
-        const sectionId = section.getAttribute('id');
-        
-        if (scrollPosition >= sectionTop && scrollPosition < sectionTop + sectionHeight) {
-            // Remove active from all icons
-            launcherIcons.forEach(icon => {
-                icon.classList.remove('active');
-            });
-            
-            // Add active to current section icon
-            const activeIcon = document.querySelector(`.launcher-icon[href="#${sectionId}"]`);
-            if (activeIcon) {
-                activeIcon.classList.add('active');
+    OPEN_SOURCE_DATA.forEach(r => {
+        if (typeof cache.stars[r.repo] === 'number') r.stars = cache.stars[r.repo];
+    });
+    document.querySelectorAll('[data-repo]').forEach(el => {
+        const repo = OPEN_SOURCE_DATA.find(r => r.repo === el.dataset.repo);
+        if (repo) el.textContent = formatStars(repo.stars);
+    });
+    const total = document.querySelector('[data-stat="stars"]');
+    if (total) total.textContent = `${formatStars(totalStars())}+`;
+}
+refreshStars();
+
+// ======== REVEAL ON SCROLL ========
+const revealTargets = document.querySelectorAll('.section-head, .card, .area-card, .repo-card, .post-card, .pub');
+if ('IntersectionObserver' in window && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    const revealObserver = new IntersectionObserver(entries => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                entry.target.classList.add('in');
+                revealObserver.unobserve(entry.target);
             }
-        }
+        });
+    }, { rootMargin: '0px 0px -40px 0px' });
+    revealTargets.forEach(el => {
+        el.classList.add('reveal');
+        revealObserver.observe(el);
     });
 }
-
-// Smooth scroll on click
-launcherIcons.forEach(icon => {
-    icon.addEventListener('click', (e) => {
-        e.preventDefault();
-        const targetId = icon.getAttribute('href');
-        const targetSection = document.querySelector(targetId);
-        
-        if (targetSection) {
-            // Adjust offset based on screen size
-            const isMobile = window.innerWidth <= 480;
-            const topBarHeight = isMobile ? 32 : 24;
-            const offsetTop = targetSection.offsetTop - topBarHeight;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    });
-});
-
-// Listen to scroll events
-window.addEventListener('scroll', updateActiveSection);
-
-// Initial update
-updateActiveSection();
-
-// ======== PROFILE IMAGE ERROR HANDLING ========
-const profileImage = document.querySelector('.profile-image');
-if (profileImage) {
-    profileImage.addEventListener('error', function() {
-        this.src = 'profile.svg';
-    });
-}
-
-// ======== TOOLTIPS ========
-document.querySelectorAll('.launcher-icon').forEach(icon => {
-    icon.addEventListener('mouseenter', function() {
-        const title = this.getAttribute('title');
-        const isMobile = window.innerWidth <= 480;
-        
-        // Don't show tooltips on mobile bottom navigation
-        if (title && !this.querySelector('.tooltip') && !isMobile) {
-            const tooltip = document.createElement('div');
-            tooltip.className = 'tooltip';
-            tooltip.textContent = title;
-            tooltip.style.cssText = `
-                position: absolute;
-                left: 100%;
-                top: 50%;
-                transform: translateY(-50%);
-                margin-left: 10px;
-                background: rgba(0, 0, 0, 0.85);
-                color: white;
-                padding: 5px 10px;
-                border-radius: 3px;
-                font-size: 11px;
-                white-space: nowrap;
-                pointer-events: none;
-                z-index: 10000;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
-            `;
-            this.style.position = 'relative';
-            this.appendChild(tooltip);
-        }
-    });
-    
-    icon.addEventListener('mouseleave', function() {
-        const tooltip = this.querySelector('.tooltip');
-        if (tooltip) {
-            tooltip.remove();
-        }
-    });
-});
-
-// ======== KEYBOARD SHORTCUTS ========
-document.addEventListener('keydown', (e) => {
-    if (e.altKey && e.key >= '1' && e.key <= '4') {
-        e.preventDefault();
-        const sectionIds = ['home', 'news', 'research', 'people'];
-        const index = parseInt(e.key) - 1;
-        const targetSection = document.getElementById(sectionIds[index]);
-        
-        if (targetSection) {
-            const offsetTop = targetSection.offsetTop - 24;
-            window.scrollTo({
-                top: offsetTop,
-                behavior: 'smooth'
-            });
-        }
-    }
-});
-
-// ======== VISITOR STATISTICS ========
-// Option 1: Using a simple counter API (you'll need to choose a service)
-// Recommended free services:
-// - GoatCounter: https://www.goatcounter.com (open source, privacy-friendly)
-// - CountAPI: https://countapi.xyz (simple, no signup)
-// - Visitor Badge: https://visitor-badge.laobi.icu
-
-// Simplified visitor stats - minimalist approach
-async function loadVisitorStats() {
-    try {
-        // Using CountAPI for simple visitor counting
-        const namespace = 'aoqu-website';
-        const keyTotal = 'visits';
-        
-        // Increment total visit counter
-        const responseTotal = await fetch(`https://api.countapi.xyz/hit/${namespace}/${keyTotal}`);
-        const dataTotal = await responseTotal.json();
-        
-        if (dataTotal.value) {
-            document.getElementById('visitor-counter').textContent = dataTotal.value.toLocaleString();
-        }
-        
-        // Country counter - data from map widget or Google Analytics
-        // Placeholder value until you have actual data
-        document.getElementById('country-counter').textContent = '25+';
-        
-    } catch (error) {
-        console.error('Error loading visitor stats:', error);
-        document.getElementById('visitor-counter').textContent = '---';
-        document.getElementById('country-counter').textContent = '---';
-    }
-}
-
-// Load visitor stats on page load
-loadVisitorStats();
-
-// ======== INITIALIZATION ========
-console.log('🐧 Ubuntu-style scrollable website loaded!');
-console.log('💡 Shortcuts: Alt+1-4 (sections)');
-console.log('📜 Scroll or click sidebar to navigate');
-console.log('⌨️  Terminal mode activated!');
-console.log('📊 Visitor stats loaded!');

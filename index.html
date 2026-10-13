@@ -3,190 +3,155 @@
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Ao Qu - MIT PhD Student</title>
+    <title>Ao Qu · MIT</title>
+    <meta name="description" content="Ao Qu (瞿骜) is a PhD student at MIT IDSS working on self-evolving agents: experience-driven improvement, multi-agent evolution, benchmarks for scientific discovery, and infrastructure for self-improving agents.">
+    <meta property="og:title" content="Ao Qu · MIT">
+    <meta property="og:description" content="Self-evolving agents that learn from experience. PhD student at MIT IDSS.">
+    <meta property="og:image" content="https://quao627.github.io/profile.jpg">
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230e2a32'/%3E%3Ctext x='32' y='43' font-family='Georgia,serif' font-size='30' fill='%23f2a48f' text-anchor='middle'%3EAQ%3C/text%3E%3C/svg%3E">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link rel="stylesheet" href="styles.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>document.documentElement.classList.add('js');</script>
   </head>
   <body>
-    <!-- Ubuntu-style Top Bar -->
-    <div class="top-bar">
-        <div class="top-bar-left">
-            <!-- <span class="site-logo">🎓</span> -->
-            <span class="app-name">aoqu@mit</span>
+    <header class="site-nav" id="site-nav">
+        <div class="container nav-inner">
+            <a href="#about" class="brand">Ao Qu <span class="brand-zh">瞿骜</span></a>
+            <nav class="nav-links" aria-label="Sections">
+                <a href="#research">Research</a>
+                <a href="#experience">Experience</a>
+                <a href="#open-source">Open Source</a>
+                <a href="#writing">Writing</a>
+                <a href="#news">News</a>
+                <a href="#publications">Publications</a>
+                <a href="#people">People</a>
+            </nav>
         </div>
-        <div class="top-bar-center">
-            <div class="status-info">
-                <span class="status-badge">
-                    <span class="status-dot"></span>
-                    <span class="status-text">Active</span>
-                </span>
-                <span class="location-info">📍 Boston these days</span>
+    </header>
+
+    <main>
+        <!-- Hero: content loaded from data/about.js -->
+        <section id="about" class="hero container"></section>
+
+        <!-- Now -->
+        <section id="now" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">Now</span>
+                <h2>What I'm working on</h2>
             </div>
-        </div>
-        <div class="top-bar-right">
-            <span class="time" id="current-time"></span>
-        </div>
-    </div>
+            <div class="bento now-grid"></div>
+        </section>
 
-    <!-- Ubuntu-style Sidebar Launcher -->
-    <div class="sidebar">
-        <div class="launcher">
-            <a href="#home" class="launcher-icon active" title="About Me">
-                <i class="fas fa-home"></i>
-                <span class="launcher-text">About</span>
-            </a>
-            <a href="#news" class="launcher-icon" title="News">
-                <i class="fas fa-newspaper"></i>
-                <span class="launcher-text">News</span>
-            </a>
-            <a href="#research" class="launcher-icon" title="Research">
-                <i class="fas fa-flask"></i>
-                <span class="launcher-text">Research</span>
-            </a>
-            <a href="#people" class="launcher-icon" title="People & Network">
-                <i class="fas fa-users"></i>
-                <span class="launcher-text">People</span>
-            </a>
-        </div>
-    </div>
+        <!-- Research areas -->
+        <section id="research" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">Research</span>
+                <h2>Research areas</h2>
+                <p class="section-aside">Click an area to filter publications</p>
+            </div>
+            <div class="areas-grid"></div>
+        </section>
 
-    <!-- Main Content - Scrollable -->
-    <main class="main-content">
-        <!-- Home Section -->
-        <section id="home" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
+        <!-- Experience + Honors -->
+        <section id="experience" class="section container">
+            <div class="bento">
+                <div class="card span-7">
+                    <div class="card-head">
+                        <span class="eyebrow">Experience</span>
                     </div>
-                    <div class="window-title">
-                        <i class="fas fa-user-circle"></i>
-                        About Me
-                    </div>
+                    <ol class="timeline"></ol>
                 </div>
-                <div class="window-content terminal-content">
-                    <div class="terminal-output">
-                        <!-- Profile and Bio -->
-                        <div class="terminal-response" id="profile-bio-output">
-                            <!-- Content loaded from data/about.js -->
-                        </div>
-
-                        <!-- Research Interests -->
-                        <div class="terminal-response" id="research-output">
-                            <!-- Content loaded from data/about.js -->
-                        </div>
+                <div class="card span-5" id="honors">
+                    <div class="card-head">
+                        <span class="eyebrow">Honors</span>
                     </div>
+                    <ul class="honors-list"></ul>
                 </div>
             </div>
         </section>
 
-        <!-- News Section -->
-        <section id="news" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-newspaper"></i>
-                        News
-                    </div>
-                </div>
-                <div class="window-content">
-                <h2>Recent News</h2>
-                <div class="news-list">
-                    <!-- Content loaded from data/news.js -->
-                </div>
+        <!-- Open source -->
+        <section id="open-source" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">Open Source</span>
+                <h2>Things you can run</h2>
+                <a class="section-aside link-arrow" href="https://github.com/quao627" target="_blank">GitHub profile <i class="fas fa-arrow-right"></i></a>
             </div>
+            <div class="repo-grid"></div>
+        </section>
+
+        <!-- Writing -->
+        <section id="writing" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">Writing</span>
+                <h2>Blogs & long reads</h2>
+            </div>
+            <div class="writing-grid"></div>
+        </section>
+
+        <!-- News + Media -->
+        <section id="news" class="section container">
+            <div class="bento">
+                <div class="card span-8">
+                    <div class="card-head">
+                        <span class="eyebrow">News</span>
+                    </div>
+                    <ul class="news-list"></ul>
+                    <button class="text-button" id="news-toggle" type="button"></button>
+                </div>
+                <div class="card span-4" id="media">
+                    <div class="card-head">
+                        <span class="eyebrow">In the media</span>
+                    </div>
+                    <ul class="media-list"></ul>
+                </div>
             </div>
         </section>
 
-        <!-- Research Section -->
-        <section id="research" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-flask"></i>
-                        Research
-                    </div>
-                </div>
-                <div class="window-content">
-                <h2>Selected Recent Works</h2>
-                <div class="section-note">* indicates equal contribution</div>
-                <div class="papers-list">
-                    <!-- Content loaded from data/publications.js -->
-                </div>
-
-                <h2 class="section-subtitle">Early Publications (Before 2023)</h2>
-                <ul class="simple-list">
-                    <!-- Content loaded from data/publications.js -->
-                </ul>
+        <!-- Publications -->
+        <section id="publications" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">Publications</span>
+                <h2>Selected papers</h2>
+                <p class="section-aside">* equal contribution</p>
             </div>
-            </div>
+            <div class="pub-filters" role="toolbar" aria-label="Filter publications by research area"></div>
+            <div class="pub-list"></div>
+            <details class="early-pubs">
+                <summary><span>Earlier work (before 2023)</span><i class="fas fa-chevron-down"></i></summary>
+                <ul class="early-list"></ul>
+            </details>
         </section>
 
-        <!-- People Section -->
-        <section id="people" class="section">
-            <div class="window">
-                <div class="window-header">
-                    <div class="window-controls">
-                        <span class="control close"></span>
-                        <span class="control minimize"></span>
-                        <span class="control maximize"></span>
-                    </div>
-                    <div class="window-title">
-                        <i class="fas fa-users"></i>
-                        People & Network
-                        </div>
-                    </div>
-                    <div class="window-content">
-                        <div class="people-grid">
-                            <!-- Content loaded from data/people.js -->
-                        </div>
-                    </div>
-                </div>
-            </section>
+        <!-- People -->
+        <section id="people" class="section container">
+            <div class="section-head">
+                <span class="eyebrow">People</span>
+                <h2>People I work with</h2>
+            </div>
+            <div class="people-grid"></div>
         </section>
-
     </main>
 
-    <!-- Visitor Analytics Footer (Hidden for now, but links/scripts still active) -->
-    <footer class="visitor-footer" style="display: none;">
-        <div class="visitor-footer-content">
-            <!-- Inline Stats and Map -->
-            <div class="visitor-inline">
-                <!-- Stats on the side -->
-                <div class="visitor-stats-side">
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="visitor-counter">---</div>
-                        <div class="stat-mini-label">Visitors</div>
-                    </div>
-                    <div class="stat-mini">
-                        <div class="stat-mini-value" id="country-counter">---</div>
-                        <div class="stat-mini-label">Countries</div>
-                    </div>
-                </div>
-                
-                <!-- Map in the center -->
-                <div class="visitor-map-inline">
-                    <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=zsHdgbYyiBRIcBn7zJhUndNwxu0z71pKTh0fCO_AoVo&cl=ffffff&w=a"></script>
-                </div>
+    <footer class="site-footer">
+        <div class="container">
+            <div class="contact-card"></div>
+            <div class="footer-bottom">
+                <span>© <span id="year"></span> Ao Qu</span>
+                <span>Last updated Oct 2026</span>
             </div>
+        </div>
+
+        <!-- Visitor map (hidden; script kept for analytics) -->
+        <div class="visitor-map" style="display: none;">
+            <script type="text/javascript" id="mapmyvisitors" src="//mapmyvisitors.com/map.js?d=zsHdgbYyiBRIcBn7zJhUndNwxu0z71pKTh0fCO_AoVo&cl=ffffff&w=a"></script>
         </div>
     </footer>
 
-    <!-- Google Analytics 4 (Replace YOUR_GA4_ID with your actual ID) -->
-    <!-- Get your ID from https://analytics.google.com -->
-    
+    <!-- Google Analytics 4 -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-XGVM335K55"></script>
     <script>
       window.dataLayer = window.dataLayer || [];
@@ -194,18 +159,18 @@
       gtag('js', new Date());
       gtag('config', 'G-XGVM335K55');
     </script>
-   
 
     <!-- Load data files first -->
     <script src="data/about.js"></script>
     <script src="data/news.js"></script>
     <script src="data/publications.js"></script>
+    <script src="data/projects.js"></script>
     <script src="data/people.js"></script>
-    
-    <!-- Then load the data into HTML -->
+
+    <!-- Then render the data into HTML -->
     <script src="data-loader.js"></script>
-    
-    <!-- Finally run animations and interactions -->
+
+    <!-- Finally run interactions -->
     <script src="script.js"></script>
   </body>
 </html>
