@@ -78,6 +78,18 @@ const PUBLICATIONS_DATA = {
             }
         },
         {
+            id: 'urbanci',
+            title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
+            authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
+            venue: "arXiv 2025",
+            areas: ['multiagent'],
+            image: "paper-teasers/urbanci.png",
+            links: {
+                paper: "https://arxiv.org/abs/2504.12345",
+                code: "https://github.com/quao627/Urban-CI-LitReview"
+            }
+        },
+        {
             id: 'frontieror',
             title: "FrontierOR: Benchmarking LLMs' Capacity for Efficient Algorithm Design in Large-Scale Optimization",
             authors: "Minwei Kong*, Chonghe Jiang*, <strong>Ao Qu (project lead)</strong>, Wenbin Ouyang, Zhaoming Zeng, Xiaotong Guo, Zhekai Li, Junyi Li, Yi Fan, Xinshou Zheng, Xi Jing, Yikai Zhang, Zhiwei Liang, Seonghoo Kim, Runqing Yang, Zijian Zhou, Sirui Li, Han Zheng, Wangyang Ying, Ou Zheng, Chonghuan Wang, Jinglong Zhao, Hanzhang Qin, Cathy Wu, Paul Pu Liang, Jinhua Zhao, Hai Wang",
@@ -198,18 +210,6 @@ const PUBLICATIONS_DATA = {
             links: {
                 paper: "https://arxiv.org/abs/2410.16162",
                 code: "https://github.com/YihongT/Sparkle"
-            }
-        },
-        {
-            id: 'urbanci',
-            title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
-            authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
-            venue: "arXiv 2025",
-            areas: ['multiagent'],
-            image: "paper-teasers/urbanci.png",
-            links: {
-                paper: "https://arxiv.org/abs/2504.12345",
-                code: "https://github.com/quao627/Urban-CI-LitReview"
             }
         },
         {
