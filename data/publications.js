@@ -205,7 +205,7 @@ const PUBLICATIONS_DATA = {
             title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
             authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
             venue: "arXiv 2025",
-            areas: [],
+            areas: ['multiagent'],
             image: "paper-teasers/urbanci.png",
             links: {
                 paper: "https://arxiv.org/abs/2504.12345",

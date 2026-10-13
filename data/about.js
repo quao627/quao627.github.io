@@ -76,7 +76,8 @@ const ABOUT_DATA = {
             icon: "fa-diagram-project",
             papers: [
                 { label: "CORAL", id: "coral" },
-                { label: "Economy of Minds", id: "eom" }
+                { label: "Economy of Minds", id: "eom" },
+                { label: "Reimagining Urban Science", id: "urbanci" }
             ]
         },
         {
