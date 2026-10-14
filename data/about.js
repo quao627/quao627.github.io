@@ -89,7 +89,7 @@ const ABOUT_DATA = {
         { org: "MIT", role: "Co-instructor, <a href='https://mit-mi.github.io/how2ai-course/fall2026/' target='_blank'>How to AI an AI for (Almost) Anything</a>", time: "Fall 2026" },
         { org: "ByteDance Seed", role: "Research Scientist Intern, Top Seed Talent Program", time: "2026" },
         { org: "MIT IDSS", role: "PhD Student", time: "2022 – Now" },
-        { org: "SMART M3S", role: "Visiting Researcher, Singapore", time: "– 2025" },
+        { org: "SMART M3S", role: "Visiting Researcher, Singapore", time: "2025 – 2026" },
         { org: "Vanderbilt University", role: "B.S. Mathematics & Computer Science", time: "2018 – 2022" }
     ],
 
