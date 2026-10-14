@@ -1,19 +1,23 @@
 // People and Collaborations Data
 const PEOPLE_DATA = {
     interns: [
-        { name: "Josephine Lee", tag: "(MIT MEng)", url: "https://github.com/josephinelee1234" },
-        { name: "Kathy Choi", tag: "(MIT MEng)", url: "https://fab.cba.mit.edu/classes/863.24/people/KathyChoi/about.html" },
         { name: "Anirudh Valiveru", tag: "(MIT Undergrad)", url: "https://anirudhv27.github.io/" },
-        { name: "Minwei Kong", tag: "(LSE Master, applying for PhD)", url: "https://minw913.github.io/" },
-        { name: "Yibo Zhao", tag: "(JHU Master, applying for PhD)", url: "https://yibozh.github.io/" },
+        { name: "Alyssa Chu", tag: "(MIT Undergrad)", url: "https://www.linkedin.com/in/alyssa-chu/" },
+        { name: "Minwei Kong", tag: "(LSE Master → MIT PhD)", url: "https://minw913.github.io/" },
+        { name: "Yibo Zhao", tag: "(JHU Master → UIUC PhD)", url: "https://yibozh.github.io/" },
         { name: "Zhenze Mo", tag: "(NEU Master, applying for PhD)", url: "https://www.linkedin.com/in/zhenze-mo/" },
-        { name: "Yuhan Tang", tag: "(UCB Master → MIT)", url: "https://www.linkedin.com/in/yuhan-tang-1b3571227/" }
+        { name: "Yuhan Tang", tag: "(UCB Master → MIT PhD)", url: "https://www.linkedin.com/in/yuhan-tang-1b3571227/" },
+        { name: "Quanfeng Huang", tag: "(CMU Master)", url: "https://www.linkedin.com/in/quanfeng-huang-3a66523a3/" },
+        { name: "Xuyan Ye", tag: "(Renmin University Undergrad)", url: "https://xuyanye.com/" }
     ],
     
-    startups: [
-        { name: "O2Tech.ai", url: "https://www.o2tech.ai/" },
-        { name: "Subconscious.dev", url: "https://www.subconscious.dev/" },
-        // { name: "Zhiling Technology", url: "https://libra.zhilingtech.com/" }
+    companies: [
+        { name: "Takeda", url: "https://www.takeda.com/" },
+        { name: "FranklinWH", url: "https://www.franklinwh.com/" },
+        { name: "HCLTech", url: "https://www.hcltech.com/" },
+        { name: "Mobileye", url: "https://www.mobileye.com/" },
+        { name: "Hyundai", url: "https://www.hyundai.com/worldwide/en/" },
+        { name: "Liberty Mutual", url: "https://www.libertymutual.com/" }
     ],
     
     mentors: [
@@ -47,7 +51,12 @@ const PEOPLE_DATA = {
         { name: "Tiange Luo", url: "https://tiangeluo.github.io/"},
         { name: "Vindulam Jayawardana", url: "https://vindulamj.github.io/"},
         { name: "Zhongxia (Zee) Yan", url: "https://zhongxiayan.github.io/"},
-        { name: "Chonghe Jiang", url: "https://sites.mit.edu/chonghej/"}
+        { name: "Chonghe Jiang", url: "https://sites.mit.edu/chonghej/"},
+        { name: "Hanfei Yu", url: "https://hanfeiyu.github.io/" },
+        { name: "Bo Liu", url: "https://benjamin-eecs.github.io/" },
+        { name: "Kaichen Zhou", url: "https://kaichen-z.github.io/" },
+        { name: "Sunghwan Kim", url: "https://kimsh0507.github.io/" },
+        { name: "Keane Ong", url: "https://keanepotato.github.io/" }
     ].sort((a, b) => a.name.localeCompare(b.name)) // Automatically sorted alphabetically
 };
 

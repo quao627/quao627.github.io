@@ -1,5 +1,6 @@
 // Publications and Research Data
-// badges: kind "award" is highlighted; anything else renders as a quiet note
+// badges: kind "award" (a prize won) shows red, kind "honor" (an oral, a finalist) orange;
+// anything else renders as a quiet note
 const PUBLICATIONS_DATA = {
     selectedWorks: [
         {
@@ -32,7 +33,7 @@ const PUBLICATIONS_DATA = {
             venue: "ICLR 2026",
             badges: [
                 { text: "Best Paper · NeurIPS MTI-LLM Workshop 2025", kind: "award" },
-                { text: "Oral · COLM RAM2 Workshop 2025" }
+                { text: "Oral · COLM RAM2 Workshop 2025", kind: "honor" }
             ],
             image: "paper-teasers/mem1.png",
             links: {
@@ -72,17 +73,6 @@ const PUBLICATIONS_DATA = {
             }
         },
         {
-            id: 'urbanci',
-            title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
-            authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
-            venue: "arXiv 2025",
-            image: "paper-teasers/urbanci.png",
-            links: {
-                paper: "https://arxiv.org/abs/2504.12345",
-                code: "https://github.com/quao627/Urban-CI-LitReview"
-            }
-        },
-        {
             id: 'frontieror',
             title: "FrontierOR: Benchmarking LLMs' Capacity for Efficient Algorithm Design in Large-Scale Optimization",
             authors: "Minwei Kong*, Chonghe Jiang*, <strong>Ao Qu (project lead)</strong>, Wenbin Ouyang, Zhaoming Zeng, Xiaotong Guo, Zhekai Li, Junyi Li, Yi Fan, Xinshou Zheng, Xi Jing, Yikai Zhang, Zhiwei Liang, Seonghoo Kim, Runqing Yang, Zijian Zhou, Sirui Li, Han Zheng, Wangyang Ying, Ou Zheng, Chonghuan Wang, Jinglong Zhao, Hanzhang Qin, Cathy Wu, Paul Pu Liang, Jinhua Zhao, Hai Wang",
@@ -103,7 +93,7 @@ const PUBLICATIONS_DATA = {
             authors: "Minwei Kong*, <strong>Ao Qu* (corresponding author)</strong>, Xiaotong Guo, Wenbin Ouyang, Chonghe Jiang, Han Zheng, Yining Ma, Dingyi Zhuang, Yuhan Tang, Junyi Li, Hai Wang, Cathy Wu, Jinhua Zhao",
             venue: "KDD 2026",
             badges: [
-                { text: "Best Paper Finalist · INFORMS Data Mining Society 2025", kind: "award" }
+                { text: "Best Paper Finalist · INFORMS Data Mining Society 2025", kind: "honor" }
             ],
             image: "paper-teasers/alphaopt.jpg",
             links: {
@@ -180,6 +170,17 @@ const PUBLICATIONS_DATA = {
             links: {
                 paper: "https://arxiv.org/abs/2509.18020",
                 video: "https://drive.google.com/file/d/1hdLLfHoMHoIPdCyx-PYnfPOIKyoVHz3Q/view?usp=sharing"
+            }
+        },
+        {
+            id: 'urbanci',
+            title: "Reimagining Urban Science: Scaling Causal Inference with Large Language Models",
+            authors: "Yutong Xia*, <strong>Ao Qu*</strong>, Yunhan Zheng, Yihong Tang, Dingyi Zhuang, Yuxuan Liang, Shenhao Wang, Cathy Wu, Lijun Sun, Roger Zimmermann, Jinhua Zhao",
+            venue: "arXiv 2025",
+            image: "paper-teasers/urbanci.png",
+            links: {
+                paper: "https://arxiv.org/abs/2504.12345",
+                code: "https://github.com/quao627/Urban-CI-LitReview"
             }
         },
         {

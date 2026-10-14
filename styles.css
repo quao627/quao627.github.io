@@ -1,12 +1,25 @@
-/* Ao Qu — personal site. White, quiet, one accent (awards). */
+/* Ao Qu — personal site. White and quiet, black / white / gray only: icons
+   and pills sit on a pale gray wash; red is kept for awards. */
 
 :root {
+    /* body text sits a step lighter than ink, so bold key phrases stand out */
     --ink: #111;
-    --text: #333;
+    --text: #4a4a4a;
     --gray: #777;
     --line: #ececec;
+    --link: #111;
+    --link-hover: #000;
+    --wash: #f2f2f2;
+    --underline: #cfcfcf;
+    --icon: #444;
+    /* colour only for what is special, never for the theme */
     --award: #c0392b;
-    --serif: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+    --award-wash: #fbefed;
+    --honor: #b45309;
+    --honor-wash: #fdf3e6;
+    --feature: #2f5fb3;
+    --feature-wash: #eef3fb;
+    --serif: "Newsreader", "Iowan Old Style", Georgia, serif;
     --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", "Helvetica Neue", "PingFang SC", sans-serif;
 }
 
@@ -38,11 +51,13 @@ strong { color: var(--ink); font-weight: 600; }
 .news-text a,
 .area-papers a,
 .pub-media a,
-.early-venue a {
+.early-venue a,
+.exp-list a {
+    color: var(--link);
     text-decoration: underline;
-    text-decoration-color: #cfcfcf;
+    text-decoration-color: var(--underline);
     text-underline-offset: 3px;
-    transition: text-decoration-color 0.15s ease;
+    transition: text-decoration-color 0.15s ease, color 0.15s ease;
 }
 
 .intro-text p a:hover,
@@ -51,11 +66,33 @@ strong { color: var(--ink); font-weight: 600; }
 .news-text a:hover,
 .area-papers a:hover,
 .pub-media a:hover,
-.early-venue a:hover { text-decoration-color: var(--ink); }
+.early-venue a:hover,
+.exp-list a:hover { color: var(--link-hover); text-decoration-color: var(--link); }
 
 /* name lists stay plain until hovered */
+.name-list a,
+.intern-list a { transition: color 0.15s ease; }
 .name-list a:hover,
-.intern-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.intern-list a:hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
+
+/* ======== Icons: one gray square per section heading ======== */
+
+.h-icon {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--wash);
+    color: var(--icon);
+}
+
+.h-icon {
+    width: 34px;
+    height: 34px;
+    border-radius: 10px;
+    font-size: 15px;
+}
+
 
 .container {
     max-width: 880px;
@@ -72,7 +109,10 @@ h2 {
     font-size: 32px;
     line-height: 1.1;
     color: var(--ink);
-    margin: 64px 0 16px;
+    margin: 64px 0 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
 }
 
 h3 {
@@ -85,7 +125,23 @@ h3 {
 .note { color: var(--text); }
 .note-small { color: var(--gray); font-size: 14px; }
 .sub { color: var(--gray); font-size: 13.5px; }
-.award { color: var(--award); font-weight: 500; }
+.award,
+.honor {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--award);
+    background: var(--award-wash);
+    font-weight: 500;
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding: 1px 9px;
+    border-radius: 999px;
+}
+
+.honor { color: var(--honor); background: var(--honor-wash); }
+.award i,
+.honor i { font-size: 10.5px; }
 
 /* ======== Top bar ======== */
 
@@ -121,6 +177,7 @@ h3 {
 }
 
 .topbar-nav a:hover { color: var(--ink); }
+.topbar-nav a.active { color: var(--link); }
 
 /* ======== Intro ======== */
 
@@ -155,19 +212,25 @@ h3 {
 .intro-links {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 18px;
-    margin-top: 18px;
+    gap: 8px;
+    margin-top: 20px;
 }
 
 .intro-text .intro-links a {
-    font-size: 14px;
-    color: var(--gray);
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 4px 13px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    font-size: 13.5px;
+    color: var(--text);
     text-decoration: none;
-    transition: color 0.15s ease;
+    transition: border-color 0.15s ease, background 0.15s ease;
 }
 
-.intro-text .intro-links a:hover { color: var(--ink); }
-.intro-links i { margin-right: 4px; }
+.intro-text .intro-links a:hover { border-color: var(--underline); background: var(--wash); }
+.intro-links i { color: var(--icon); font-size: 13px; }
 
 .intro-photo {
     width: 100%;
@@ -182,14 +245,33 @@ h3 {
 
 .news-list li {
     display: grid;
-    grid-template-columns: 96px minmax(0, 1fr);
-    gap: 16px;
-    padding: 5px 0;
+    grid-template-columns: 100px 22px minmax(0, 1fr);
+    gap: 12px;
+    padding: 6px 0;
     font-size: 14.5px;
 }
 
+.news-icon {
+    width: 22px;
+    height: 22px;
+    margin-top: 1px;
+    border-radius: 50%;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 10px;
+    background: var(--wash);
+    color: var(--icon);
+}
+
+.news-icon.news-award { background: var(--award-wash); color: var(--award); }
+.news-icon.news-honor { background: var(--honor-wash); color: var(--honor); }
+.news-icon.news-feature { background: var(--feature-wash); color: var(--feature); }
+.news-text em a { color: var(--link); }
+
 .news-date {
     color: var(--gray);
+    white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
 
@@ -207,12 +289,12 @@ h3 {
     color: var(--gray);
     cursor: pointer;
     text-decoration: underline;
-    text-decoration-color: #cfcfcf;
+    text-decoration-color: var(--underline);
     text-underline-offset: 3px;
 }
 
-.more-button { margin-top: 8px; font-size: 14px; }
-.more-button:hover, .authors-toggle:hover { color: var(--ink); }
+.more-button { margin-top: 10px; font-size: 14px; }
+.more-button:hover, .authors-toggle:hover { color: var(--ink); text-decoration-color: var(--ink); }
 
 /* ======== Research ======== */
 
@@ -227,7 +309,7 @@ h3 {
     margin-bottom: 8px;
 }
 
-.question-list li::marker { color: var(--gray); }
+.question-list li::marker { color: var(--gray); font-weight: 600; }
 
 .area-list {
     display: grid;
@@ -273,16 +355,24 @@ h3 {
 .repo-list a,
 .blog-list a { font-weight: 600; transition: color 0.15s ease; }
 .repo-list a:hover,
-.blog-list a:hover { text-decoration: underline; text-underline-offset: 3px; }
+.blog-list a:hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 
 .stars {
-    color: var(--gray);
-    font-size: 13px;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    color: var(--text);
+    background: var(--wash);
+    font-size: 12.5px;
+    font-weight: 500;
+    line-height: 1.6;
+    padding: 0 9px;
+    border-radius: 999px;
     white-space: nowrap;
     font-variant-numeric: tabular-nums;
 }
 
-.stars i { font-size: 11px; }
+.stars i { font-size: 10px; }
 
 /* ======== Experience ======== */
 
@@ -334,7 +424,8 @@ h3 {
     margin-bottom: 4px;
 }
 
-.pub-title:hover { text-decoration: underline; text-underline-offset: 3px; }
+.pub-title { transition: color 0.15s ease; }
+.pub-title:hover { color: var(--link); text-decoration: underline; text-underline-offset: 3px; }
 
 .pub-authors {
     color: var(--gray);
@@ -345,11 +436,32 @@ h3 {
 .authors-toggle { font-size: 13.5px; }
 
 .pub-venue {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
     font-size: 14px;
-    margin: 4px 0 8px;
+    margin: 6px 0 8px;
 }
 
-.venue { font-style: italic; color: var(--ink); }
+.venue {
+    color: var(--link);
+    background: var(--wash);
+    font-weight: 600;
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding: 1px 9px;
+    border-radius: 999px;
+}
+
+.badge-note {
+    color: var(--gray);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding: 0 9px;
+    border: 1px solid var(--line);
+    border-radius: 999px;
+}
 
 .pub-links {
     display: flex;
@@ -372,6 +484,8 @@ h3 {
     color: var(--gray);
 }
 
+.pub-media i { color: var(--feature); font-size: 12px; margin-right: 3px; }
+
 .early { margin-top: 12px; border-top: 1px solid var(--line); padding-top: 16px; }
 
 .early summary {
@@ -379,6 +493,8 @@ h3 {
     font-weight: 600;
     color: var(--ink);
 }
+
+.early summary::marker { color: var(--gray); }
 
 .early-list { list-style: none; margin-top: 8px; }
 .early-list li { padding: 8px 0; }
@@ -438,5 +554,15 @@ h3 {
     .pub { grid-template-columns: 1fr; gap: 12px; }
     .pub-image { max-width: 360px; }
 
-    .news-list li { grid-template-columns: 1fr; gap: 0; padding: 6px 0; }
+    .news-list li {
+        grid-template-columns: 22px minmax(0, 1fr);
+        grid-template-areas: "icon date" "icon text";
+        gap: 0 10px;
+        padding: 7px 0;
+    }
+
+    .news-icon { grid-area: icon; }
+    .news-date { grid-area: date; }
+    .news-text { grid-area: text; }
+
 }

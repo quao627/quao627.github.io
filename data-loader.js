@@ -16,6 +16,24 @@ function formatStars(n) {
     return String(n);
 }
 
+// News kinds, read from the wording; an item can name its own with `kind`.
+// Only the special ones carry colour (award red, honor orange, feature blue).
+const NEWS_KINDS = [
+    { kind: 'honor',   test: /finalist|\boral|top \d+%/i,      icon: 'fas fa-medal' },
+    { kind: 'award',   test: /award/i,                         icon: 'fas fa-trophy' },
+    { kind: 'talk',    test: /\btalk\b|presented/i,            icon: 'fas fa-microphone' },
+    { kind: 'accept',  test: /accepted/i,                      icon: 'fas fa-check' },
+    { kind: 'release', test: /released|open-sourced|is out|is now on/i, icon: 'fas fa-rocket' },
+    { kind: 'milestone', test: /stars on github/i,             icon: 'fas fa-arrow-trend-up' },
+    { kind: 'feature', test: /top ml papers|selected as/i,     icon: 'fas fa-star' },
+    { kind: 'life',    test: /./,                              icon: 'fas fa-location-dot' }
+];
+
+function newsKind(item) {
+    const text = item.content.replace(/<[^>]+>/g, '');
+    return NEWS_KINDS.find(k => item.kind ? k.kind === item.kind : k.test.test(text)) || NEWS_KINDS[NEWS_KINDS.length - 1];
+}
+
 function isRealUrl(url) {
     return url && url !== '#';
 }
@@ -86,11 +104,15 @@ function loadNews() {
         (html, [name, id]) => html.replace(new RegExp(`<em>${name}</em>`, 'g'), `<em><a href="#${id}">${name}</a></em>`),
         content
     );
-    list.innerHTML = NEWS_DATA.map((item, i) => `
+    list.innerHTML = NEWS_DATA.map((item, i) => {
+        const k = newsKind(item);
+        return `
         <li class="${item.highlight ? 'highlight' : ''}${i >= 6 ? ' news-extra' : ''}">
             <span class="news-date">${item.date}</span>
+            <span class="news-icon news-${k.kind}" aria-hidden="true"><i class="${k.icon}"></i></span>
             <span class="news-text">${linkPaperNames(item.content)}</span>
-        </li>`).join('');
+        </li>`;
+    }).join('');
 }
 
 // ======== RESEARCH ========
@@ -129,7 +151,7 @@ function loadProjects() {
             <li>
                 <div class="row">
                     <a href="https://github.com/${r.repo}" target="_blank" rel="noopener">${r.name}</a>
-                    <span class="stars"><i class="fas fa-star"></i> <span data-repo="${r.repo}">${formatStars(r.stars)}</span></span>
+                    <span class="stars" title="GitHub stars"><i class="fas fa-star"></i> <span data-repo="${r.repo}">${formatStars(r.stars)}</span></span>
                 </div>
                 <div class="sub">${r.desc}</div>
             </li>`).join('');
@@ -140,7 +162,7 @@ function loadProjects() {
         blogs.innerHTML = BLOG_DATA.map(b => `
             <li>
                 <a href="${b.url}"${externalAttrs(b.url)}>${b.title}</a>
-                <div class="sub">${b.source} · ${b.date}</div>
+                <div class="sub">${b.date}</div>
             </li>`).join('');
     }
 }
@@ -169,10 +191,14 @@ function loadPublications() {
                 .map(key => `<a href="${p.links[key]}"${externalAttrs(p.links[key])}><i class="${LINK_META[key].icon}"></i> ${LINK_META[key].label}</a>`)
                 .join('');
             const badges = (p.badges || [])
-                .map(b => b.kind === 'award' ? ` · <span class="award">${b.text}</span>` : ` · ${b.text}`)
+                .map(b => b.kind === 'award'
+                    ? `<span class="award"><i class="fas fa-trophy"></i> ${b.text}</span>`
+                    : b.kind === 'honor'
+                        ? `<span class="honor"><i class="fas fa-medal"></i> ${b.text}</span>`
+                        : `<span class="badge-note">${b.text}</span>`)
                 .join('');
             const media = p.media && p.media.length
-                ? `<div class="pub-media">Media: ${p.media.map(m => `<a href="${m.url}" target="_blank" rel="noopener">${m.name}</a>`).join(', ')}</div>`
+                ? `<div class="pub-media"><i class="fas fa-newspaper"></i> Media: ${p.media.map(m => `<a href="${m.url}" target="_blank" rel="noopener">${m.name}</a>`).join(', ')}</div>`
                 : '';
             return `
                 <div class="pub" id="${p.id}">
@@ -196,7 +222,7 @@ function loadPublications() {
             <li>
                 <div class="early-title">${p.title}</div>
                 <div class="early-authors">${p.authors}</div>
-                <div class="early-venue">${p.venue}${p.award ? ` · <span class="award">${p.award}</span>` : ''}${p.note ? ` · ${p.note}` : ''}</div>
+                <div class="early-venue">${p.venue}${p.award ? ` · <span class="${/best/i.test(p.award) && !/finalist/i.test(p.award) ? 'award' : 'honor'}">${p.award}</span>` : ''}${p.note ? ` · ${p.note}` : ''}</div>
             </li>`).join('');
     }
 }
@@ -212,7 +238,7 @@ function loadPeople() {
         <div>
             <h3>Research interns I have mentored</h3>
             <ul class="intern-list">
-                ${PEOPLE_DATA.interns.map(p => `<li>${nameLink(p)} <span class="sub">${p.tag.replace(/^\(|\)$/g, '')}</span></li>`).join('')}
+                ${PEOPLE_DATA.interns.map(p => `<li>${nameLink(p)}${p.tag ? ` <span class="sub">${p.tag.replace(/^\(|\)$/g, '')}</span>` : ''}</li>`).join('')}
             </ul>
         </div>
         <div>
@@ -220,8 +246,8 @@ function loadPeople() {
             <p class="name-list">${PEOPLE_DATA.mentors.map(nameLink).join(', ')}</p>
             <h3>Collaborators I am honored to have worked with</h3>
             <p class="name-list">${PEOPLE_DATA.collaborators.map(nameLink).join(', ')}</p>
-            <h3>Startups I have collaborated with</h3>
-            <p class="name-list">${PEOPLE_DATA.startups.map(nameLink).join(', ')}</p>
+            <h3>Companies I have collaborated with to solve real-world problems</h3>
+            <p class="name-list">${PEOPLE_DATA.companies.map(nameLink).join(', ')}</p>
         </div>
     `;
 }

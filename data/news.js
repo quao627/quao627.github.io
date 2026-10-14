@@ -1,13 +1,33 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-10-08",
+        content: "Presented <em>CORAL</em> at <strong>COLM 2026</strong> with <a href='https://scholar.google.com/citations?user=sZc3Xw8AAAAJ&hl=en' target='_blank'>Han Zheng</a> and <a href='https://scholar.google.com/citations?user=SpIJomUAAAAJ&hl=en' target='_blank'>Zijian Zhou</a>!",
+        highlight: false
+    },
+    {
         date: "2026-10-05",
-        content: "<em>Evolving in Thought Space</em> is now on <a href='https://arxiv.org/abs/2610.06269' target='_blank'>arXiv</a>! Instead of fine-tuning a large model at test time, we train a small guidance model to propose high-level strategies while a frozen, stronger executor writes the code. Without web access, it beats the best previously reported solutions across four domains, from polyomino packing to GPU kernel optimization. Great work with my co–first author, Chonghe Jiang!",
+        content: "<em>Evolving in Thought Space</em> is out (<a href='https://arxiv.org/abs/2610.06269' target='_blank'>arXiv</a>, <a href='https://x.com/ao_qu18465/status/2107551843115262086' target='_blank'>tweet</a>)! With test-time reinforcement learning, a small guidance model learns to propose high-level strategies for a frozen, stronger executor and, without web access, beats the best previously reported solutions in four domains. Great work with my co–first author, Chonghe Jiang!",
         highlight: true
     },
     {
         date: "2026-09-24",
         content: "Three papers accepted to <strong>NeurIPS 2026</strong>: <em>Economy of Minds</em>, <em>FrontierOR</em> (Evaluations & Datasets Track), and <em>The Last Human-Written Paper</em>.",
+        highlight: true
+    },
+    {
+        date: "2026-09-24",
+        content: "<em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> hit <strong>5,000 stars</strong> on GitHub!",
+        highlight: true
+    },
+    {
+        date: "2026-09-12",
+        content: "<em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> hit <strong>1,000 stars</strong> on GitHub!",
+        highlight: false
+    },
+    {
+        date: "2026-09-01",
+        content: "We open-sourced <em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> (<a href='https://github.com/Human-Agent-Society/reef' target='_blank'>code</a>, <a href='https://x.com/ao_qu18465/status/2094867930081337730' target='_blank'>tweet</a>), an infrastructure for continually self-improving agents.",
         highlight: true
     },
     {
@@ -17,7 +37,7 @@ const NEWS_DATA = [
     },
     {
         date: "2026-08-19",
-        content: "We released <em>SPADE</em> (<a href='https://arxiv.org/abs/2608.19197' target='_blank'>arXiv</a>, <a href='https://spade-rl.github.io' target='_blank'>project</a>), a self-play RL framework where a single LLM both designs executable training environments and learns to solve them, producing an adaptive curriculum for language agents. Wonderful collaboration with Bo Liu, Simon Yu, and the team.",
+        content: "We released <em>SPADE</em> (<a href='https://arxiv.org/abs/2608.19197' target='_blank'>arXiv</a>, <a href='https://spade-rl.github.io' target='_blank'>project</a>, <a href='https://x.com/Benjamin_eecs/status/2090427345547219435' target='_blank'>tweet</a>), a self-play RL framework where one LLM both designs training environments and learns to solve them. Wonderful collaboration with Bo Liu, Simon Yu, and the team.",
         highlight: false
     },
     {
@@ -32,17 +52,27 @@ const NEWS_DATA = [
     },
     {
         date: "2026-06-01",
-        content: "<em>Economy of Minds</em> is now on <a href='https://arxiv.org/abs/2606.02859' target='_blank'>arXiv</a>! We show that agent populations coordinating through economic interactions — auctions, payments, and wealth accumulation — develop emergent multi-agent intelligence that outperforms monolithic baselines. Wonderful collaboration with Zhenting Qi, Huangyuan Su, and the team at Harvard and MIT.",
+        content: "<em>Economy of Minds</em> is now on <a href='https://arxiv.org/abs/2606.02859' target='_blank'>arXiv</a>! Agent populations that coordinate through auctions, payments, and wealth develop emergent intelligence that outperforms monolithic baselines. Wonderful collaboration with Zhenting Qi, Huangyuan Su, and the team at Harvard and MIT.",
         highlight: false
     },
     {
         date: "2026-05-24",
-        content: "<em>FrontierOR</em> is now on <a href='https://arxiv.org/abs/2605.25246' target='_blank'>arXiv</a>! We benchmark LLMs' capacity for efficient algorithm design on 180 large-scale optimization tasks drawn from top operations research venues. Great work with Minwei Kong and Chonghe Jiang!",
+        content: "<em>FrontierOR</em> is now on <a href='https://arxiv.org/abs/2605.25246' target='_blank'>arXiv</a>! It benchmarks LLMs on efficient algorithm design across 180 large-scale optimization tasks from top OR venues. Great work with Minwei Kong and Chonghe Jiang!",
+        highlight: false
+    },
+    {
+        date: "2026-04-30",
+        content: "Invited to give a talk at <strong>Boston University</strong> on self-evolving agents. Thanks to <a href='https://www.bu.edu/questrom/profiles/jinglong-zhao/' target='_blank'>Jinglong Zhao</a> for hosting!",
+        highlight: false
+    },
+    {
+        date: "2026-04-14",
+        content: "Invited to give a talk at <strong>Tsinghua University</strong> on self-evolving agents. Thanks to <a href='https://gaohuang-net.github.io/' target='_blank'>Gao Huang</a> and <a href='https://scholar.google.com/citations?user=Q9cLkdcAAAAJ&hl=en' target='_blank'>Yang Yue</a> for hosting me!",
         highlight: false
     },
     {
         date: "2026-04-02",
-        content: "We released <em>CORAL</em> (<a href='https://arxiv.org/abs/2604.01658' target='_blank'>arXiv</a>, <a href='https://github.com/Human-Agent-Society/CORAL' target='_blank'>code</a>), the first framework for autonomous multi-agent evolution on open-ended problems. Long-running agents explore, reflect, and collaborate through shared persistent memory, setting new state-of-the-art results on 10 discovery tasks.",
+        content: "We released <em>CORAL</em> (<a href='https://arxiv.org/abs/2604.01658' target='_blank'>arXiv</a>, <a href='https://github.com/Human-Agent-Society/CORAL' target='_blank'>code</a>), the first framework for autonomous multi-agent evolution on open-ended problems, setting new state-of-the-art results on 10 discovery tasks.",
         highlight: true
     },
     {

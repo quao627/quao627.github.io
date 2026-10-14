@@ -1,4 +1,5 @@
-// Interactions: news expander, author expander, live GitHub stars
+// Interactions: news expander, author expander, live GitHub stars, the
+// top bar's current section
 
 // ======== NEWS: show the latest few, expand on demand ========
 const newsToggle = document.getElementById('news-toggle');
@@ -24,6 +25,25 @@ document.addEventListener('click', e => {
     rest.hidden = !rest.hidden;
     btn.textContent = rest.hidden ? btn.dataset.more : btn.dataset.less;
 });
+
+// ======== TOP BAR: mark the section being read ========
+const navLinks = [...document.querySelectorAll('.topbar-nav a')];
+const navSections = navLinks.map(a => document.querySelector(a.getAttribute('href'))).filter(Boolean);
+function markSection() {
+    const y = window.scrollY + 120;
+    let current = null;
+    // Side-by-side sections share a top; the left one (first in the bar) wins
+    navSections.forEach(s => {
+        if (s.offsetTop <= y && (!current || s.offsetTop > current.offsetTop)) current = s;
+    });
+    // The last section never reaches the top; the page's end stands for it
+    if (window.innerHeight + window.scrollY >= document.documentElement.scrollHeight - 2) {
+        current = navSections[navSections.length - 1];
+    }
+    navLinks.forEach(a => a.classList.toggle('active', !!current && a.getAttribute('href') === `#${current.id}`));
+}
+window.addEventListener('scroll', markSection, { passive: true });
+markSection();
 
 // ======== LIVE GITHUB STARS (cached for 6 hours) ========
 async function refreshStars() {
