@@ -2,7 +2,7 @@
 const NEWS_DATA = [
     {
         date: "2026-10-14",
-        content: "Taught Lecture 5 of AI4AI, a harness engineering tutorial: from a 100-line agent loop to the tools, skills, MCP, context management, memory, subagents, and safety layers of Claude Code and Codex (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/harness%20engineering%20tutorial.pdf' target='_blank'>slides</a>).",
+        content: "Taught Lecture 5 of AI4AI, a tutorial on harness engineering for modern agents (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/harness%20engineering%20tutorial.pdf' target='_blank'>slides</a>).",
         kind: "talk",
         highlight: false
     },
