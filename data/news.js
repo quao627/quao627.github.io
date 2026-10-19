@@ -1,6 +1,12 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-10-14",
+        content: "Taught Lecture 5 of AI4AI, a harness engineering tutorial: from a 100-line agent loop to the tools, skills, MCP, context management, memory, subagents, and safety layers of Claude Code and Codex (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/harness%20engineering%20tutorial.pdf' target='_blank'>slides</a>).",
+        kind: "talk",
+        highlight: false
+    },
+    {
         date: "2026-10-08",
         content: "Presented <em>CORAL</em> at <strong>COLM 2026</strong> with <a href='https://scholar.google.com/citations?user=sZc3Xw8AAAAJ&hl=en' target='_blank'>Han Zheng</a> and <a href='https://scholar.google.com/citations?user=SpIJomUAAAAJ&hl=en' target='_blank'>Zijian Zhou</a>!",
         highlight: false
@@ -24,6 +30,12 @@ const NEWS_DATA = [
         date: "2026-09-12",
         content: "<em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> hit <strong>1,000 stars</strong> on GitHub!",
         highlight: false
+    },
+    {
+        date: "2026-09-09",
+        content: "Started teaching the AI4AI class, <a href='https://mit-mi.github.io/how2ai-course/fall2026/' target='_blank'>How to AI an AI for (Almost) Anything</a>, at MIT with <a href='https://pliang279.github.io/' target='_blank'>Paul Liang</a>! In the first lecture, I covered the history of self-evolving AI and how we got here (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/lec1%20-%20intro.pdf' target='_blank'>slides</a>).",
+        kind: "talk",
+        highlight: true
     },
     {
         date: "2026-09-01",
