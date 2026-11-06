@@ -1,6 +1,12 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-11-04",
+        content: "Taught Lecture 7 of AI4AI, on RL in practice for LLM post-training (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/lec6%20-%20rl%20in%20practice.pdf' target='_blank'>slides</a>).",
+        kind: "talk",
+        highlight: false
+    },
+    {
         date: "2026-10-14",
         content: "Taught Lecture 5 of AI4AI, a tutorial on harness engineering for modern agents (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/harness%20engineering%20tutorial.pdf' target='_blank'>slides</a>).",
         kind: "talk",
