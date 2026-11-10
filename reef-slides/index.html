@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Reef: Infrastructure for Self-Improving Agents</title>
+<title>Reef: An Infrastructure for Continual Self-Improving Agents</title>
 <meta name="description" content="Slides on Reef, open-source infrastructure for continually self-improving agents.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -20,6 +20,11 @@ img { display: block; }
 </style>
 </head>
 <body>
+<div class="frame"><div class="scale"><section id="cover" data-transition="fade" style="background:#ffffff;color:#1d1d1f;font-family:'Inter', Arial, sans-serif;padding:128px;display:flex;flex-direction:column;justify-content:center;gap:48px">
+<svg aria-label="Reef logo" width="192" height="152" viewBox="10 18 48 38"><g fill="none" stroke="#a03729" stroke-linecap="round" stroke-linejoin="round" stroke-width="3.5"><path d="M14 23.5c2.5 0 4 2.5 7 2.5s5.5-4.5 8.5-4.5S35.5 26 38.5 26s6-4.5 9-4.5c2.5 0 4 2 6.5 2"/><path d="M14 36.5c2.5 0 4 2.5 7 2.5s5.5-4.5 8.5-4.5S35.5 39 38.5 39s6-4.5 9-4.5c2.5 0 4 2 6.5 2"/><path d="M14 49.5c2.5 0 4 2.5 7 2.5s5.5-4.5 8.5-4.5S35.5 52 38.5 52s6-4.5 9-4.5c2.5 0 4 2 6.5 2"/></g></svg>
+<h1 style="font-size:96px;font-weight:600;line-height:1.1;letter-spacing:-2px">Reef: An Infrastructure for Continual Self-Improving Agents</h1>
+</section>
+</div></div>
 <div class="frame"><div class="scale"><section id="signals" data-transition="fade" style="background:#ffffff;color:#1d1d1f;font-family:'Inter', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:20px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <h2 style="font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1.5px">Agents can learn from inference-time signals</h2>
@@ -286,6 +291,31 @@ img { display: block; }
 <p style="position:absolute;right:128px;bottom:64px;width:80px;text-align:right;font-size:24px;color:#6e6e73">5</p>
 </section>
 </div></div>
+<div class="frame"><div class="scale"><section id="rea-cad" data-transition="fade" style="background:#ffffff;color:#1d1d1f;font-family:'Inter', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:36px">
+<div style="display:flex;flex-direction:column;gap:12px">
+<h2 style="font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1.5px">REA builds MCPs and Reef optimizes them</h2>
+<p style="font-size:32px;line-height:1.4">Using an MCP server built with REA from FreeCAD’s binaries, an agent finished this CAD task 10× faster and with 57× fewer tokens than computer use.</p>
+</div>
+<div style="display:flex;flex-direction:row;gap:48px;align-items:center">
+<video src="lid-vents.mp4" poster="lid-vents.jpg" aria-label="Computer use and an agent-built MCP server side by side on the FreeCAD lid-vent task" style="width:1038px;height:584px;object-fit:cover;border:1px solid #d2d2d7;border-radius:24px;flex:none" controls muted loop playsinline preload="metadata"></video>
+<div style="flex:1;display:flex;flex-direction:column;gap:48px">
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:64px;font-weight:600;line-height:1.1;color:#a03729">10×</p>
+<p style="font-size:24px;line-height:1.4;color:#6e6e73">faster, 4 min vs 40 min</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:64px;font-weight:600;line-height:1.1;color:#a03729">57×</p>
+<p style="font-size:24px;line-height:1.4;color:#6e6e73">fewer tokens, 0.3M vs 17.2M</p>
+</div>
+<div style="display:flex;flex-direction:column;gap:4px">
+<p style="font-size:64px;font-weight:600;line-height:1.1;color:#a03729">13/13</p>
+<p style="font-size:24px;line-height:1.4;color:#6e6e73">checks passed, vs 2/13</p>
+</div>
+</div>
+</div>
+<p style="position:absolute;right:128px;bottom:64px;width:80px;text-align:right;font-size:24px;color:#6e6e73">6</p>
+</section>
+</div></div>
 <div class="frame"><div class="scale"><section id="links" data-transition="fade" style="background:#ffffff;color:#1d1d1f;font-family:'Inter', Arial, sans-serif;padding:128px 128px 160px;display:flex;flex-direction:column;gap:56px">
 <div style="display:flex;flex-direction:column;gap:12px">
 <h2 style="font-size:64px;font-weight:600;line-height:1.1;letter-spacing:-1.5px">Reef is open source</h2>
@@ -310,7 +340,7 @@ img { display: block; }
 <p style="font-size:24px;line-height:1.4"><a href="https://x.com/ao_qu18465/status/2094867930081337730" style="color:#a03729">x.com/ao_qu18465/status/2094867930081337730</a></p>
 </div>
 </div>
-<p style="position:absolute;right:128px;bottom:64px;width:80px;text-align:right;font-size:24px;color:#6e6e73">6</p>
+<p style="position:absolute;right:128px;bottom:64px;width:80px;text-align:right;font-size:24px;color:#6e6e73">7</p>
 </section>
 </div></div>
 <script>
