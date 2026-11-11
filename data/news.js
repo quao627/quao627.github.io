@@ -1,6 +1,12 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-11-10",
+        content: "Gave a talk on <em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> at the <strong>MIT Center for Bits and Atoms</strong> (<a href='https://quao627.github.io/reef-slides/' target='_blank'>slides</a>).",
+        kind: "talk",
+        highlight: false
+    },
+    {
         date: "2026-11-04",
         content: "Taught Lecture 7 of AI4AI, on RL in practice for LLM post-training (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/lec6%20-%20rl%20in%20practice.pdf' target='_blank'>slides</a>).",
         kind: "talk",

@@ -9,6 +9,7 @@ const OPEN_SOURCE_DATA = [
 ];
 
 const BLOG_DATA = [
+    { title: "Blind Computer Use: Agents Build Their Own Tools from Just a Binary", date: "Nov 2026", url: "blog/blind-computer-use/" },
     { title: "Your Inference Server is Secretly a Learner: Open-Sourcing Reef", date: "Sep 2026", url: "https://x.com/ao_qu18465/status/2094867930081337730" },
     { title: "The Compounding Loop: A Framework for Self-Evolving Agents", date: "Apr 2026", url: "blog/self-evolving-agents/" },
     { title: "Evolve Like Coral: Towards Autonomous Multi-Agent Evolution", date: "Mar 2026", url: "https://coral.compounding-intelligence.ai/blogs/evolve-like-coral/" }

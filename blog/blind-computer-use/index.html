@@ -1,0 +1,564 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Blind Computer Use</title>
+  <meta name="description" content="A language agent given only a closed-source program's binaries and a reverse-engineering toolkit builds its own MCP server for the program. Working through that server, it finishes a FreeCAD task 10x faster with 57x fewer tokens than computer use, and averages 295 points to 79 at Fruit Ninja.">
+  <meta property="og:type" content="article">
+  <meta property="og:title" content="Blind Computer Use: Given just a binary, language agents build their own tools for a program and use it better than agents that watch the screen">
+  <meta property="og:description" content="A language agent given only a closed-source program's binaries and a reverse-engineering toolkit builds its own MCP server for the program. Working through that server, it finishes a FreeCAD task 10x faster with 57x fewer tokens than computer use, and averages 295 points to 79 at Fruit Ninja.">
+  <meta property="og:image" content="https://quao627.github.io/blog/blind-computer-use/media/v6/lid-vent.jpg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,400..800;1,14..32,400..800&family=JetBrains+Mono:wght@400;600&display=swap">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+  <div class="band">
+    <div class="col">
+      <h1><span class="hl nw">Blind</span> <span class="nw">Computer Use</span></h1>
+      <p class="subtitle">Given just a binary, language agents build their own tools for a program and use it better than agents that watch the screen</p>
+    </div>
+  </div>
+  <div class="col">
+    <div class="byline">
+      <div><h3>Published</h3><p>November 2026</p></div>
+    </div>
+  </div>
+</header>
+
+<article class="col">
+
+  <div class="tldr">
+    <b>TL;DR</b>
+    <p><b>We give a language agent only the compiled binaries of a program and a reverse-engineering toolkit. The agent builds its own tools for the program. With these tools, it uses the program much better than the same model does by operating the screen.</b> In FreeCAD, Kimi K2.6 finished one task <b>10× faster and with 57× fewer tokens</b> when it used the MCP server it built. Across five tasks it passed <b>87% of the checks with its MCP server and 33% with computer use</b>. In Fruit Ninja, a closed-source real-time game, DeepSeek V4.1 Flash <b>averaged 295 points with its MCP server and 79 points with computer use</b>.</p>
+  </div>
+
+  <figure class="demo" id="demo-lid">
+    <div class="demo-stats">
+      <div><span class="demo-big">10×</span><span class="demo-note">faster, 4 min vs 40 min</span></div>
+      <div><span class="demo-big">57×</span><span class="demo-note">fewer tokens, 0.3M vs 17.2M</span></div>
+      <div><span class="demo-big">13/13</span><span class="demo-note">checks passed, vs 2/13</span></div>
+    </div>
+    <div class="vid-wrap">
+      <video controls playsinline preload="metadata" poster="media/v6/lid-vent.jpg" src="media/v6/lid-vent.mp4" aria-label="Kimi K2.6 on the lid-vent task, computer use on the left and its MCP server on the right"></video>
+    </div>
+    <figcaption><b>Demo 1.</b> Kimi K2.6 cuts vents into a lid in FreeCAD. The left side uses computer use. The right side uses the MCP server that the model built. The clocks show real elapsed time. Computer use ran until the 40-minute deadline and did not cut the vents.</figcaption>
+  </figure>
+
+  <figure class="demo" id="demo-fruit">
+    <div class="demo-stats">
+      <div><span class="demo-big">295</span><span class="demo-note">average score with its MCP server, 3 rounds</span></div>
+      <div><span class="demo-big gui">79</span><span class="demo-note">average score with computer use, 3 rounds</span></div>
+      <div><span class="demo-big">288 <small>vs 9</small></span><span class="demo-note">points earned during play in the round shown</span></div>
+    </div>
+    <div class="vid-wrap">
+      <video controls playsinline preload="metadata" poster="media/v6/fruit-ninja.jpg" src="media/v6/fruit-ninja.mp4" aria-label="DeepSeek V4.1 Flash playing Fruit Ninja, computer use on the left and its MCP server on the right"></video>
+    </div>
+    <figcaption><b>Demo 2.</b> DeepSeek V4.1 Flash plays a 60-second round of Fruit Ninja, shown at 2× speed. The left side uses computer use. The right side uses the MCP server that the model built from the game's binary.</figcaption>
+  </figure>
+
+  <p>With computer use, a language agent operates software the way a person does. It looks at screenshots and moves the mouse. This works on any program, but every step needs a new screenshot and a new model reply. Agents work better when a program offers tools that they can call directly, such as an MCP server (<a href="https://arxiv.org/abs/2410.16464">Song et al., 2024</a>; <a href="https://arxiv.org/abs/2510.24563">Jia et al., 2025</a>). So far, people have written these tools by hand or generated them from source code and documentation. For closed-source software, there is no source code to generate them from.</p>
+  <p>We ask whether an agent can build these tools itself when it has only the compiled binaries of the program. We give the agent <a href="https://github.com/morluto/rea">REA</a>, a reverse-engineering toolkit that can inspect binaries and instrument running processes. We do not give it source code, documentation or internet access. The agent studies the program and writes an MCP server for it. After that, the agent does its tasks through only this server, without using the screen, mouse or keyboard. We observed superior performance and call this <b>blind computer use</b>.</p>
+
+  
+  <!-- ===================================================== -->
+  <h2 id="pipeline">How an agent builds an MCP server from binaries</h2>
+  <p>We give one agent session the binaries and REA in an offline sandbox, and ask it to build an MCP server. The agent builds the server in four steps (Figure 1):</p>
+  <ol>
+    <li><b>Analyze.</b> The agent inspects the package and finds what the binaries expose.</li>
+    <li><b>Test.</b> The agent runs the program and tries its guesses on it.</li>
+    <li><b>Build.</b> The agent writes the MCP server.</li>
+    <li><b>Check.</b> The agent runs the server against the program. If a check fails because of a bug in the code, the agent goes back to step 3 and fixes the code. If the failure raises a new question about the program, the agent goes back to step 2 and tests it.</li>
+  </ol>
+  <p>We do not show the agent the benchmark tasks, so the agent has to decide by itself which operations the server should offer.</p>
+
+  <figure class="pipe" id="fig-pipe">
+    <div class="fig-tools">
+      <span>Click a step to see what the agent did in it.</span>
+    </div>
+
+    <svg class="pipe-svg pipe-wide" viewBox="0 0 760 300" role="img" aria-label="The build loop: input package, then analyze, test, build, check, with feedback from checking back to building and testing, and an MCP server as output. REA is used in the analyze and test steps, shell and file tools in every step, and the image build and test run in the check step.">
+      <defs>
+        <marker id="pw-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="pw-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <g class="io">
+        <rect x="2" y="42" width="100" height="196" rx="8"/>
+        <text x="52" y="66" text-anchor="middle" class="t-h">Input</text>
+        <text x="52" y="90" text-anchor="middle">FreeCAD 0.20.2</text>
+        <text x="52" y="105" text-anchor="middle">.deb packages</text>
+        <text x="52" y="120" text-anchor="middle">63 ELF files</text>
+        <text x="52" y="135" text-anchor="middle" class="t-mono">manifest.json</text>
+        <line x1="14" x2="90" y1="150" y2="150"/>
+        <text x="52" y="170" text-anchor="middle" class="t-neg">no source</text>
+        <text x="52" y="185" text-anchor="middle" class="t-neg">no docs</text>
+        <text x="52" y="200" text-anchor="middle" class="t-neg">no network</text>
+        <text x="52" y="215" text-anchor="middle" class="t-neg">no tasks</text>
+      </g>
+      <rect class="loop" x="118" y="8" width="528" height="284" rx="12"/>
+      <text x="134" y="31" class="t-cap">Build loop</text>
+
+      <path class="fb" d="M560 86 V66 H446 V82" marker-end="url(#pw-b)"/>
+      <text class="t-fb" x="503" y="60" text-anchor="middle">fix the code</text>
+      <path class="fb" d="M596 86 V44 H318 V82" marker-end="url(#pw-b)"/>
+      <text class="t-fb" x="457" y="38" text-anchor="middle">new question: test again</text>
+
+      <g class="stage off" data-stage="1" tabindex="0" role="button" aria-label="Step 1, Analyze">
+        <rect x="134" y="86" width="112" height="90" rx="8"/>
+        <circle class="badge" cx="152" cy="105" r="10"/><text class="badge-t" x="152" y="109" text-anchor="middle">1</text>
+        <text class="t-st" x="144" y="138">Analyze</text>
+        <text class="t-sub m-rea" x="144" y="155">binary, exports,</text>
+        <text class="t-sub m-rea" x="144" y="169">linked libraries</text>
+        <text class="t-sub m-mem" x="144" y="155">nothing to</text>
+        <text class="t-sub m-mem" x="144" y="169">inspect</text>
+      </g>
+      <g class="stage off" data-stage="2" tabindex="0" role="button" aria-label="Step 2, Test">
+        <rect x="262" y="86" width="112" height="90" rx="8"/>
+        <circle class="badge" cx="280" cy="105" r="10"/><text class="badge-t" x="280" y="109" text-anchor="middle">2</text>
+        <text class="t-st" x="272" y="138">Test</text>
+        <text class="t-sub m-rea" x="272" y="155">run the program,</text>
+        <text class="t-sub m-rea" x="272" y="169">try each guess</text>
+        <text class="t-sub m-mem" x="272" y="155">program can't run,</text>
+        <text class="t-sub m-mem" x="272" y="169">memory only</text>
+      </g>
+      <g class="stage" data-stage="3" tabindex="0" role="button" aria-label="Step 3, Build">
+        <rect x="390" y="86" width="112" height="90" rx="8"/>
+        <circle class="badge" cx="408" cy="105" r="10"/><text class="badge-t" x="408" y="109" text-anchor="middle">3</text>
+        <text class="t-st" x="400" y="138">Build</text>
+        <text class="t-sub m-rea" x="400" y="155">MCP server +</text>
+        <text class="t-sub m-rea" x="400" y="169">injected script</text>
+        <text class="t-sub m-mem" x="400" y="155">written from</text>
+        <text class="t-sub m-mem" x="400" y="169">memory</text>
+      </g>
+      <g class="stage" data-stage="4" tabindex="0" role="button" aria-label="Step 4, Check">
+        <rect x="518" y="86" width="112" height="90" rx="8"/>
+        <circle class="badge" cx="536" cy="105" r="10"/><text class="badge-t" x="536" y="109" text-anchor="middle">4</text>
+        <text class="t-st" x="528" y="138">Check</text>
+        <text class="t-sub m-rea" x="528" y="155">real calls through</text>
+        <text class="t-sub m-rea" x="528" y="169">the built server</text>
+        <text class="t-sub m-mem" x="528" y="155">build image,</text>
+        <text class="t-sub m-mem" x="528" y="169">list tools only</text>
+      </g>
+
+      <line class="flow" x1="102" y1="131" x2="132" y2="131" marker-end="url(#pw-a)"/>
+      <line class="flow" x1="246" y1="131" x2="260" y2="131" marker-end="url(#pw-a)"/>
+      <line class="flow" x1="374" y1="131" x2="388" y2="131" marker-end="url(#pw-a)"/>
+      <line class="flow" x1="502" y1="131" x2="516" y2="131" marker-end="url(#pw-a)"/>
+      <line class="flow" x1="630" y1="131" x2="658" y2="131" marker-end="url(#pw-a)"/>
+
+      <text class="t-cap" x="134" y="284">Tools the agent uses in each step</text>
+      <g class="rail rea off">
+        <line class="tool-link" x1="190" y1="176" x2="190" y2="206"/><line class="tool-link" x1="318" y1="176" x2="318" y2="206"/>
+        <rect x="134" y="206" width="240" height="26" rx="13"/>
+        <text class="m-rea" x="254" y="223" text-anchor="middle">REA: inspect binaries, probe the live program</text>
+        <text class="m-mem" x="254" y="223" text-anchor="middle">REA withheld</text>
+      </g>
+      <g class="rail">
+        <line class="tool-link" x1="574" y1="176" x2="574" y2="206"/>
+        <rect x="518" y="206" width="112" height="26" rx="13"/>
+        <text class="m-rea" x="574" y="223" text-anchor="middle">build image, run it</text>
+        <text class="m-mem" x="574" y="223" text-anchor="middle">build image only</text>
+      </g>
+      <g class="rail">
+        <rect x="134" y="242" width="496" height="26" rx="13"/>
+        <text x="382" y="259" text-anchor="middle">Shell and files: run commands, write test scripts and the server code</text>
+      </g>
+
+      <g class="io">
+        <rect x="660" y="42" width="98" height="196" rx="8"/>
+        <text x="709" y="66" text-anchor="middle" class="t-h">Output</text>
+        <text x="709" y="89" text-anchor="middle" class="t-mono">mcp/</text>
+        <text x="709" y="103" text-anchor="middle">server + script</text>
+        <text x="709" y="123" text-anchor="middle" class="t-mono">env/</text>
+        <text x="709" y="137" text-anchor="middle">Dockerfile</text>
+        <text x="709" y="157" text-anchor="middle" class="t-mono">evidence/</text>
+        <text x="709" y="171" text-anchor="middle">REA logs, probes</text>
+        <line x1="672" x2="746" y1="186" y2="186"/>
+        <text x="709" y="208" text-anchor="middle" class="t-strong m-rea">19 working tools</text>
+        <text x="709" y="208" text-anchor="middle" class="t-strong m-mem">fails on call 1</text>
+      </g>
+    </svg>
+
+    <svg class="pipe-svg pipe-tall" viewBox="0 0 360 650" role="img" aria-label="The build loop, top to bottom: input package, analyze, test, build, check, then the MCP server as output. Each step is tagged with the tools the agent uses in it.">
+      <defs>
+        <marker id="pt-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0 L10 5 L0 10 z"/></marker>
+        <marker id="pt-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0 0 L10 5 L0 10 z"/></marker>
+      </defs>
+      <g class="io">
+        <rect x="8" y="4" width="344" height="76" rx="8"/>
+        <text x="180" y="26" text-anchor="middle" class="t-h">Input</text>
+        <text x="180" y="47" text-anchor="middle">FreeCAD 0.20.2 .deb packages, 63 ELF files</text>
+        <text x="180" y="66" text-anchor="middle" class="t-neg">no source, no docs, no network, no tasks</text>
+      </g>
+      <line class="flow" x1="140" y1="80" x2="140" y2="102" marker-end="url(#pt-a)"/>
+      <rect class="loop" x="8" y="104" width="344" height="424" rx="12"/>
+      <text x="22" y="127" class="t-cap">Build loop, with the tools used in each step</text>
+
+      <g class="stage off" data-stage="1" tabindex="0" role="button" aria-label="Step 1, Analyze">
+        <rect x="24" y="142" width="232" height="70" rx="8"/>
+        <circle class="badge" cx="44" cy="162" r="10"/><text class="badge-t" x="44" y="166" text-anchor="middle">1</text>
+        <text class="t-st" x="62" y="167">Analyze</text>
+        <text class="t-tool m-rea" x="246" y="167" text-anchor="end">REA + shell</text>
+        <text class="t-tool m-mem" x="246" y="167" text-anchor="end">REA withheld</text>
+        <text class="t-sub m-rea" x="62" y="188">binary, exports, linked libraries</text>
+        <text class="t-sub m-mem" x="62" y="188">nothing to inspect</text>
+      </g>
+      <g class="stage off" data-stage="2" tabindex="0" role="button" aria-label="Step 2, Test">
+        <rect x="24" y="238" width="232" height="70" rx="8"/>
+        <circle class="badge" cx="44" cy="258" r="10"/><text class="badge-t" x="44" y="262" text-anchor="middle">2</text>
+        <text class="t-st" x="62" y="263">Test</text>
+        <text class="t-tool m-rea" x="246" y="263" text-anchor="end">REA + shell</text>
+        <text class="t-tool m-mem" x="246" y="263" text-anchor="end">REA withheld</text>
+        <text class="t-sub m-rea" x="62" y="284">run the program, try each guess</text>
+        <text class="t-sub m-mem" x="62" y="284">program can't run, memory only</text>
+      </g>
+      <g class="stage" data-stage="3" tabindex="0" role="button" aria-label="Step 3, Build">
+        <rect x="24" y="334" width="232" height="70" rx="8"/>
+        <circle class="badge" cx="44" cy="354" r="10"/><text class="badge-t" x="44" y="358" text-anchor="middle">3</text>
+        <text class="t-st" x="62" y="359">Build</text>
+        <text class="t-tool m-rea" x="246" y="359" text-anchor="end">files</text>
+        <text class="t-tool m-mem" x="246" y="359" text-anchor="end">files</text>
+        <text class="t-sub m-rea" x="62" y="380">MCP server + injected script</text>
+        <text class="t-sub m-mem" x="62" y="380">written from memory</text>
+      </g>
+      <g class="stage" data-stage="4" tabindex="0" role="button" aria-label="Step 4, Check">
+        <rect x="24" y="430" width="232" height="70" rx="8"/>
+        <circle class="badge" cx="44" cy="450" r="10"/><text class="badge-t" x="44" y="454" text-anchor="middle">4</text>
+        <text class="t-st" x="62" y="455">Check</text>
+        <text class="t-tool m-rea" x="246" y="455" text-anchor="end">shell + image build</text>
+        <text class="t-tool m-mem" x="246" y="455" text-anchor="end">shell + image build</text>
+        <text class="t-sub m-rea" x="62" y="476">real calls through the built server</text>
+        <text class="t-sub m-mem" x="62" y="476">build image, list tools only</text>
+      </g>
+      <line class="flow" x1="140" y1="212" x2="140" y2="236" marker-end="url(#pt-a)"/>
+      <line class="flow" x1="140" y1="308" x2="140" y2="332" marker-end="url(#pt-a)"/>
+      <line class="flow" x1="140" y1="404" x2="140" y2="428" marker-end="url(#pt-a)"/>
+
+      <path class="fb" d="M256 458 H290 V369 H260" marker-end="url(#pt-b)"/>
+      <text class="t-fb" x="296" y="420">fix</text>
+      <path class="fb" d="M256 478 H330 V273 H260" marker-end="url(#pt-b)"/>
+      <text class="t-fb" x="0" y="0" transform="translate(344 380) rotate(-90)" text-anchor="middle">test again</text>
+
+      <line class="flow" x1="140" y1="528" x2="140" y2="550" marker-end="url(#pt-a)"/>
+      <g class="io">
+        <rect x="8" y="552" width="344" height="92" rx="8"/>
+        <text x="180" y="574" text-anchor="middle" class="t-h">Output</text>
+        <text x="180" y="595" text-anchor="middle">mcp/ server + script, env/Dockerfile, evidence/</text>
+        <text x="180" y="622" text-anchor="middle" class="t-strong m-rea">19 working tools</text>
+        <text x="180" y="622" text-anchor="middle" class="t-strong m-mem">fails on the first call</text>
+      </g>
+    </svg>
+
+    <div class="stage-detail" id="stage-detail" aria-live="polite"></div>
+    <figcaption><b>Figure 1.</b> The four steps of the build. The details come from GLM-5.3's FreeCAD build. A dashed arrow shows where the agent goes back to after a check fails. The bars under the steps show which tools the agent uses in each step.</figcaption>
+  </figure>
+
+  <!-- ===================================================== -->
+  <h2 id="build">What does the agent spend its time on during a build?</h2>
+  <p>GLM-5.3's build for FreeCAD took 18 minutes and 152 tool calls. About two thirds of these calls tested the program. Writing the server took only 7 calls and about 20 seconds. For example, early in the build the agent found that FreeCAD's console program exits immediately if it is not started from a terminal, and it changed the server to start FreeCAD that way.</p>
+  <p>Each tool that comes out of a build does one whole operation. For example, the server that Kimi K2.6 built has a <code>boolean_cut</code> tool, so cutting a vent into the lid is one call, <code>boolean_cut(name=Vented2, base=Vented1, tool=Vent2)</code>. With computer use, the same model worked through FreeCAD's menus and dialogs for 40 minutes and did not cut any vent.</p>
+
+  <figure class="tl" id="fig-tl">
+    <div class="tl-area">
+      <div class="tl-marks" id="tl-marks"></div>
+      <div class="tl-track" id="tl-track" role="img" aria-label="Timeline of the 18-minute build: analyze until minute 3, test until minute 15.8, build until 16.1, check until 18.3."></div>
+      <div class="tl-ticks" id="tl-ticks" aria-hidden="true"></div>
+      <div class="tl-axis" id="tl-axis" aria-hidden="true"></div>
+      <p class="tl-unit">minutes into the build</p>
+    </div>
+    <div class="tl-legend">
+      <span><i class="sw st-1"></i>1 Analyze, 0–3 min</span>
+      <span><i class="sw st-2"></i>2 Test, 3–15.8 min</span>
+      <span><i class="sw st-3"></i>3 Build, 15.8–16.1 min</span>
+      <span><i class="sw st-4"></i>4 Check, 16.1–18.3 min</span>
+    </div>
+    <div class="tl-legend">
+      <span><i class="sw sw-tick" style="background:var(--fg-2)"></i>shell or file call</span>
+      <span><i class="sw sw-tick" style="background:var(--accent)"></i>REA call</span>
+      <span><i class="sw sw-tick" style="background:var(--ok);width:3px"></i>image build or smoke test</span>
+    </div>
+    <ol class="tl-list" id="tl-list"></ol>
+    <figcaption><b>Figure 2.</b> Every tool call in GLM-5.3's FreeCAD build. Click a number to read what the agent wrote at that moment.</figcaption>
+  </figure>
+
+  <h3>How a tool call reaches FreeCAD</h3>
+  <p>The server lets the agent run FreeCAD's own operations with a tool call. It starts FreeCAD, attaches to it with Frida, and injects a small script into it. When the agent calls a tool, the script calls the matching FreeCAD functions inside the running program, for example to save a document or export a STEP file.</p>
+
+  <figure>
+    <div class="scroll-x">
+      <svg class="mech" viewBox="0 0 760 300" role="img" aria-label="A task agent sends tools/call to the MCP server over stdio. The server has started FreeCAD under a PTY and attached Frida, and forwards each call to an agent script inside the FreeCAD process, which calls FreeCAD's Python modules through the C API. FreeCAD writes the project and export files.">
+        <defs>
+          <marker id="m-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0 L10 5 L0 10 z"/></marker>
+          <marker id="m-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0 0 L10 5 L0 10 z"/></marker>
+        </defs>
+        <rect class="box" x="2" y="112" width="96" height="76" rx="8"/>
+        <text x="50" y="155" text-anchor="middle" class="t-h">Task agent</text>
+
+        <line class="flow" x1="98" y1="135" x2="150" y2="135" marker-end="url(#m-a)"/>
+        <text x="124" y="127" text-anchor="middle" class="t-lab">tools/call</text>
+        <line class="flow" x1="150" y1="165" x2="100" y2="165" marker-end="url(#m-a)"/>
+        <text x="124" y="182" text-anchor="middle" class="t-lab">result</text>
+
+        <rect class="box" x="152" y="56" width="140" height="188" rx="8"/>
+        <text x="222" y="80" text-anchor="middle" class="t-h">MCP server</text>
+        <text x="222" y="96" text-anchor="middle" class="t-mono">server.js, Node</text>
+        <text x="166" y="144" class="t-sub">starts FreeCAD</text>
+        <text x="166" y="160" class="t-sub">under a PTY</text>
+        <text x="166" y="180" class="t-sub">attaches with Frida</text>
+        <text x="166" y="200" class="t-sub">forwards each call</text>
+        <text x="166" y="216" class="t-sub">as op(name, args)</text>
+
+        <rect class="proc" x="384" y="8" width="374" height="284" rx="10"/>
+        <text x="400" y="30" class="t-h">freecadcmd-python3</text>
+
+        <line class="flow" x1="292" y1="100" x2="396" y2="100" marker-end="url(#m-a)"/>
+        <text x="338" y="92" text-anchor="middle" class="t-lab">spawn, PTY</text>
+        <line class="flow" x1="292" y1="135" x2="396" y2="135" marker-end="url(#m-a)"/>
+        <text x="338" y="127" text-anchor="middle" class="t-lab">inject script</text>
+        <line class="flow-acc" x1="292" y1="180" x2="396" y2="180" marker-end="url(#m-b)"/>
+        <text x="338" y="172" text-anchor="middle" class="t-acc">op(name, args)</text>
+        <line class="flow" x1="398" y1="212" x2="294" y2="212" marker-end="url(#m-a)"/>
+        <text x="338" y="228" text-anchor="middle" class="t-lab">{ ok, data }</text>
+
+        <rect class="inj" x="398" y="66" width="176" height="166" rx="8"/>
+        <text x="486" y="88" text-anchor="middle" class="t-h">agent.js (injected)</text>
+        <text x="410" y="114" class="t-mono">PyGILState_Ensure</text>
+        <text x="410" y="138" class="t-mono">PyImport_ImportModule</text>
+        <text x="410" y="162" class="t-mono">PyObject_GetAttrString</text>
+        <text x="410" y="186" class="t-mono">PyObject_CallObject</text>
+        <text x="410" y="210" class="t-mono">PyGILState_Release</text>
+
+        <rect class="box" x="604" y="66" width="140" height="112" rx="8"/>
+        <text x="674" y="88" text-anchor="middle" class="t-h">Embedded Python</text>
+        <text x="674" y="110" text-anchor="middle" class="t-mono">FreeCAD, Part,</text>
+        <text x="674" y="128" text-anchor="middle" class="t-mono">Import, Mesh,</text>
+        <text x="674" y="146" text-anchor="middle" class="t-mono">MeshPart</text>
+
+        <line class="flow-acc" x1="574" y1="122" x2="602" y2="122" marker-end="url(#m-b)"/>
+        <text x="588" y="114" text-anchor="middle" class="t-acc">calls</text>
+
+        <rect class="box" x="604" y="206" width="140" height="66" rx="8"/>
+        <text x="674" y="228" text-anchor="middle" class="t-mono">/workspace</text>
+        <text x="674" y="248" text-anchor="middle" class="t-sub">.FCStd .step</text>
+        <text x="674" y="264" text-anchor="middle" class="t-sub">.iges .brep .stl</text>
+        <line class="flow" x1="674" y1="178" x2="674" y2="204" marker-end="url(#m-a)"/>
+        <text x="666" y="196" text-anchor="end" class="t-lab">FreeCAD writes</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 3.</b> How one tool call reaches FreeCAD in the server that GLM-5.3 built. The bronze parts are what the agent worked out by testing: the script it injects into FreeCAD and the calls the script makes.</figcaption>
+  </figure>
+
+  <!-- ===================================================== -->
+  <h2 id="results">How well do agents work with the MCP servers they built?</h2>
+  <p>After each build finishes, the agent cannot change the server any more. We give the server to the same model, together with five FreeCAD tasks that the agent did not see during the build. Each task has multiple checks on the files the model saves. Each task starts from a project file that already passes a few of them.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Task</th><th>What the agent must do</th><th class="num">Checks</th><th class="num">Deadline</th></tr></thead>
+      <tbody>
+        <tr><td class="task">board-plate</td><td>Resize a mounting plate and move its two holes, keeping the linked cuts. Save, then export STEP and STL.</td><td class="num">9</td><td class="num">20 min</td></tr>
+        <tr><td class="task">cable-slot</td><td>The same edit plus a slot cut through the plate.</td><td class="num">10</td><td class="num">20 min</td></tr>
+        <tr><td class="task">service-standoffs</td><td>The same edit plus four standoffs fused on in a chain.</td><td class="num">10</td><td class="num">20 min</td></tr>
+        <tr><td class="task">lid-vent</td><td>Resize a lid, move four screw holes and cut five vents in sequence.</td><td class="num">13</td><td class="num">40 min</td></tr>
+        <tr><td class="task">enclosure</td><td>Release a two-part enclosure. Shell, posts, port cutouts, lid holes, vents and a rotated label plate add up to 26 linked features.</td><td class="num">21</td><td class="num">90 min</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+
+  <div class="exp-head" id="exp1"><span class="exp-num">Main result</span><h3>Kimi K2.6 passed 87% of the checks with its MCP server and 33% with computer use</h3></div>
+  <p>Kimi K2.6 does each task twice, once with its MCP server and once with computer use. With computer use, Kimi completed the shortest task. On the other four tasks, it did not pass any check beyond the ones the starting file already passed. The MCP runs also cost less. The five tasks took 62 minutes and 10.7M tokens with the MCP server, and 142 minutes and 65.8M tokens with computer use. The build is a separate cost that the agent pays once per program, and GLM-5.3's build took 18 minutes.</p>
+
+  <figure id="fig-exp1">
+    <p class="fig-title">With computer use, Kimi completed one task and made no progress on the other four</p>
+    </div>
+    <div class="bc" id="chart-exp1"></div>
+    <figcaption><b>Figure 4.</b> Kimi K2.6 on the five tasks. The dashed line shows how many checks the starting file already passes before the agent does anything.</figcaption>
+  </figure>
+
+  <p>GLM-5.3 passed every check on all five tasks with the MCP server it built. It finished the longest task in 79 seconds on average.</p>
+
+  <figure id="fig-video">
+    <p class="fig-title">Three of the five tasks, with the two runs shown side by side</p>
+    <div class="fig-tools">
+      <div class="seg" role="group" aria-label="Task">
+        <button type="button" data-vid="enclosure" aria-pressed="true">Enclosure</button>
+        <button type="button" data-vid="plate" aria-pressed="false">Board plate</button>
+        <button type="button" data-vid="lid" aria-pressed="false">Lid vent</button>
+      </div>
+      <span class="vid-stat" id="vid-stat">MCP server: 18/21 in 16 min, 2.2M tokens. Computer use: 2/21 in 47 min, 21.4M tokens.</span>
+    </div>
+    <div class="vid-wrap">
+      <video id="vid" controls playsinline preload="metadata" poster="media/v6/enclosure.jpg" src="media/v6/enclosure.mp4" aria-label="Kimi K2.6 on the enclosure task, computer use on the left and its MCP server on the right"></video>
+    </div>
+    <figcaption><b>Figure 5.</b> Kimi K2.6 on three of the five tasks. The left side uses computer use and the right side uses its MCP server. Each side shows its real clock and the tokens it has used so far.</figcaption>
+  </figure>
+
+
+  <div class="exp-head" id="exp2"><span class="exp-num">Ablation</span><h3>A server that the agent writes without access to the program does not work</h3></div>
+  <p>FreeCAD's Python API is widely documented, so a model might be able to write the server from memory. To check this, we run the build again, but this time we do not give the agent REA or FreeCAD's files. On the five tasks, GLM-5.3's server did not pass any check beyond the starting file, and Kimi's server passed 27% of the checks. The servers that the same models built with REA passed 100% and 87%. Both servers written from memory failed on the first tool call, before the call reached any FreeCAD API.</p>
+
+  <figure id="fig-exp2">
+    </div>
+    <div class="chart-pair">
+      <div class="bc" id="chart-glm"></div>
+      <div class="bc dense" id="chart-kimi"></div>
+    </div>
+    <figcaption><b>Figure 6.</b> Each model's server on the five tasks. Solid bars are the server built with REA. Hatched bars are the server written from memory only. The dashed line shows the checks that the starting file already passes.</figcaption>
+  </figure>
+
+    <!-- ===================================================== -->
+  <h2 id="fruit-ninja">In a closed-source, real-time game, the model scores 3.7× higher with its MCP server</h2>
+  <p>FreeCAD is open source, and its tasks have no time pressure. Fruit Ninja is closed source and runs in real time. While the model is thinking, fruit falls off the screen.</p>
+  <p>We give DeepSeek V4.1 Flash the game's binary and REA, and it builds an MCP server in the same four steps. The same model then plays three 60-second rounds with the server and three rounds with computer use. <b>The model averaged 295.0 points per round with its MCP server and 78.7 points with computer use.</b> Most of the computer-use score is a bonus that the game adds when a round ends. In the round shown in Demo 2, the model earned 9 points during play with computer use and 288 points with its MCP server.</p>
+
+  <figure id="fig-fn-score">
+    <p class="fig-title">During play, the model earned 288 points with its MCP server and 9 with computer use</p>
+    <div class="fn-rows">
+      <div>
+        <h4>Final score, average of 3 rounds</h4>
+        <div class="hb">
+          <span>Computer use</span><div class="hb-track"><div class="hb-fill s-gui" style="width:20.7%"></div><span class="hb-v" style="left:20.7%">78.7</span></div>
+          <span>MCP server</span><div class="hb-track"><div class="hb-fill s-rea" style="width:77.6%"></div><span class="hb-v" style="left:77.6%">295.0</span></div>
+        </div>
+      </div>
+      <div>
+        <h4>Final score in round 1, split into play and bonus</h4>
+        <div class="hb">
+          <span>Computer use</span><div class="hb-track stack"><div class="hb-fill s-gui" style="width:2.4%;border-radius:0"></div><div class="hb-fill s-gui-2" style="width:21%"></div><span class="hb-v" style="left:23.4%">89 = 9 + 80</span></div>
+          <span>MCP server</span><div class="hb-track stack"><div class="hb-fill s-rea" style="width:75.8%;border-radius:0"></div><div class="hb-fill s-rea-2" style="width:9.2%"></div><span class="hb-v" style="left:85%">323 = 288 + 35</span></div>
+        </div>
+        <div class="tl-legend fn-legend">
+          <span><i class="sw s-ink"></i>points earned during play</span>
+          <span><i class="sw s-ink-2"></i>end-of-round bonus</span>
+        </div>
+      </div>
+    </div>
+    <figcaption><b>Figure 7.</b> DeepSeek V4.1 Flash at Fruit Ninja. In the lower pair of bars, the solid part is points earned during play, and the faded part is bonuses added when the round ends.</figcaption>
+  </figure>
+
+  <p>The server's <code>game_state</code> tool reads the score, the clock, and the fruit and bombs from the game process. Its <code>slice</code> tool plans one stroke through the fruit and performs it. The model does not need to find the fruit in an image.</p>
+
+  <figure id="fig-fn-tools">
+    <p class="fig-title">One of the four tools plans a whole stroke and performs it</p>
+    <div class="tools">
+      <div class="tool"><code>game_state</code><p>Score, clock, fruit and bombs, read from the game process.</p></div>
+      <div class="tool"><code>slice</code><p>Plans one stroke through the fruit and runs it.</p></div>
+      <div class="tool"><code>get_controls</code><p>Game rules and input limits.</p></div>
+      <div class="tool"><code>get_screenshot</code><p>The live game screen.</p></div>
+    </div>
+    <figcaption><b>Figure 8.</b> The four tools in the MCP server that DeepSeek V4.1 Flash built from the Fruit Ninja binary.</figcaption>
+  </figure>
+
+  <!-- ===================================================== -->
+  <h2 id="discussion">Why an agent does not need the screen</h2>
+  <p>In this part, we share some of our interpretation of what we see in the results.</p>
+
+  <h3>A skilled user knows which operations to do without studying the screen</h3>
+  <p>An experienced FreeCAD user does not need to analyze the screen to know what to do next. To cut a vent into a lid, they already know the operations: make a box, place it, and subtract it from the lid. In the GOMS model of skilled computer use, an expert knows goals and the methods that reach them, and clicks and keystrokes are only how the methods get carried out (Card, Moran and Newell, 1983). Blind people use software through a screen reader that reads the names of the buttons and menus aloud. Experienced users often write scripts instead of clicking.</p>
+
+  <h3>A model works with a tool call more cheaply than with a screenshot</h3>
+  <p>The same information can be easy or hard to use depending on how it is presented. A person reads a diagram faster than a paragraph that says the same thing (<a href="https://doi.org/10.1111/j.1551-6708.1987.tb00863.x">Larkin and Simon, 1987</a>). A language model is the opposite, and works with text more cheaply than with images. The call <code>add_box(length=40, width=3, height=7)</code> and a screenshot of the lid describe the same step. With the screenshot, the model has to find the right field, work out where to click, and read the result from another screenshot. On lid-vent, computer use spent 17.2M tokens and the MCP run spent 0.3M.</p>
+
+  <h3>An agent can play with the software before it has a task</h3>
+  <p>In our setting, the agent gets time to play with the program before it receives any task. It starts the program, tries things to see what happens, and learns what the program can do. About two thirds of the calls in GLM-5.3's build were like this. They added nothing to the server and only showed the agent how the program behaves. A Tetris player does something similar when they rotate a piece just to see where it fits (<a href="https://doi.org/10.1207/s15516709cog1804_1">Kirsh and Maglio, 1994</a>). After that, the agent turns what it learned into tools, so it is ready for tasks it has not seen yet.</p>
+
+  <!-- ===================================================== -->
+  <h2 id="related">How this relates to prior work</h2>
+  <p>Earlier work shows that agents do better with APIs or MCP tools than with only the screen. This has been shown on the web (<a href="https://arxiv.org/abs/2410.16464">Song et al.</a>), in IDEs (<a href="https://arxiv.org/abs/2502.18525">Aggarwal and Welleck</a>) and on the desktop (<a href="https://arxiv.org/abs/2504.14603">UFO2</a>, <a href="https://arxiv.org/abs/2508.03923">CoAct-1</a>, <a href="https://arxiv.org/abs/2510.24563">OSWorld-MCP</a>, <a href="https://arxiv.org/abs/2506.07672">MCPWorld</a>). We ask a different question: where do the tools come from when nobody has written them?</p>
+  <div class="table-wrap">
+    <table class="rel">
+      <thead><tr><th>Where the tools come from</th><th>What it needs</th><th>Examples</th></tr></thead>
+      <tbody>
+        <tr><td>Written by the vendor or by other people</td><td>The program's own API, or its source</td><td><a href="https://blogs.windows.com/windowsdeveloper/2025/11/18/ignite-2025-furthering-windows-as-the-premier-platform-for-developers-governed-by-security/">Windows agent connectors</a>, <a href="https://github.com/neka-nat/freecad-mcp">freecad-mcp</a>, the servers in <a href="https://arxiv.org/abs/2508.14704">MCP-Universe</a> and <a href="https://arxiv.org/abs/2508.20453">MCP-Bench</a></td></tr>
+        <tr><td>Generated from source code or documentation</td><td>A code repository, an API specification, or manuals</td><td><a href="https://github.com/HKUDS/CLI-Anything">CLI-Anything</a>, <a href="https://arxiv.org/abs/2509.05941">Code2MCP</a>, <a href="https://arxiv.org/abs/2507.16044">AutoMCP</a>, <a href="https://arxiv.org/abs/2510.17790">UltraCUA</a>, <a href="https://arxiv.org/abs/2505.20286">Alita</a></td></tr>
+        <tr><td>Learned from using the program</td><td>Screen interaction, or recorded network traffic for web apps</td><td><a href="https://arxiv.org/abs/2504.07079">SkillWeaver</a>, <a href="https://arxiv.org/abs/2409.17140">AXIS</a>, <a href="https://arxiv.org/abs/2605.12481">ToolCUA</a>, <a href="https://github.com/Integuru-AI/Integuru">Integuru</a>, <a href="https://arxiv.org/abs/2604.00694">Unbrowse</a></td></tr>
+        <tr class="ours"><td>Built by the agent from compiled binaries</td><td>The binaries and a reverse-engineering toolkit</td><td>This post</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Agents can already analyze binaries with tools such as <a href="https://github.com/LaurieWired/GhidraMCP">GhidraMCP</a>, <a href="https://github.com/mrexodia/ida-pro-mcp">ida-pro-mcp</a> and <a href="https://arxiv.org/abs/2403.05286">LLM4Decompile</a>. We do not know of earlier work where the agent turns this analysis into a tool server and then does a user's tasks through the server.</p>
+
+  <!-- ===================================================== -->
+  <h2 id="next">Next: let agents shape their own link to the environment</h2>
+  <p>In our experiments, the agent builds the server only once, before it sees any task. After it starts to receive tasks, it does not update the server. But the agent still has the program, and it can go back to it at any time.</p>
+  <p>The next step is to let the agent keep changing the server while it does tasks (Figure 9). The server is the agent's link to the software, and the agent built this link itself. So the agent can also decide what the link should look like. When a task is awkward with the current tools, the agent can go back to the binary and test how that part of the program behaves. Then it can add a tool, redesign a tool, or combine several steps into one tool. In Fruit Ninja, the agent already chose to build one <code>slice</code> tool that plans a whole stroke and performs it. Over time, the agent defines how it wants to work with the software, and the link evolves with the tasks it does. An MCP server built this way can also be shared with other agents.</p>
+
+  <figure id="fig-vision">
+    <p class="fig-title">The agent keeps reshaping its link to the program as it works</p>
+    <div class="scroll-x">
+      <svg class="vision" viewBox="0 0 760 384" role="img" aria-label="A sketch. An agent on the left is connected to an installed program on the right by five lines, each one a tool. Three solid lines were built before the first task. Two dashed lines are tools the agent added or redesigned later. Below, a four-step loop: do a task through the server, notice what is awkward to do, go back into the program and test, reshape the server and keep it.">
+        <defs>
+          <marker id="v-a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk" d="M0 0 L10 5 L0 10 z"/></marker>
+          <marker id="v-b" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="mk-acc" d="M0 0 L10 5 L0 10 z"/></marker>
+        </defs>
+
+        <rect class="bubble" x="14" y="14" width="212" height="50" rx="16"/>
+        <text x="120" y="35" text-anchor="middle">This task is awkward with</text>
+        <text x="120" y="51" text-anchor="middle">the tools I have now.</text>
+        <circle class="bubble" cx="104" cy="74" r="4.5"/><circle class="bubble" cx="97" cy="86" r="2.8"/>
+
+        <g transform="translate(40 96)">
+          <line class="bot-line" x1="38" y1="0" x2="38" y2="12"/><circle class="bot-dot" cx="38" cy="-3" r="4.5"/>
+          <rect class="bot" x="8" y="12" width="60" height="44" rx="13"/>
+          <circle class="bot-eye" cx="28" cy="32" r="4.5"/><circle class="bot-eye" cx="48" cy="32" r="4.5"/>
+          <path class="bot-smile" d="M29 43 Q38 50 47 43"/>
+          <rect class="bot" x="16" y="60" width="44" height="46" rx="11"/>
+          <path class="bot-line" d="M16 80 H2 V94"/>
+          <path class="bot-line" d="M60 78 H96"/><circle class="bot-dot" cx="99" cy="78" r="5.5"/>
+          <path class="bot-line" d="M28 106 V120 H22"/><path class="bot-line" d="M48 106 V120 H54"/>
+          <text x="38" y="142" text-anchor="middle" class="t-h">the agent</text>
+        </g>
+
+        <text class="t-cap" x="440" y="92" text-anchor="middle">built before the first task</text>
+        <path class="lane" d="M146 174 C 230 174, 250 110, 320 110 H594"/>
+        <path class="lane" d="M146 174 C 230 174, 250 134, 320 134 H594"/>
+        <path class="lane" d="M146 174 C 230 174, 250 158, 320 158 H594"/>
+        <path class="lane new" d="M146 174 C 230 174, 250 186, 320 186 H594"/>
+        <path class="lane new" d="M146 174 C 230 174, 250 210, 320 210 H594"/>
+        <g class="pill"><rect x="372" y="100" width="136" height="20" rx="10"/><text class="t-mono" x="440" y="114" text-anchor="middle">add_box</text></g>
+        <g class="pill"><rect x="372" y="124" width="136" height="20" rx="10"/><text class="t-mono" x="440" y="138" text-anchor="middle">boolean_cut</text></g>
+        <g class="pill"><rect x="372" y="148" width="136" height="20" rx="10"/><text class="t-mono" x="440" y="162" text-anchor="middle">export_step</text></g>
+        <g class="pill new"><rect x="372" y="176" width="136" height="20" rx="10"/><text x="440" y="190" text-anchor="middle">new tool</text></g>
+        <g class="pill new"><rect x="372" y="200" width="136" height="20" rx="10"/><text x="440" y="214" text-anchor="middle">redesigned tool</text></g>
+        <text class="t-acc" x="440" y="238" text-anchor="middle">shaped later by the agent, as it works</text>
+
+        <rect class="prog" x="600" y="86" width="140" height="140" rx="10"/>
+        <line class="prog-line" x1="600" y1="108" x2="740" y2="108"/>
+        <circle class="prog-dot" cx="614" cy="97" r="3.2"/><circle class="prog-dot" cx="625" cy="97" r="3.2"/><circle class="prog-dot" cx="636" cy="97" r="3.2"/>
+        <text class="t-bin" x="672" y="134" text-anchor="middle">0110 1001 0111</text>
+        <text class="t-bin" x="672" y="154" text-anchor="middle">1100 0011 1010</text>
+        <text class="t-bin" x="672" y="174" text-anchor="middle">0101 1110 0001</text>
+        <text class="t-bin" x="672" y="194" text-anchor="middle">1011 0100 0110</text>
+        <text class="t-bin" x="672" y="214" text-anchor="middle">0011 1101 1000</text>
+        <circle class="sock" cx="600" cy="110" r="4.5"/><circle class="sock" cx="600" cy="134" r="4.5"/><circle class="sock" cx="600" cy="158" r="4.5"/><circle class="sock new" cx="600" cy="186" r="4.5"/><circle class="sock new" cx="600" cy="210" r="4.5"/>
+        <text x="670" y="246" text-anchor="middle" class="t-h">the installed program</text>
+
+        <g class="chip-step"><rect x="20" y="276" width="160" height="52" rx="10"/><circle class="badge" cx="40" cy="302" r="10"/><text class="badge-t" x="40" y="306" text-anchor="middle">1</text><text x="58" y="298">Do a task</text><text x="58" y="314">through the server</text></g>
+        <g class="chip-step"><rect x="208" y="276" width="160" height="52" rx="10"/><circle class="badge" cx="228" cy="302" r="10"/><text class="badge-t" x="228" y="306" text-anchor="middle">2</text><text x="246" y="298">Notice what is</text><text x="246" y="314">awkward to do</text></g>
+        <g class="chip-step"><rect x="396" y="276" width="160" height="52" rx="10"/><circle class="badge" cx="416" cy="302" r="10"/><text class="badge-t" x="416" y="306" text-anchor="middle">3</text><text x="434" y="298">Go back into the</text><text x="434" y="314">program and test</text></g>
+        <g class="chip-step"><rect x="584" y="276" width="160" height="52" rx="10"/><circle class="badge" cx="604" cy="302" r="10"/><text class="badge-t" x="604" y="306" text-anchor="middle">4</text><text x="622" y="298">Reshape the server</text><text x="622" y="314">and keep it</text></g>
+        <line class="flow" x1="180" y1="302" x2="206" y2="302" marker-end="url(#v-a)"/>
+        <line class="flow" x1="368" y1="302" x2="394" y2="302" marker-end="url(#v-a)"/>
+        <line class="flow" x1="556" y1="302" x2="582" y2="302" marker-end="url(#v-a)"/>
+        <path class="fb" d="M664 328 V354 H100 V332" marker-end="url(#v-b)"/>
+        <text class="t-acc" x="382" y="372" text-anchor="middle">after each round, the link fits the agent's work better</text>
+      </svg>
+    </div>
+    <figcaption><b>Figure 9.</b> A sketch of the next step, not a result. Each line is one tool in the agent's server, and together the lines are the agent's link to the program.</figcaption>
+  </figure>
+
+  <p>If this works, a program does not need to ship an agent interface for agents to use it well. An agent starts with only the installed program, designs for itself how to work with it, and gets better at using it over time. Software is one kind of environment. We are excited about agents that shape their own links to the environments they work in, starting with the software on a computer.</p>
+</article>
+
+<nav class="versions col" aria-label="Site"><a href="../../">Back to Ao Qu's homepage</a></nav>
+
+<script src="js/pipeline.js"></script>
+<script src="js/timeline.js"></script>
+<script src="js/charts.js"></script>
+<script src="js/video.js"></script>
+</body>
+</html>
