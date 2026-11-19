@@ -1,6 +1,12 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-11-19",
+        content: "<em>A Society of AI Scientists</em> is out (<a href='https://www.alphaxiv.org/abs/2611.society-ai-scientists' target='_blank'>alphaXiv</a>), and featured in an <a href='https://www.science.org/content/article/exclusive-i-got-eavesdrop-ai-agents-doing-science-it-was-eye-opening' target='_blank'>exclusive story</a> by <strong>Science</strong>. Thanks to Rehaan Ahmad and Sam Schmidgall for leading the work!",
+        kind: "release",
+        highlight: true
+    },
+    {
         date: "2026-11-10",
         content: "Gave a talk on <em><a href='https://github.com/Human-Agent-Society/reef' target='_blank'>Reef</a></em> at the <strong>MIT Center for Bits and Atoms</strong> (<a href='https://quao627.github.io/reef-slides/' target='_blank'>slides</a>).",
         kind: "talk",
@@ -11,6 +17,12 @@ const NEWS_DATA = [
         content: "Taught Lecture 7 of AI4AI, on RL in practice for LLM post-training (<a href='https://mit-mi.github.io/how2ai-course/fall2026/schedule/lec6%20-%20rl%20in%20practice.pdf' target='_blank'>slides</a>).",
         kind: "talk",
         highlight: false
+    },
+    {
+        date: "2026-10-21",
+        content: "<em>FrontierCS 2</em>, a benchmark for computer science R&D, is out (<a href='https://arxiv.org/abs/2610.29932' target='_blank'>arXiv</a>, <a href='https://frontier-cs.org/' target='_blank'>website</a>)! Thanks to Qiuyang Mang and Wenhao Chai for leading the work!",
+        kind: "release",
+        highlight: true
     },
     {
         date: "2026-10-14",

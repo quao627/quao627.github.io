@@ -61,6 +61,17 @@ const PUBLICATIONS_DATA = {
             }
         },
         {
+            id: 'frontiercs2',
+            title: "FrontierCS 2: A Benchmark for Computer Science R&D",
+            authors: "Qiuyang Mang, Wenhao Chai, Runyuan He, Dongruixuan Li, Zihan Zheng, et al., <strong>Ao Qu</strong>, Han Zheng, Chonghe Jiang, et al., Matei Zaharia, Alex Dimakis, Ion Stoica, Joseph E. Gonzalez, Alvin Cheung",
+            venue: "arXiv 2026",
+            image: "paper-teasers/frontiercs2.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2610.29932",
+                project: "https://frontier-cs.org/"
+            }
+        },
+        {
             id: 'eom',
             title: "Economy of Minds: Emerging Multi-Agent Intelligence with Economic Interactions",
             authors: "Zhenting Qi, Huangyuan Su, <strong>Ao Qu</strong>, Chenyu Wang, Yu Yao, Han Zheng, Kushal Chattopadhyay, Guowei Xu, Zihan Wang, Weirui Ye, Vijay Janapa Reddi, Ju Li, Paul Pu Liang, Himabindu Lakkaraju, Sham Kakade, Yilun Du",
