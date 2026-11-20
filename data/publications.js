@@ -4,6 +4,29 @@
 const PUBLICATIONS_DATA = {
     selectedWorks: [
         {
+            id: 'frontiercs2',
+            title: "FrontierCS 2: A Benchmark for Computer Science R&D",
+            authors: "Qiuyang Mang, Wenhao Chai, Runyuan He, Dongruixuan Li, Zihan Zheng, et al., <strong>Ao Qu</strong>, Han Zheng, Chonghe Jiang, et al., Matei Zaharia, Alex Dimakis, Ion Stoica, Joseph E. Gonzalez, Alvin Cheung",
+            venue: "arXiv 2026",
+            image: "paper-teasers/frontiercs2.jpg",
+            links: {
+                paper: "https://arxiv.org/abs/2610.29932",
+                project: "https://frontier-cs.org/"
+            }
+        },
+        {
+            id: 'spade',
+            title: "SPADE: Self-Play in Adaptive Synthetic Executable Environments",
+            authors: "Bo Liu*, Simon Yu*, Yiding Jiang, <strong>Ao Qu</strong>, Andrew Zhao, Zichen Liu, Junsu Kim, Zijian Zhou, Seungone Kim, Tongzheng Ren, Mickel Liu, Hanfei Yu, Zhaorun Chen, Weiyan Shi, Paul Pu Liang, Luke Zettlemoyer, Yejin Choi, Natasha Jaques",
+            venue: "arXiv 2026",
+            image: "paper-teasers/spade.png",
+            links: {
+                paper: "https://arxiv.org/abs/2608.19197",
+                code: "https://github.com/spade-rl/spade",
+                project: "https://spade-rl.github.io"
+            }
+        },
+        {
             id: 'coral',
             title: "CORAL: Towards Autonomous Multi-Agent Evolution for Open-Ended Discovery",
             authors: "<strong>Ao Qu*</strong>, Han Zheng*, Zijian Zhou*, Yihao Yan, Yihong Tang, Shao Yong Ong, Fenglu Hong, Kaichen Zhou, Chonghe Jiang, Minwei Kong, Jiacheng Zhu, Xuan Jiang, Sirui Li, Cathy Wu, Bryan Kian Hsiang Low, Jinhua Zhao, Paul Pu Liang",
@@ -47,29 +70,6 @@ const PUBLICATIONS_DATA = {
                 { name: "MarkTechPost", url: "https://www.marktechpost.com/2025/06/26/mit-and-nus-researchers-introduce-mem1-a-memory-efficient-framework-for-long-horizon-language-agents/" },
                 { name: "QbitAI (量子位)", url: "https://mp.weixin.qq.com/s/aLq93YFNY2e9-AJ0xyJ1eQ" }
             ]
-        },
-        {
-            id: 'spade',
-            title: "SPADE: Self-Play in Adaptive Synthetic Executable Environments",
-            authors: "Bo Liu*, Simon Yu*, Yiding Jiang, <strong>Ao Qu</strong>, Andrew Zhao, Zichen Liu, Junsu Kim, Zijian Zhou, Seungone Kim, Tongzheng Ren, Mickel Liu, Hanfei Yu, Zhaorun Chen, Weiyan Shi, Paul Pu Liang, Luke Zettlemoyer, Yejin Choi, Natasha Jaques",
-            venue: "arXiv 2026",
-            image: "paper-teasers/spade.png",
-            links: {
-                paper: "https://arxiv.org/abs/2608.19197",
-                code: "https://github.com/spade-rl/spade",
-                project: "https://spade-rl.github.io"
-            }
-        },
-        {
-            id: 'frontiercs2',
-            title: "FrontierCS 2: A Benchmark for Computer Science R&D",
-            authors: "Qiuyang Mang, Wenhao Chai, Runyuan He, Dongruixuan Li, Zihan Zheng, et al., <strong>Ao Qu</strong>, Han Zheng, Chonghe Jiang, et al., Matei Zaharia, Alex Dimakis, Ion Stoica, Joseph E. Gonzalez, Alvin Cheung",
-            venue: "arXiv 2026",
-            image: "paper-teasers/frontiercs2.jpg",
-            links: {
-                paper: "https://arxiv.org/abs/2610.29932",
-                project: "https://frontier-cs.org/"
-            }
         },
         {
             id: 'eom',
