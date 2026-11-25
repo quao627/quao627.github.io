@@ -1,0 +1,61 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Reinforcement Learning for LLM Agents</title>
+<meta name="description" content="Guest lecture slides by Ao Qu for MIT MAS.S60, AI Agents for Cognitive Augmentation (Nov 24, 2026).">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap">
+<style>
+:root { --bg: #f5f5f7; --card: #ffffff; --ink: #1d1d1f; --muted: #6e6e73; --line: #d2d2d7; --accent: #a31f34; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #111113; --card: #1c1c1e; --ink: #f5f5f7; --muted: #a1a1a6; --line: #3a3a3c; --accent: #e0566b; }
+}
+* { box-sizing: border-box; margin: 0; }
+html { background: var(--bg); }
+body { font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", Arial, sans-serif; color: var(--ink);
+       padding: 32px 16px 48px; display: flex; flex-direction: column; align-items: center; gap: 20px; }
+header, .viewer, .links, footer { width: 100%; max-width: 1200px; }
+h1 { font-size: clamp(26px, 4vw, 40px); font-weight: 700; letter-spacing: -0.01em; }
+.meta { margin-top: 8px; color: var(--muted); font-size: 16px; line-height: 1.5; }
+.meta a { color: var(--accent); text-decoration: none; }
+.meta a:hover { text-decoration: underline; }
+.viewer { position: relative; aspect-ratio: 16 / 9; background: var(--card); border: 1px solid var(--line);
+          border-radius: 12px; overflow: hidden; }
+.viewer iframe { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; }
+.links { display: flex; flex-wrap: wrap; gap: 10px; }
+.btn { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; border-radius: 999px; font-size: 15px;
+       font-weight: 600; text-decoration: none; border: 1px solid var(--line); background: var(--card); color: var(--ink); }
+.btn.primary { background: var(--accent); border-color: var(--accent); color: #fff; }
+.btn:hover { filter: brightness(0.97); }
+.note { color: var(--muted); font-size: 14px; line-height: 1.5; }
+footer { color: var(--muted); font-size: 14px; line-height: 1.6; border-top: 1px solid var(--line); padding-top: 16px; }
+footer a { color: var(--accent); text-decoration: none; }
+</style>
+</head>
+<body>
+<header>
+  <h1>Reinforcement Learning for LLM Agents</h1>
+  <p class="meta">Guest lecture by <a href="https://quao627.github.io/">Ao Qu</a> · MIT MAS.S60,
+    <a href="https://cognitive-agents.media.mit.edu/" target="_blank" rel="noopener">AI Agents for Cognitive Augmentation</a> · Nov 24, 2026</p>
+</header>
+
+<div class="viewer">
+  <iframe src="https://view.officeapps.live.com/op/embed.aspx?src=https%3A%2F%2Fquao627.github.io%2Frl-for-llm-agents%2Frl-for-llm-agents.pptx"
+          title="Slides: Reinforcement Learning for LLM Agents" allowfullscreen loading="lazy"></iframe>
+</div>
+
+<div class="links">
+  <a class="btn primary" href="https://view.officeapps.live.com/op/view.aspx?src=https%3A%2F%2Fquao627.github.io%2Frl-for-llm-agents%2Frl-for-llm-agents.pptx" target="_blank" rel="noopener">Open full screen</a>
+  <a class="btn" href="rl-for-llm-agents.pptx" download>Download PPTX</a>
+  <a class="btn" href="rl-for-llm-agents.pdf" target="_blank" rel="noopener">PDF</a>
+</div>
+<p class="links note">The player keeps the slide animations; click or press → to step through. If it doesn’t load, use the PDF.</p>
+
+<footer>
+  Thanks to Valdemar Danry and Pattie Maes for the invitation.
+</footer>
+</body>
+</html>
