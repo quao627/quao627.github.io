@@ -1,6 +1,12 @@
 // News and Updates Data
 const NEWS_DATA = [
     {
+        date: "2026-11-24",
+        content: "Gave a guest lecture on <em>Reinforcement Learning for LLM Agents</em> in MIT MAS.S60, <a href='https://cognitive-agents.media.mit.edu/' target='_blank'>AI Agents for Cognitive Augmentation</a> (<a href='https://quao627.github.io/rl-for-llm-agents/' target='_blank'>slides</a>). Thanks to Valdemar Danry and Pattie Maes for the invitation!",
+        kind: "talk",
+        highlight: false
+    },
+    {
         date: "2026-11-19",
         content: "<em>A Society of AI Scientists</em> is out (<a href='https://www.alphaxiv.org/abs/2611.society-ai-scientists' target='_blank'>alphaXiv</a>), and featured in an <a href='https://www.science.org/content/article/exclusive-i-got-eavesdrop-ai-agents-doing-science-it-was-eye-opening' target='_blank'>exclusive story</a> by <strong>Science</strong>. Thanks to Rehaan Ahmad and Sam Schmidgall for leading the work!",
         kind: "release",
